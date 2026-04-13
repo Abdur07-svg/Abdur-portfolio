@@ -1,0 +1,193 @@
+/* ===== BASE ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #020b18;
+  color: #ffffff;
+  min-height: 100vh;
+
+  /* তারার মতো background */
+  background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 50px 50px, 100px 100px;
+  background-position: 0 0, 25px 25px;
+  /* তারার উজ্জ্বলতা কমানো */
+  background-color: #020b18;
+}
+
+/* ===== HERO SECTION ===== */
+#hero {
+  text-align: center;
+  padding: 60px 20px 50px;
+  position: relative;
+}
+
+/* গোলাকার ছবি — glowing border */
+#hero img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 3px solid #00d4ff;
+  box-shadow:
+    0 0 15px #00d4ff,
+    0 0 30px #00d4ff,
+    0 0 60px rgba(0, 212, 255, 0.4);
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+#hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+#hero p {
+  color: #8ab4c9;
+  font-size: 1rem;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* ===== SECTION COMMON ===== */
+section {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 30px;
+
+  /* sci-fi card style */
+  background: rgba(5, 20, 40, 0.7);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+  position: relative;
+
+  /* glowing border effect */
+  box-shadow:
+    0 0 10px rgba(0, 212, 255, 0.1),
+    inset 0 0 20px rgba(0, 212, 255, 0.03);
+}
+
+/* কোণায় sci-fi কাটা দাগ */
+section::before,
+section::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: #00d4ff;
+  border-style: solid;
+}
+
+section::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+section::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+/* ===== HEADINGS ===== */
+section h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+section p {
+  color: #a0b8cc;
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+/* ===== QUALIFICATIONS LIST ===== */
+#qualifications ul {
+  list-style: none;
+  padding: 0;
+}
+
+#qualifications ul li {
+  color: #a0b8cc;
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+/* bullet এর বদলে cyan dot */
+#qualifications ul li::before {
+  content: '▸';
+  color: #00d4ff;
+  position: absolute;
+  left: 0;
+}
+
+/* ===== SOCIAL LINKS ===== */
+#social h2 {
+  margin-bottom: 20px;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* YouTube button */
+.btn-youtube {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 80, 80, 0.5);
+  color: #ff8080;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+}
+
+.btn-youtube:hover {
+  background: rgba(255, 0, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+  color: #ffffff;
+}
+
+/* Instagram button */
+.btn-instagram {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(130, 0, 255, 0.1);
+  border: 1px solid rgba(180, 80, 255, 0.5);
+  color: #c080ff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(130, 0, 255, 0.1);
+}
+
+.btn-instagram:hover {
+  background: rgba(130, 0, 255, 0.25);
+  box-shadow: 0 0 20px rgba(180, 80, 255, 0.4);
+  color: #ffffff;
+}
