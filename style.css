@@ -190,4 +190,110 @@ section p {
   background: rgba(130, 0, 255, 0.25);
   box-shadow: 0 0 20px rgba(180, 80, 255, 0.4);
   color: #ffffff;
+
+  
+}
+/* Hero - border সরানো */
+#hero {
+  text-align: center;
+  padding: 60px 20px 50px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#hero::before,
+#hero::after {
+  display: none;
+}
+
+/* About + Qualifications পাশাপাশি */
+.row-sections {
+  max-width: 800px;
+  margin: 30px auto;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.row-sections section {
+  margin: 0;
+  flex: 1;
+}
+
+/* About section - ভবিষ্যতের জন্য */
+#about {
+  flex: 2;
+}
+
+#qualifications {
+  flex: 1;
+}
+
+.extra-info {
+  margin-top: 16px;
+}
+
+/* Mobile এ একটার নিচে একটা */
+@media (max-width: 600px) {
+  .row-sections {
+    flex-direction: column;
+  }
+}
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(0, 200, 80, 0.1);
+  border: 1px solid rgba(0, 200, 80, 0.5);
+  color: #00c850;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 200, 80, 0.1);
+}
+
+.btn-whatsapp:hover {
+  background: rgba(0, 200, 80, 0.25);
+  box-shadow: 0 0 20px rgba(0, 200, 80, 0.4);
+  color: #ffffff;
+}
+
+.btn-x {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #cccccc;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.btn-x:hover {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+/* সব social button একই ছোট size */
+.btn-youtube,
+.btn-instagram,
+.btn-whatsapp,
+.btn-x {
+  padding: 10px 14px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
