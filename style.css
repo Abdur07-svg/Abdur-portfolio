@@ -1,4 +1,3 @@
-/* ===== BASE ===== */
 * {
   margin: 0;
   padding: 0;
@@ -10,25 +9,29 @@ body {
   background-color: #020b18;
   color: #ffffff;
   min-height: 100vh;
-
-  /* তারার মতো background */
   background-image:
     radial-gradient(white 1px, transparent 1px),
     radial-gradient(white 1px, transparent 1px);
   background-size: 50px 50px, 100px 100px;
   background-position: 0 0, 25px 25px;
-  /* তারার উজ্জ্বলতা কমানো */
-  background-color: #020b18;
 }
 
-/* ===== HERO SECTION ===== */
 #hero {
   text-align: center;
   padding: 60px 20px 50px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  max-width: 800px;
+  margin: 0 auto;
   position: relative;
 }
 
-/* গোলাকার ছবি — glowing border */
+#hero::before,
+#hero::after {
+  display: none;
+}
+
 #hero img {
   width: 160px;
   height: 160px;
@@ -57,25 +60,19 @@ body {
   letter-spacing: 1px;
 }
 
-/* ===== SECTION COMMON ===== */
 section {
   max-width: 800px;
   margin: 30px auto;
   padding: 30px;
-
-  /* sci-fi card style */
   background: rgba(5, 20, 40, 0.7);
   border: 1px solid rgba(0, 212, 255, 0.3);
   border-radius: 4px;
   position: relative;
-
-  /* glowing border effect */
   box-shadow:
     0 0 10px rgba(0, 212, 255, 0.1),
     inset 0 0 20px rgba(0, 212, 255, 0.03);
 }
 
-/* কোণায় sci-fi কাটা দাগ */
 section::before,
 section::after {
   content: '';
@@ -98,7 +95,6 @@ section::after {
   border-width: 0 2px 2px 0;
 }
 
-/* ===== HEADINGS ===== */
 section h2 {
   font-size: 1.4rem;
   font-weight: 700;
@@ -113,7 +109,6 @@ section p {
   font-size: 0.95rem;
 }
 
-/* ===== QUALIFICATIONS LIST ===== */
 #qualifications ul {
   list-style: none;
   padding: 0;
@@ -127,89 +122,13 @@ section p {
   font-size: 0.95rem;
 }
 
-/* bullet এর বদলে cyan dot */
 #qualifications ul li::before {
-  content: '▸';
+  content: '\25B8';
   color: #00d4ff;
   position: absolute;
   left: 0;
 }
 
-/* ===== SOCIAL LINKS ===== */
-#social h2 {
-  margin-bottom: 20px;
-}
-
-.social-buttons {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-/* YouTube button */
-.btn-youtube {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
-  background: rgba(255, 0, 0, 0.1);
-  border: 1px solid rgba(255, 80, 80, 0.5);
-  color: #ff8080;
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
-}
-
-.btn-youtube:hover {
-  background: rgba(255, 0, 0, 0.25);
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-  color: #ffffff;
-}
-
-/* Instagram button */
-.btn-instagram {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
-  background: rgba(130, 0, 255, 0.1);
-  border: 1px solid rgba(180, 80, 255, 0.5);
-  color: #c080ff;
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(130, 0, 255, 0.1);
-}
-
-.btn-instagram:hover {
-  background: rgba(130, 0, 255, 0.25);
-  box-shadow: 0 0 20px rgba(180, 80, 255, 0.4);
-  color: #ffffff;
-
-  
-}
-/* Hero - border সরানো */
-#hero {
-  text-align: center;
-  padding: 60px 20px 50px;
-  background: none;
-  border: none;
-  box-shadow: none;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-#hero::before,
-#hero::after {
-  display: none;
-}
-
-/* About + Qualifications পাশাপাশি */
 .row-sections {
   max-width: 800px;
   margin: 30px auto;
@@ -223,7 +142,6 @@ section p {
   flex: 1;
 }
 
-/* About section - ভবিষ্যতের জন্য */
 #about {
   flex: 2;
 }
@@ -236,64 +154,115 @@ section p {
   margin-top: 16px;
 }
 
-/* Mobile এ একটার নিচে একটা */
 @media (max-width: 600px) {
   .row-sections {
     flex-direction: column;
   }
 }
-.btn-whatsapp {
+
+#social h2 {
+  margin-bottom: 20px;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* সব button একই base style */
+.btn-youtube,
+.btn-instagram,
+.btn-whatsapp,
+.btn-x,
+.btn-facebook {
+  width: 50px;
+  height: 50px;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
-  background: rgba(0, 200, 80, 0.1);
-  border: 1px solid rgba(0, 200, 80, 0.5);
-  color: #00c850;
+  justify-content: center;
   text-decoration: none;
   border-radius: 4px;
   font-weight: 600;
-  letter-spacing: 1px;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(0, 200, 80, 0.1);
 }
 
+/* YouTube */
+.btn-youtube {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 80, 80, 0.5);
+  color: #ff4444;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+}
+.btn-youtube:hover {
+  background: rgba(255, 0, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+  color: #ffffff;
+}
+
+/* Instagram */
+.btn-instagram {
+  background: rgba(130, 0, 255, 0.1);
+  border: 1px solid rgba(180, 80, 255, 0.5);
+  color: #c080ff;
+  box-shadow: 0 0 10px rgba(130, 0, 255, 0.1);
+}
+.btn-instagram:hover {
+  background: rgba(130, 0, 255, 0.25);
+  box-shadow: 0 0 20px rgba(180, 80, 255, 0.4);
+  color: #ffffff;
+}
+
+/* WhatsApp */
+.btn-whatsapp {
+  background: rgba(0, 200, 80, 0.1);
+  border: 1px solid rgba(0, 200, 80, 0.5);
+  color: #25d366;
+  box-shadow: 0 0 10px rgba(0, 200, 80, 0.1);
+}
 .btn-whatsapp:hover {
   background: rgba(0, 200, 80, 0.25);
   box-shadow: 0 0 20px rgba(0, 200, 80, 0.4);
   color: #ffffff;
 }
 
+/* X (Twitter) */
 .btn-x {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #cccccc;
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
-
 .btn-x:hover {
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
-/* সব social button একই ছোট size */
-.btn-youtube,
-.btn-instagram,
-.btn-whatsapp,
-.btn-x {
-  padding: 10px 14px;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+/* Facebook */
+.btn-facebook {
+  background: rgba(24, 119, 242, 0.1);
+  border: 1px solid rgba(24, 119, 242, 0.5);
+  color: #0866ff;
+  box-shadow: 0 0 10px rgba(24, 119, 242, 0.1);
+}
+.btn-facebook:hover {
+  background: rgba(24, 119, 242, 0.25);
+  box-shadow: 0 0 20px rgba(24, 119, 242, 0.4);
+  color: #ffffff;
+}
+
+.star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
 }
