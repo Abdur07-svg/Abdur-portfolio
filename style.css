@@ -96,6 +96,7 @@ section::after {
 }
 
 section h2 {
+  text-align: center;
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 16px;
@@ -103,6 +104,13 @@ section h2 {
   letter-spacing: 1px;
 }
 
+section h4 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
 section p {
   color: #a0b8cc;
   line-height: 1.8;
