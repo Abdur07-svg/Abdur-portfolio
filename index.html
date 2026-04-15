@@ -6,7 +6,8 @@
   <title>Abdur Rahman - Portfolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
+<!-- Glowing Cursor -->
+<div id="cursor-glow"></div>
 <!-- Loading Screen -->
 <div id="loader">
   <div class="loader-content">
@@ -24,7 +25,7 @@
   <div id="hero">
     <img src="images\Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="আমার ছবি">
     <h1>Abdur Rajjak</h1>
-    <p>Student | AI Enthusiast | Game Developer</p>
+    <p id="typing-text"></p>
   </div>
 
   <!-- About + Qualifications পাশাপাশি -->
@@ -32,7 +33,7 @@
 
     <section id="about">
       <h2>Something About Me</h2>
-      <p>I am Abdur Rajjak, i am student from West Bengal, currently preparing for competitive exams like WBJEE. I am deeply interested in technology and aim to build advanced projects like a JARVIS-style AI assistant and even develop my own mobile game, despite starting with little coding experience. I prefer learning step by step, and I am also working on improving my spoken English. I have big goals, but I know I need to improve my consistency and focus to achieve them.</p>
+      <p>I am Abdur Rajjak, i am student from West Bengal. I am deeply interested in technology and aim to build advanced projects like a JARVIS-style AI assistant and even develop my own mobile game, despite starting with little coding experience. I prefer learning step by step, and I am also working on improving my spoken English. I have big goals, but I know I need to improve my consistency and focus to achieve them.</p>
       <div class="extra-info">
         <!-- ভবিষ্যতে এখানে যোগ করো -->
       </div>
@@ -115,6 +116,81 @@
     }, 3000);
   });
 </script>
+<script>
+  const texts = [
+    "Student",
+    "AI Enthusiast", 
+    "Game Developer",
+    "Python Coder",
+    
+    
+  ];
 
+  let textIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  const typingElement = document.getElementById('typing-text');
+
+  function type() {
+    const currentText = texts[textIndex];
+
+    if (isDeleting) {
+      typingElement.textContent = currentText.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      typingElement.textContent = currentText.substring(0, charIndex + 1);
+      charIndex++;
+    }
+
+    let speed = isDeleting ? 80 : 120;
+
+    if (!isDeleting && charIndex === currentText.length) {
+      speed = 1500;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      textIndex = (textIndex + 1) % texts.length;
+      speed = 400;
+    }
+
+    setTimeout(type, speed);
+  }
+
+  // Loading screen শেষ হওয়ার পর শুরু হবে
+  setTimeout(type, 3500);
+</script>
+<script>
+  const cursorGlow = document.getElementById('cursor-glow');
+
+  document.addEventListener('mousemove', function(e) {
+    cursorGlow.style.left = e.clientX + 'px';
+    cursorGlow.style.top = e.clientY + 'px';
+  });
+
+  // Button এ hover করলে glow বড় হবে
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', function() {
+      cursorGlow.style.width = '600px';
+      cursorGlow.style.height = '600px';
+      cursorGlow.style.background = `radial-gradient(
+        circle,
+        rgba(0, 212, 255, 0.15) 0%,
+        rgba(0, 212, 255, 0.05) 40%,
+        transparent 70%
+      )`;
+    });
+
+    el.addEventListener('mouseleave', function() {
+      cursorGlow.style.width = '400px';
+      cursorGlow.style.height = '400px';
+      cursorGlow.style.background = `radial-gradient(
+        circle,
+        rgba(0, 212, 255, 0.08) 0%,
+        rgba(0, 212, 255, 0.03) 40%,
+        transparent 70%
+      )`;
+    });
+  });
+</script>
 </body>
 </html>

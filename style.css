@@ -345,3 +345,49 @@ section p {
   transition: opacity 0.5s ease;
   pointer-events: none;
 }
+/* Typing Animation */
+#typing-text {
+  color: #8ab4c9;
+  font-size: 1rem;
+  margin-top: 8px;
+  letter-spacing: 1px;
+  min-height: 24px;
+}
+
+/* Cursor blinking effect */
+#typing-text::after {
+  content: '|';
+  color: #00d4ff;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+/* Glowing Cursor */
+#cursor-glow {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(0, 212, 255, 0.08) 0%,
+    rgba(0, 212, 255, 0.03) 40%,
+    transparent 70%
+  );
+  transition: left 0.08s ease, top 0.08s ease;
+}
+
+/* Normal cursor লুকাবো না — শুধু glow যোগ হবে */
+* {
+  cursor: default;
+}
+
+a, button {
+  cursor: pointer;
+}
