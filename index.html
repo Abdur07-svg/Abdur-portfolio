@@ -56,17 +56,17 @@ Still learning, still improving — just getting started 🚀
 
   <div class="qual-box">
     <h3>🎓 Student</h3>
-    <p>Currently preparing for WBJEE and focusing on building my academic foundation.</p>
+    <p>Preparing to begin my B.Tech in CSE this year, with a strong focus on building a solid foundation in programming, problem-solving, and core computer science concepts.</p>
   </div>
-
+  <br><br>
   <div class="qual-box">
     <h3>💻 Web Development</h3>
-    <p>Learning HTML, CSS, and JavaScript and building small projects to improve my skills.</p>
+    <p>Currently learning and working with HTML, CSS, and JavaScript by building small real-world projects to strengthen my practical skills and understanding.</p>
   </div>
-
+  <br><br>
   <div class="qual-box">
     <h3>🧠 Continuous Learning</h3>
-    <p>Exploring AI, improving problem-solving, and working on my spoken English.</p>
+    <p>Actively exploring AI, improving logical thinking, and enhancing my spoken English to grow both technically and personally.</p>
   </div>
 
 </section>
@@ -118,10 +118,10 @@ Still learning, still improving — just getting started 🚀
     <div class="skill-item">
       <div class="skill-header">
         <span class="skill-name">Problem Solving</span>
-        <span class="skill-percent">70%</span>
+        <span class="skill-percent">50%</span>
       </div>
       <div class="skill-bar">
-        <div class="skill-fill" data-width="70"></div>
+        <div class="skill-fill" data-width="50"></div>
       </div>
     </div>
 
@@ -354,115 +354,6 @@ Still learning, still improving — just getting started 🚀
 
   skillFills.forEach(fill => observer.observe(fill));
 </script>
-<!-- Particle Background -->
-<canvas id="particle-canvas"></canvas>
 
-<script>
-  const canvas = document.getElementById('particle-canvas');
-  const ctx = canvas.getContext('2d');
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  window.addEventListener('resize', function() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
-
-  const particles = [];
-  const mouse = { x: null, y: null };
-
-  document.addEventListener('mousemove', function(e) {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
-
-  // Particle class
-  class Particle {
-    constructor() {
-      this.reset();
-    }
-
-    reset() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 2 + 0.5;
-      this.speedX = (Math.random() - 0.5) * 0.5;
-      this.speedY = (Math.random() - 0.5) * 0.5;
-      this.opacity = Math.random() * 0.5 + 0.1;
-      this.color = Math.random() > 0.5 ? '0, 212, 255' : '100, 180, 255';
-    }
-
-    update() {
-      // Mouse এর দিকে আকর্ষণ
-      if (mouse.x && mouse.y) {
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 150) {
-          this.x += dx * 0.02;
-          this.y += dy * 0.02;
-        }
-      }
-
-      this.x += this.speedX;
-      this.y += this.speedY;
-
-      // Screen এর বাইরে গেলে reset
-      if (this.x < 0 || this.x > canvas.width ||
-          this.y < 0 || this.y > canvas.height) {
-        this.reset();
-      }
-    }
-
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-      ctx.fill();
-    }
-  }
-
-  // ১৫০টা particle তৈরি করো
-  for (let i = 0; i < 150; i++) {
-    particles.push(new Particle());
-  }
-
-  // Particles এর মধ্যে line আঁকো
-  function connectParticles() {
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 100) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(0, 212, 255, ${0.1 * (1 - dist / 100)})`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-  }
-
-  // Animation loop
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    particles.forEach(p => {
-      p.update();
-      p.draw();
-    });
-
-    connectParticles();
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-</script>
 </body>
 </html>
