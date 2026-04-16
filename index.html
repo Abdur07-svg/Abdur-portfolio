@@ -70,6 +70,126 @@ Still learning, still improving — just getting started 🚀
   </div>
 
 </section>
+<!-- Skills Section -->
+<section id="skills">
+  <h2>⚡ Skills</h2>
+  <div class="skills-container">
+
+    <div class="skill-item">
+      <div class="skill-header">
+        <span class="skill-name">Python</span>
+        <span class="skill-percent">5%</span>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-fill" data-width="5"></div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-header">
+        <span class="skill-name">Web Development</span>
+        <span class="skill-percent">60%</span>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-fill" data-width="60"></div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-header">
+        <span class="skill-name">AI / Machine Learning</span>
+        <span class="skill-percent">5%</span>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-fill" data-width="5"></div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-header">
+        <span class="skill-name">Game Development</span>
+        <span class="skill-percent">1%</span>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-fill" data-width="1"></div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-header">
+        <span class="skill-name">Problem Solving</span>
+        <span class="skill-percent">70%</span>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-fill" data-width="70"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- Projects Section -->
+<section id="projects">
+  <h2>🚀 My Projects</h2>
+  <div class="projects-container">
+
+    <!-- JARVIS Project -->
+    <div class="project-card">
+      <div class="project-icon">🤖</div>
+      <div class="project-info">
+        <h3>JARVIS AI Assistant</h3>
+        <p>A voice-controlled AI assistant built with Python, LiveKit and Gemini API. Features include wake word detection, weather updates, news, and app control.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Gemini API</span>
+          <span class="tag">LiveKit</span>
+          <span class="tag">Voice AI</span>
+        </div>
+        <div class="project-status">
+          <span class="status-dot"></span>
+          <span class="status-text">In Progress</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Temple Run Game -->
+    <div class="project-card">
+      <div class="project-icon">🎮</div>
+      <div class="project-info">
+        <h3>Temple Run Game</h3>
+        <p>A Temple Run-style endless runner mobile game built in Android Studio. Currently building core mechanics and preparing for Play Store launch.</p>
+        <div class="project-tags">
+          <span class="tag">Android Studio</span>
+          <span class="tag">Java</span>
+          <span class="tag">Game Dev</span>
+          <span class="tag">APK</span>
+        </div>
+        <div class="project-status">
+          <span class="status-dot"></span>
+          <span class="status-text">In Progress</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portfolio Website -->
+    <div class="project-card">
+      <div class="project-icon">🌐</div>
+      <div class="project-info">
+        <h3>Personal Portfolio</h3>
+        <p>This sci-fi themed personal portfolio website built from scratch using HTML, CSS and JavaScript. Features animations, glowing effects and responsive design.</p>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <div class="project-status">
+          <span class="status-dot completed"></span>
+          <span class="status-text">Completed</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
   </div>
 
@@ -214,6 +334,25 @@ Still learning, still improving — just getting started 🚀
       )`;
     });
   });
+</script>
+<script>
+  // Skill bars animate হবে যখন screen এ দেখা যাবে
+  const skillFills = document.querySelectorAll('.skill-fill');
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const fill = entry.target;
+        const targetWidth = fill.getAttribute('data-width');
+        setTimeout(function() {
+          fill.style.width = targetWidth + '%';
+        }, 200);
+        observer.unobserve(fill);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  skillFills.forEach(fill => observer.observe(fill));
 </script>
 </body>
 </html>
