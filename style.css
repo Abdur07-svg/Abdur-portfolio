@@ -578,3 +578,14 @@ a, button {
     flex-direction: column;
   }
 }
+.project-icon {
+  font-size: 30px;
+  color: #00f7ff;
+  text-shadow: 0 0 10px #00f7ff;
+  transition: 0.3s;
+}
+
+.project-icon:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 20px #00f7ff;
+}
