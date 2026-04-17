@@ -132,24 +132,37 @@ Still learning, still improving — just getting started 🚀
   <h2>🚀 My Projects</h2>
   <div class="projects-container">
 
-    <!-- JARVIS Project -->
-    <div class="project-card">
-      <div class="project-icon">🤖</div>
-      <div class="project-info">
-        <h3>JARVIS AI Assistant</h3>
-        <p>A voice-controlled AI assistant built with Python, LiveKit and Gemini API. Features include wake word detection, weather updates, news, and app control.</p>
-        <div class="project-tags">
-          <span class="tag">Python</span>
-          <span class="tag">Gemini API</span>
-          <span class="tag">LiveKit</span>
-          <span class="tag">Voice AI</span>
-        </div>
-        <div class="project-status">
-          <span class="status-dot"></span>
-          <span class="status-text">In Progress</span>
-        </div>
+   <!-- JARVIS Project -->
+<div class="project-card">
+  <div class="project-icon">🤖</div>
+  <div class="project-info">
+    <h3>JARVIS AI Assistant</h3>
+    <p>A voice-controlled AI assistant built with Python, LiveKit and Gemini API. Features include wake word detection, weather updates, news, and app control.</p>
+    <div class="project-tags">
+      <span class="tag">Python</span>
+      <span class="tag">Gemini API</span>
+      <span class="tag">LiveKit</span>
+      <span class="tag">Voice AI</span>
+    </div>
+    <div class="project-status">
+      <span class="status-dot"></span>
+      <span class="status-text">In Progress</span>
+    </div>
+
+    <!-- Demo Images -->
+    <div class="demo-images">
+      <p class="demo-label">📸 Project Screenshots</p>
+      <div class="demo-grid">
+        <img src="images/jarvis2.png.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 2">
+        <img src="images/jarvis3.png.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 3">
+        <img src="images/jarvis4.png.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 4">
+        <img src="images/jarvis5.png.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 5">
+        <img src="images/jarvis6.png.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 6">
       </div>
     </div>
+
+  </div>
+</div>
 
     <!-- Temple Run Game -->
     <div class="project-card">
@@ -185,6 +198,17 @@ Still learning, still improving — just getting started 🚀
           <span class="status-dot completed"></span>
           <span class="status-text">Completed</span>
         </div>
+        <!-- Demo Images -->
+    <div class="demo-images">
+      <p class="demo-label">📸 Project Screenshots</p>
+      <div class="demo-grid">
+        <img src="images/My portfolio1.png" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 1">
+        <img src="images/My portfolio2.png" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 2">
+        <img src="images/My portfolio3.png" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 3">
+        <img src="images/My portfolio4.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 4">
+        <img src="images/My portfolio5.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 5">
+      </div>
+    </div>
       </div>
     </div>
 
@@ -192,6 +216,37 @@ Still learning, still improving — just getting started 🚀
 </section>
 
   </div>
+  <!-- Contact Section -->
+<section id="contact">
+  <h2>📩 Send Me a Message</h2>
+  <p class="contact-subtitle">Got something to say? Drop a message — I'll get back to you!</p>
+
+  <form id="contact-form" action="https://formspree.io/f/xqewqknr" method="POST">
+
+    <div class="form-group">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+    </div>
+
+    <button type="submit" class="btn-send">
+      <span id="btn-text">Send Message ➤</span>
+    </button>
+
+    <div id="form-success" class="form-success">
+      ✅ Message sent successfully! I'll reply soon.
+    </div>
+
+    <div id="form-error" class="form-error">
+      ❌ Something went wrong. Please try again.
+    </div>
+
+  </form>
+</section>
 
   <!-- Social Links Section -->
   <section id="social">
@@ -354,6 +409,29 @@ Still learning, still improving — just getting started 🚀
 
   skillFills.forEach(fill => observer.observe(fill));
 </script>
+<script>
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+
+  // ESC চাপলে বন্ধ হবে
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-content">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <img id="lightbox-img" src="" alt="Preview">
+  </div>
+</div>
 </body>
 </html>
