@@ -132,13 +132,9 @@ section h2 {
   margin-bottom: 16px;
   color: #ffffff;
   letter-spacing: 1px;
-<<<<<<< HEAD
   border-bottom: 1px solid var(--border);
-  padding-bottom: 12px
-=======
->>>>>>> b03db02367fad12233ecc23ae902b5531ce34289
-  
-}
+  padding-bottom: 12px;
+  }
 
 section h4 {
   font-family: 'Orbitron', monospace;
@@ -147,11 +143,8 @@ section h4 {
   margin-bottom: 16px;
   color: #ffffff;
   letter-spacing: 1px;
-<<<<<<< HEAD
   border-bottom: 1px solid var(--border);
-  padding-bottom: 12px
-=======
->>>>>>> b03db02367fad12233ecc23ae902b5531ce34289
+  padding-bottom: 12px;
 }
 section p {
   color: #a0b8cc;
