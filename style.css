@@ -132,6 +132,8 @@ section h2 {
   margin-bottom: 16px;
   color: #ffffff;
   letter-spacing: 1px;
+  border-bottom: 1px solid var(--border)
+  padding-bottom: 12px
   }
 
 section h4 {
