@@ -169,6 +169,33 @@ Still learning, still improving — just getting started 🚀
       <span class="status-text">In Progress</span>
     </div>
 
+    <div class="jarvis-demo">
+      <div class="jarvis-demo-header">
+        <div>
+          <span class="jarvis-demo-kicker">LIVE DEMO</span>
+          <h4>Ask JARVIS</h4>
+        </div>
+        <span class="jarvis-demo-status">ONLINE</span>
+      </div>
+
+      <div class="jarvis-chat" id="jarvis-chat" aria-live="polite">
+        <div class="jarvis-message bot">
+          Hello! Welcome to Abdur's AI system. How can I assist you today?
+        </div>
+      </div>
+
+      <form class="jarvis-input-row" id="jarvis-form">
+        <input
+          type="text"
+          id="jarvis-input"
+          placeholder="Ask: who are you, hello, time..."
+          autocomplete="off"
+          aria-label="Ask JARVIS a question"
+        >
+        <button type="submit">Ask</button>
+      </form>
+    </div>
+
     <!-- Demo Images -->
     <div class="demo-images">
       <p class="demo-label">📸 Project Screenshots</p>
@@ -381,6 +408,265 @@ Still learning, still improving — just getting started 🚀
 
   // Loading screen শেষ হওয়ার পর শুরু হবে
   setTimeout(type, 3500);
+</script>
+<script>
+  const jarvisForm = document.getElementById('jarvis-form');
+  const jarvisInput = document.getElementById('jarvis-input');
+  const jarvisChat = document.getElementById('jarvis-chat');
+
+  function addJarvisMessage(text, sender) {
+    const message = document.createElement('div');
+    message.className = 'jarvis-message ' + sender;
+    message.textContent = text;
+    jarvisChat.appendChild(message);
+    jarvisChat.scrollTop = jarvisChat.scrollHeight;
+    return message;
+  }
+
+  function getJarvisReply(question) {
+    const cleanQuestion = question.toLowerCase().trim();
+    const asksIdentity =
+      cleanQuestion.includes('who are you') ||
+      cleanQuestion.includes('what are you') ||
+      cleanQuestion.includes('your name') ||
+      cleanQuestion.includes('tumi ke') ||
+      cleanQuestion.includes('ke tumi');
+
+    if (asksIdentity) {
+      return 'I am JARVIS, your personal AI assistant. Created by Abdur, He is a developer, AI researcher, and programmer. How can I assist you today, Sir?';
+    }
+
+    if (cleanQuestion === 'good morning' || cleanQuestion.startsWith('good morning ')) {
+      return "Good morning! Welcome to Abdur's AI system. How can I assist you today?";
+    }
+
+    if (cleanQuestion === 'good afternoon' || cleanQuestion.startsWith('good afternoon ')) {
+      return "Good afternoon! Welcome to Abdur's AI system. How can I assist you today?";
+    }
+
+    if (cleanQuestion === 'good evening' || cleanQuestion.startsWith('good evening ')) {
+      return "Good evening! Welcome to Abdur's AI system. How can I assist you today?";
+    }
+
+    if (
+      cleanQuestion === 'hello' ||
+      cleanQuestion === 'hi' ||
+      cleanQuestion === 'hey' ||
+      cleanQuestion.startsWith('hello ') ||
+      cleanQuestion.startsWith('hi ') ||
+      cleanQuestion.startsWith('hey ')
+    ) {
+      return "Hello! Welcome to Abdur's AI system. How can I assist you today?";
+    }
+
+    if (
+      cleanQuestion.includes('date') ||
+      cleanQuestion.includes('today') ||
+      cleanQuestion.includes('day') ||
+      cleanQuestion.includes('tarikh')
+    ) {
+      const now = new Date();
+      return 'Sir, the current date is ' + now.toLocaleDateString([], {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }) + '.';
+    }
+
+    if (
+      cleanQuestion.includes('time') ||
+      cleanQuestion.includes('somoy')
+    ) {
+      const now = new Date();
+      return 'Sir, the current time is ' + now.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit'
+      }) + '.';
+    }
+
+    if (cleanQuestion.includes('abdur')) {
+      return 'Abdur is a student, beginner web developer, AI enthusiast, and programmer who is building real projects step by step.';
+    }
+
+    return null;
+  }
+
+  function cleanWikipediaQuestion(question) {
+    return question
+      .replace(/[?!.]/g, '')
+      .replace(/\b(who is|what is|what are|tell me about|search|wikipedia|define|about)\b/gi, '')
+      .trim();
+  }
+
+  function getLeaderQuestion(question) {
+    const cleanQuestion = question.toLowerCase().replace(/[?!.]/g, ' ').trim();
+    let role = '';
+
+    if (cleanQuestion.includes('prime minister') || /\bpm\b/.test(cleanQuestion)) {
+      role = 'primeMinister';
+    } else if (cleanQuestion.includes('president')) {
+      role = 'president';
+    } else {
+      return null;
+    }
+
+    let countryText = cleanQuestion
+      .replace(/\b(current|present|now|today|who is|who's|what is|the|of|country|prime minister|president|pm)\b/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const countryAliases = {
+      american: 'United States',
+      usa: 'United States',
+      us: 'United States',
+      british: 'United Kingdom',
+      uk: 'United Kingdom',
+      indian: 'India',
+      bangladeshi: 'Bangladesh',
+      pakistani: 'Pakistan',
+      chinese: 'China',
+      japanese: 'Japan',
+      russian: 'Russia',
+      french: 'France',
+      german: 'Germany',
+      italian: 'Italy',
+      canadian: 'Canada',
+      australian: 'Australia',
+      brazilian: 'Brazil',
+      nepali: 'Nepal',
+      sri_lankan: 'Sri Lanka'
+    };
+
+    countryText = countryAliases[countryText.replace(/\s+/g, '_')] || countryAliases[countryText] || countryText;
+
+    if (!countryText) return null;
+
+    return { role, countryText };
+  }
+
+  async function searchWikidataEntity(searchText) {
+    const url = 'https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&origin=*&language=en&limit=1&search=' + encodeURIComponent(searchText);
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.search && data.search[0];
+  }
+
+  async function getWikipediaSummaryByTitle(title) {
+    const summaryUrl = 'https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(title);
+    const summaryResponse = await fetch(summaryUrl);
+    const summaryData = await summaryResponse.json();
+    return summaryData.extract || '';
+  }
+
+  async function getLeaderReply(question) {
+    const leaderQuestion = getLeaderQuestion(question);
+
+    if (!leaderQuestion) return null;
+
+    const country = await searchWikidataEntity(leaderQuestion.countryText);
+
+    if (!country) {
+      return "Sir, I could not identify that country clearly.";
+    }
+
+    const property = leaderQuestion.role === 'primeMinister' ? 'wdt:P6' : 'wdt:P35';
+    const roleName = leaderQuestion.role === 'primeMinister' ? 'prime minister' : 'president';
+    const query = `
+      SELECT ?person ?personLabel ?article WHERE {
+        wd:${country.id} ${property} ?person.
+        OPTIONAL {
+          ?article schema:about ?person;
+                   schema:isPartOf <https://en.wikipedia.org/>.
+        }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+      }
+      LIMIT 1
+    `;
+    const url = 'https://query.wikidata.org/sparql?format=json&query=' + encodeURIComponent(query);
+    const response = await fetch(url);
+    const data = await response.json();
+    const result = data.results && data.results.bindings && data.results.bindings[0];
+
+    if (!result) {
+      return "Sir, I could not find the current " + roleName + " of " + country.label + ".";
+    }
+
+    const personName = result.personLabel.value;
+    let details = '';
+
+    if (result.article) {
+      const title = decodeURIComponent(result.article.value.split('/wiki/')[1]).replace(/_/g, ' ');
+      details = await getWikipediaSummaryByTitle(title);
+    } else {
+      details = await getWikipediaReply(personName);
+    }
+
+    return 'Sir, the current ' + roleName + ' of ' + country.label + ' is ' + personName + '. ' + details;
+  }
+
+  async function getWikipediaReply(question) {
+    const searchText = cleanWikipediaQuestion(question);
+
+    if (!searchText) {
+      return "Sir, please ask me what you want to know from Wikipedia.";
+    }
+
+    try {
+      const searchUrl = 'https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&origin=*&srlimit=1&srsearch=' + encodeURIComponent(searchText);
+      const searchResponse = await fetch(searchUrl);
+      const searchData = await searchResponse.json();
+      const firstResult = searchData.query && searchData.query.search && searchData.query.search[0];
+
+      if (!firstResult) {
+        return "Sir, I could not find a clear Wikipedia result for that question.";
+      }
+
+      const summaryText = await getWikipediaSummaryByTitle(firstResult.title);
+
+      if (!summaryText) {
+        return "Sir, I found the topic on Wikipedia, but there is no short summary available.";
+      }
+
+      return summaryText;
+    } catch (error) {
+      return "Sir, I cannot connect to Wikipedia right now. Please check your internet connection and try again.";
+    }
+  }
+
+  if (jarvisForm) {
+    jarvisForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const question = jarvisInput.value.trim();
+
+      if (!question) return;
+
+      addJarvisMessage(question, 'user');
+      jarvisInput.value = '';
+
+      const localReply = getJarvisReply(question);
+
+      if (localReply) {
+        setTimeout(function() {
+          addJarvisMessage(localReply, 'bot');
+        }, 400);
+        return;
+      }
+
+      const thinkingMessage = addJarvisMessage('Searching smart sources...', 'bot');
+      let leaderReply = null;
+
+      try {
+        leaderReply = await getLeaderReply(question);
+      } catch (error) {
+        leaderReply = null;
+      }
+
+      thinkingMessage.textContent = leaderReply || await getWikipediaReply(question);
+      jarvisChat.scrollTop = jarvisChat.scrollHeight;
+    });
+  }
 </script>
 <script>
   const cursorGlow = document.getElementById('cursor-glow');
