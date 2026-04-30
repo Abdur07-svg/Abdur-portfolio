@@ -500,6 +500,114 @@ Still learning, still improving — just getting started 🚀
       .trim();
   }
 
+  function calculateBasicMath(question) {
+    let expression = question
+      .toLowerCase()
+      .replace(/what is|calculate|solve|answer|equals|equal to|please|sir|jarvis/gi, '')
+      .replace(/plus/g, '+')
+      .replace(/minus/g, '-')
+      .replace(/times|multiplied by|multiply by|into|x|×/g, '*')
+      .replace(/divided by|divide by|over|÷/g, '/')
+      .replace(/[?=]/g, '')
+      .trim();
+
+    const percentMatch = expression.match(/(-?\d+(\.\d+)?)\s*(percent|%)\s*of\s*(-?\d+(\.\d+)?)/);
+
+    if (percentMatch) {
+      return (Number(percentMatch[1]) / 100) * Number(percentMatch[4]);
+    }
+
+    if (!/[0-9]/.test(expression) || /[^0-9+\-*/().\s]/.test(expression)) {
+      return null;
+    }
+
+    const tokens = expression.match(/\d+(\.\d+)?|[+\-*/()]/g);
+
+    if (!tokens || tokens.length === 0) return null;
+
+    let index = 0;
+
+    function parseExpression() {
+      let value = parseTerm();
+
+      while (tokens[index] === '+' || tokens[index] === '-') {
+        const operator = tokens[index++];
+        const nextValue = parseTerm();
+        value = operator === '+' ? value + nextValue : value - nextValue;
+      }
+
+      return value;
+    }
+
+    function parseTerm() {
+      let value = parseFactor();
+
+      while (tokens[index] === '*' || tokens[index] === '/') {
+        const operator = tokens[index++];
+        const nextValue = parseFactor();
+
+        if (operator === '/' && nextValue === 0) {
+          throw new Error('divide-by-zero');
+        }
+
+        value = operator === '*' ? value * nextValue : value / nextValue;
+      }
+
+      return value;
+    }
+
+    function parseFactor() {
+      if (tokens[index] === '-') {
+        index++;
+        return -parseFactor();
+      }
+
+      if (tokens[index] === '(') {
+        index++;
+        const value = parseExpression();
+
+        if (tokens[index] !== ')') {
+          throw new Error('invalid-expression');
+        }
+
+        index++;
+        return value;
+      }
+
+      const value = Number(tokens[index++]);
+
+      if (Number.isNaN(value)) {
+        throw new Error('invalid-expression');
+      }
+
+      return value;
+    }
+
+    try {
+      const result = parseExpression();
+
+      if (index !== tokens.length || !Number.isFinite(result)) {
+        return null;
+      }
+
+      return Math.round(result * 100000000) / 100000000;
+    } catch (error) {
+      return error.message === 'divide-by-zero' ? 'divide-by-zero' : null;
+    }
+  }
+
+  function getMathReply(question) {
+    const result = calculateBasicMath(question);
+
+    if (result === null) return null;
+
+    if (result === 'divide-by-zero') {
+      return 'Sir, division by zero is not possible.';
+    }
+
+    return 'Sir, the answer is ' + result + '.';
+  }
+
   function getLeaderQuestion(question) {
     const cleanQuestion = question.toLowerCase().replace(/[?!.]/g, ' ').trim();
     let role = '';
@@ -650,6 +758,15 @@ Still learning, still improving — just getting started 🚀
       if (localReply) {
         setTimeout(function() {
           addJarvisMessage(localReply, 'bot');
+        }, 400);
+        return;
+      }
+
+      const mathReply = getMathReply(question);
+
+      if (mathReply) {
+        setTimeout(function() {
+          addJarvisMessage(mathReply, 'bot');
         }, 400);
         return;
       }
