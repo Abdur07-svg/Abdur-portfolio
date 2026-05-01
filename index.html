@@ -410,6 +410,39 @@ Still learning, still improving — just getting started 🚀
   setTimeout(type, 3500);
 </script>
 <script>
+  const navbar = document.getElementById('navbar');
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+
+  function closeMobileMenu() {
+    navToggle.classList.remove('active');
+    navLinks.classList.remove('active');
+  }
+
+  navToggle.addEventListener('click', function() {
+    navToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', closeMobileMenu);
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 20) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 760) {
+      closeMobileMenu();
+    }
+  });
+</script>
+<script>
   const jarvisForm = document.getElementById('jarvis-form');
   const jarvisInput = document.getElementById('jarvis-input');
   const jarvisChat = document.getElementById('jarvis-chat');
