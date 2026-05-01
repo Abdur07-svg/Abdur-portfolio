@@ -101,6 +101,19 @@
   const jarvisChat = document.getElementById('jarvis-chat');
   const jarvisVoiceButton = document.getElementById('jarvis-voice');
   let jarvisVoiceEnabled = true;
+  let jarvisVoiceUnlocked = false;
+  let jarvisVoices = [];
+
+  function loadJarvisVoices() {
+    if (!('speechSynthesis' in window)) return;
+    jarvisVoices = window.speechSynthesis.getVoices();
+  }
+
+  loadJarvisVoices();
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = loadJarvisVoices;
+  }
 
   function addJarvisMessage(text, sender) {
     const message = document.createElement('div');
@@ -115,12 +128,40 @@
     if (!jarvisVoiceEnabled || !('speechSynthesis' in window)) return;
 
     window.speechSynthesis.cancel();
+    window.speechSynthesis.resume();
 
     const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = 'en-IN';
+    speech.lang = 'en-US';
     speech.rate = 0.95;
     speech.pitch = 0.85;
+    speech.volume = 1;
+
+    loadJarvisVoices();
+
+    const preferredVoice = jarvisVoices.find(voice => voice.lang === 'en-US') ||
+      jarvisVoices.find(voice => voice.lang === 'en-IN') ||
+      jarvisVoices.find(voice => voice.lang.startsWith('en')) ||
+      jarvisVoices[0];
+
+    if (preferredVoice) {
+      speech.voice = preferredVoice;
+      speech.lang = preferredVoice.lang;
+    }
+
     window.speechSynthesis.speak(speech);
+  }
+
+  function unlockJarvisVoice() {
+    if (jarvisVoiceUnlocked || !('speechSynthesis' in window)) return;
+
+    window.speechSynthesis.resume();
+
+    const unlockSpeech = new SpeechSynthesisUtterance('Ready');
+    unlockSpeech.lang = 'en-US';
+    unlockSpeech.volume = 0.01;
+    unlockSpeech.rate = 1;
+    window.speechSynthesis.speak(unlockSpeech);
+    jarvisVoiceUnlocked = true;
   }
 
   function setJarvisVoiceButton() {
@@ -129,6 +170,12 @@
   }
 
   function showJarvisReply(text, delay = 400) {
+    if (delay === 0) {
+      addJarvisMessage(text, 'bot');
+      speakJarvis(text);
+      return;
+    }
+
     setTimeout(function() {
       addJarvisMessage(text, 'bot');
       speakJarvis(text);
@@ -516,14 +563,14 @@
     const localReply = getJarvisReply(question);
 
     if (localReply) {
-      showJarvisReply(localReply);
+      showJarvisReply(localReply, 0);
       return;
     }
 
     const mathReply = getMathReply(question);
 
     if (mathReply) {
-      showJarvisReply(mathReply);
+      showJarvisReply(mathReply, 0);
       return;
     }
 
@@ -545,6 +592,7 @@
   if (jarvisForm) {
     jarvisForm.addEventListener('submit', function(e) {
       e.preventDefault();
+      unlockJarvisVoice();
       handleJarvisQuestion(jarvisInput.value.trim());
     });
   }
@@ -553,6 +601,7 @@
     setJarvisVoiceButton();
 
     jarvisVoiceButton.addEventListener('click', function() {
+      unlockJarvisVoice();
       jarvisVoiceEnabled = !jarvisVoiceEnabled;
 
       if (!jarvisVoiceEnabled && 'speechSynthesis' in window) {
@@ -560,6 +609,10 @@
       }
 
       setJarvisVoiceButton();
+
+      if (jarvisVoiceEnabled) {
+        speakJarvis('Voice online, Sir.');
+      }
     });
   }
 
