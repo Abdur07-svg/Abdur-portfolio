@@ -620,23 +620,29 @@
   const cr7Section = document.getElementById('cr7');
   const cr7Button = document.getElementById('cr7-btn');
   const cr7Quote = document.getElementById('cr7-quote');
+  const cr7Note = document.querySelector('.cr7-note');
   const cr7Quotes = [
-    '"Talent without work is nothing." — CR7',
+  '"Talent without work is nothing." — CR7',
   '"I\'m not perfectionist, but I like to feel that things are done well."',
   '"Your love makes me strong. Your hate makes me unstoppable."',
   '"Dreams are not what you see in your sleep. Dreams are the things which do not let you sleep."',
   '"I don\'t need to prove anything to anyone — I only need to prove it to myself."',
   '"Hard work beats talent when talent doesn\'t work hard."',
-    '"Discipline turns dreams into reality."',
-    '"Talent starts the journey. Consistency builds the legacy."',
-    '"Train your mind like a champion, code like a builder."',
-    '"Confidence, hard work, and focus."',
-    '"SIUUUU! 🔥"',
+  '"Discipline turns dreams into reality."',
+  '"Talent starts the journey. Consistency builds the legacy."',
+  '"Train your mind like a champion, code like a builder."',
+  '"Confidence, hard work, and focus."',
+  '"SIUUUU! 🔥"',
   ];
   let cr7QuoteIndex = 0;
 
   if (cr7Button && cr7Quote && cr7Section) {
     cr7Button.addEventListener('click', function() {
+      if (cr7Note) {
+        cr7Note.style.display = 'none';
+      }
+
+      cr7Quote.classList.remove('hidden');
       cr7Quote.textContent = cr7Quotes[cr7QuoteIndex];
       cr7QuoteIndex = (cr7QuoteIndex + 1) % cr7Quotes.length;
       cr7Section.classList.remove('siuuu-active');

@@ -636,6 +636,13 @@ a, button {
   font-weight: 600;
   letter-spacing: 1.5px;
   text-shadow: 0 0 10px rgba(0, 255, 136, 0.42);
+  min-height: 24px;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.cr7-quote.hidden {
+  opacity: 0;
 }
 
 #cr7.siuuu-active .cr7-mark {
