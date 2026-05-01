@@ -192,7 +192,6 @@ Still learning, still improving — just getting started 🚀
           autocomplete="off"
           aria-label="Ask JARVIS a question"
         >
-        <button type="button" class="jarvis-tool-btn" id="jarvis-mic">MIC</button>
         <button type="button" class="jarvis-tool-btn active" id="jarvis-voice">VOICE ON</button>
         <button type="submit">Ask</button>
       </form>
@@ -448,11 +447,8 @@ Still learning, still improving — just getting started 🚀
   const jarvisForm = document.getElementById('jarvis-form');
   const jarvisInput = document.getElementById('jarvis-input');
   const jarvisChat = document.getElementById('jarvis-chat');
-  const jarvisMicButton = document.getElementById('jarvis-mic');
   const jarvisVoiceButton = document.getElementById('jarvis-voice');
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let jarvisVoiceEnabled = true;
-  let jarvisRecognition = null;
 
   function addJarvisMessage(text, sender) {
     const message = document.createElement('div');
@@ -916,46 +912,6 @@ Still learning, still improving — just getting started 🚀
     });
   }
 
-  if (jarvisMicButton) {
-    if (!SpeechRecognition) {
-      jarvisMicButton.disabled = true;
-      jarvisMicButton.textContent = 'NO MIC';
-      jarvisMicButton.title = 'Speech recognition is not supported in this browser.';
-    } else {
-      jarvisRecognition = new SpeechRecognition();
-      jarvisRecognition.lang = 'en-IN';
-      jarvisRecognition.interimResults = false;
-      jarvisRecognition.maxAlternatives = 1;
-
-      jarvisMicButton.addEventListener('click', function() {
-        try {
-          jarvisRecognition.start();
-        } catch (error) {
-          jarvisRecognition.stop();
-        }
-      });
-
-      jarvisRecognition.addEventListener('start', function() {
-        jarvisMicButton.classList.add('listening');
-        jarvisMicButton.textContent = 'LISTENING';
-      });
-
-      jarvisRecognition.addEventListener('end', function() {
-        jarvisMicButton.classList.remove('listening');
-        jarvisMicButton.textContent = 'MIC';
-      });
-
-      jarvisRecognition.addEventListener('result', function(event) {
-        const spokenQuestion = event.results[0][0].transcript;
-        jarvisInput.value = spokenQuestion;
-        handleJarvisQuestion(spokenQuestion);
-      });
-
-      jarvisRecognition.addEventListener('error', function() {
-        addJarvisMessage('Sir, I could not hear you clearly. Please try again.', 'bot');
-      });
-    }
-  }
 </script>
 <script>
   const cursorGlow = document.getElementById('cursor-glow');
