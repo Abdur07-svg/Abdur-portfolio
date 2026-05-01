@@ -192,6 +192,8 @@ Still learning, still improving — just getting started 🚀
           autocomplete="off"
           aria-label="Ask JARVIS a question"
         >
+        <button type="button" class="jarvis-tool-btn" id="jarvis-mic">MIC</button>
+        <button type="button" class="jarvis-tool-btn active" id="jarvis-voice">VOICE ON</button>
         <button type="submit">Ask</button>
       </form>
     </div>
@@ -446,6 +448,11 @@ Still learning, still improving — just getting started 🚀
   const jarvisForm = document.getElementById('jarvis-form');
   const jarvisInput = document.getElementById('jarvis-input');
   const jarvisChat = document.getElementById('jarvis-chat');
+  const jarvisMicButton = document.getElementById('jarvis-mic');
+  const jarvisVoiceButton = document.getElementById('jarvis-voice');
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let jarvisVoiceEnabled = true;
+  let jarvisRecognition = null;
 
   function addJarvisMessage(text, sender) {
     const message = document.createElement('div');
@@ -454,6 +461,30 @@ Still learning, still improving — just getting started 🚀
     jarvisChat.appendChild(message);
     jarvisChat.scrollTop = jarvisChat.scrollHeight;
     return message;
+  }
+
+  function speakJarvis(text) {
+    if (!jarvisVoiceEnabled || !('speechSynthesis' in window)) return;
+
+    window.speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = 'en-IN';
+    speech.rate = 0.95;
+    speech.pitch = 0.85;
+    window.speechSynthesis.speak(speech);
+  }
+
+  function setJarvisVoiceButton() {
+    jarvisVoiceButton.textContent = jarvisVoiceEnabled ? 'VOICE ON' : 'VOICE OFF';
+    jarvisVoiceButton.classList.toggle('active', jarvisVoiceEnabled);
+  }
+
+  function showJarvisReply(text, delay = 400) {
+    setTimeout(function() {
+      addJarvisMessage(text, 'bot');
+      speakJarvis(text);
+    }, delay);
   }
 
   function getJarvisReply(question) {
@@ -829,46 +860,101 @@ Still learning, still improving — just getting started 🚀
     }
   }
 
+  async function handleJarvisQuestion(question) {
+    if (!question) return;
+
+    addJarvisMessage(question, 'user');
+    jarvisInput.value = '';
+
+    const localReply = getJarvisReply(question);
+
+    if (localReply) {
+      showJarvisReply(localReply);
+      return;
+    }
+
+    const mathReply = getMathReply(question);
+
+    if (mathReply) {
+      showJarvisReply(mathReply);
+      return;
+    }
+
+    const thinkingMessage = addJarvisMessage('Searching smart sources...', 'bot');
+    let leaderReply = null;
+
+    try {
+      leaderReply = await getLeaderReply(question);
+    } catch (error) {
+      leaderReply = null;
+    }
+
+    const finalReply = leaderReply || await getWikipediaReply(question);
+    thinkingMessage.textContent = finalReply;
+    jarvisChat.scrollTop = jarvisChat.scrollHeight;
+    speakJarvis(finalReply);
+  }
+
   if (jarvisForm) {
-    jarvisForm.addEventListener('submit', async function(e) {
+    jarvisForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      const question = jarvisInput.value.trim();
-
-      if (!question) return;
-
-      addJarvisMessage(question, 'user');
-      jarvisInput.value = '';
-
-      const localReply = getJarvisReply(question);
-
-      if (localReply) {
-        setTimeout(function() {
-          addJarvisMessage(localReply, 'bot');
-        }, 400);
-        return;
-      }
-
-      const mathReply = getMathReply(question);
-
-      if (mathReply) {
-        setTimeout(function() {
-          addJarvisMessage(mathReply, 'bot');
-        }, 400);
-        return;
-      }
-
-      const thinkingMessage = addJarvisMessage('Searching smart sources...', 'bot');
-      let leaderReply = null;
-
-      try {
-        leaderReply = await getLeaderReply(question);
-      } catch (error) {
-        leaderReply = null;
-      }
-
-      thinkingMessage.textContent = leaderReply || await getWikipediaReply(question);
-      jarvisChat.scrollTop = jarvisChat.scrollHeight;
+      handleJarvisQuestion(jarvisInput.value.trim());
     });
+  }
+
+  if (jarvisVoiceButton) {
+    setJarvisVoiceButton();
+
+    jarvisVoiceButton.addEventListener('click', function() {
+      jarvisVoiceEnabled = !jarvisVoiceEnabled;
+
+      if (!jarvisVoiceEnabled && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      setJarvisVoiceButton();
+    });
+  }
+
+  if (jarvisMicButton) {
+    if (!SpeechRecognition) {
+      jarvisMicButton.disabled = true;
+      jarvisMicButton.textContent = 'NO MIC';
+      jarvisMicButton.title = 'Speech recognition is not supported in this browser.';
+    } else {
+      jarvisRecognition = new SpeechRecognition();
+      jarvisRecognition.lang = 'en-IN';
+      jarvisRecognition.interimResults = false;
+      jarvisRecognition.maxAlternatives = 1;
+
+      jarvisMicButton.addEventListener('click', function() {
+        try {
+          jarvisRecognition.start();
+        } catch (error) {
+          jarvisRecognition.stop();
+        }
+      });
+
+      jarvisRecognition.addEventListener('start', function() {
+        jarvisMicButton.classList.add('listening');
+        jarvisMicButton.textContent = 'LISTENING';
+      });
+
+      jarvisRecognition.addEventListener('end', function() {
+        jarvisMicButton.classList.remove('listening');
+        jarvisMicButton.textContent = 'MIC';
+      });
+
+      jarvisRecognition.addEventListener('result', function(event) {
+        const spokenQuestion = event.results[0][0].transcript;
+        jarvisInput.value = spokenQuestion;
+        handleJarvisQuestion(spokenQuestion);
+      });
+
+      jarvisRecognition.addEventListener('error', function() {
+        addJarvisMessage('Sir, I could not hear you clearly. Please try again.', 'bot');
+      });
+    }
   }
 </script>
 <script>

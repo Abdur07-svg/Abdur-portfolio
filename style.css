@@ -783,6 +783,31 @@ a, button {
   box-shadow: 0 0 20px rgba(0, 212, 255, 0.45);
 }
 
+.jarvis-input-row .jarvis-tool-btn {
+  min-width: 92px;
+  background: rgba(0, 212, 255, 0.08);
+  color: #00d4ff;
+}
+
+.jarvis-input-row .jarvis-tool-btn.active {
+  background: rgba(0, 255, 136, 0.14);
+  border-color: rgba(0, 255, 136, 0.6);
+  color: #00ff88;
+  box-shadow: 0 0 14px rgba(0, 255, 136, 0.16);
+}
+
+.jarvis-input-row .jarvis-tool-btn.listening {
+  background: rgba(255, 72, 180, 0.16);
+  border-color: rgba(255, 72, 180, 0.65);
+  color: #ff8fd0;
+  box-shadow: 0 0 18px rgba(255, 72, 180, 0.25);
+}
+
+.jarvis-input-row .jarvis-tool-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 @keyframes statusPulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.8); }
