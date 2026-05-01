@@ -208,7 +208,7 @@
     }
 
     if (cleanQuestion.includes('abdur')) {
-      return 'Abdur is a student, beginner web developer, AI enthusiast, and programmer who is building real projects step by step.';
+      return 'Abdur is a student, beginner web developer, AI enthusiast, and programmer—who builds real-world projects. And he created me, too.';
     }
 
     return null;
