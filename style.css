@@ -629,8 +629,13 @@ a, button {
 
 .cr7-quote {
   margin-top: 12px;
-  color: #d8c78f;
+  color: #00ff88;
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 1rem;
+  font-style: italic;
   font-weight: 600;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.42);
 }
 
 #cr7.siuuu-active .cr7-mark {

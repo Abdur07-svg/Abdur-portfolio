@@ -621,10 +621,17 @@
   const cr7Button = document.getElementById('cr7-btn');
   const cr7Quote = document.getElementById('cr7-quote');
   const cr7Quotes = [
-    'Discipline turns dreams into reality.',
-    'Talent starts the journey. Consistency builds the legacy.',
-    'Train your mind like a champion, code like a builder.',
-    'Confidence, hard work, and focus. SIUUU!'
+    '"Talent without work is nothing." — CR7',
+  '"I\'m not perfectionist, but I like to feel that things are done well."',
+  '"Your love makes me strong. Your hate makes me unstoppable."',
+  '"Dreams are not what you see in your sleep. Dreams are the things which do not let you sleep."',
+  '"I don\'t need to prove anything to anyone — I only need to prove it to myself."',
+  '"Hard work beats talent when talent doesn\'t work hard."',
+    '"Discipline turns dreams into reality."',
+    '"Talent starts the journey. Consistency builds the legacy."',
+    '"Train your mind like a champion, code like a builder."',
+    '"Confidence, hard work, and focus."',
+    '"SIUUUU! 🔥"',
   ];
   let cr7QuoteIndex = 0;
 
