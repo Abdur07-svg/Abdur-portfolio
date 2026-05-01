@@ -18,14 +18,61 @@
 
 body {
   font-family: 'Rajdhani', 'Segoe UI', Arial, sans-serif;
-  background-color: #020b18;
+  background-color: #03040d;
   color: #ffffff;
   min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
   background-image:
-    radial-gradient(white 1px, transparent 1px),
-    radial-gradient(white 1px, transparent 1px);
-  background-size: 50px 50px, 100px 100px;
-  background-position: 0 0, 25px 25px;
+    radial-gradient(circle at 18% 18%, rgba(0, 212, 255, 0.24) 0 2px, transparent 3px),
+    radial-gradient(circle at 82% 26%, rgba(255, 72, 180, 0.24) 0 2px, transparent 3px),
+    radial-gradient(circle at 58% 78%, rgba(0, 255, 136, 0.22) 0 2px, transparent 3px),
+    linear-gradient(125deg, transparent 0 12%, rgba(0, 212, 255, 0.12) 12.2%, transparent 12.7% 40%, rgba(255, 72, 180, 0.1) 40.2%, transparent 40.8%),
+    linear-gradient(55deg, transparent 0 26%, rgba(0, 255, 136, 0.08) 26.2%, transparent 26.8% 68%, rgba(0, 212, 255, 0.09) 68.2%, transparent 68.8%),
+    linear-gradient(135deg, #03040d 0%, #06172b 36%, #050912 62%, #180a24 100%);
+  background-size: 260px 260px, 320px 320px, 300px 300px, 100% 100%, 100% 100%, cover;
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(0, 212, 255, 0.18), transparent 22%),
+    radial-gradient(circle at 78% 68%, rgba(255, 72, 180, 0.14), transparent 24%),
+    linear-gradient(100deg, transparent 0%, rgba(0, 212, 255, 0.15) 44%, rgba(255, 255, 255, 0.12) 50%, rgba(0, 255, 136, 0.1) 56%, transparent 66%);
+  background-size: 100% 100%, 100% 100%, 260% 100%;
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  animation: bgScan 11s linear infinite;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(90deg, rgba(0, 212, 255, 0.035) 0 1px, transparent 1px 42px),
+    radial-gradient(circle at center, transparent 0 46%, rgba(0, 0, 0, 0.42) 100%);
+  background-size: 42px 42px, 42px 42px, 100% 100%;
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes bgScan {
+  0% { background-position: 0 0, 0 0, 180% 0; }
+  100% { background-position: 0 0, 0 0, -80% 0; }
 }
 
 #hero {
