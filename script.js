@@ -617,6 +617,30 @@
   skillFills.forEach(fill => observer.observe(fill));
 
 
+  const cr7Section = document.getElementById('cr7');
+  const cr7Button = document.getElementById('cr7-btn');
+  const cr7Quote = document.getElementById('cr7-quote');
+  const cr7Quotes = [
+    'Discipline turns dreams into reality.',
+    'Talent starts the journey. Consistency builds the legacy.',
+    'Train your mind like a champion, code like a builder.',
+    'Confidence, hard work, and focus. SIUUU!'
+  ];
+  let cr7QuoteIndex = 0;
+
+  if (cr7Button && cr7Quote && cr7Section) {
+    cr7Button.addEventListener('click', function() {
+      cr7Quote.textContent = cr7Quotes[cr7QuoteIndex];
+      cr7QuoteIndex = (cr7QuoteIndex + 1) % cr7Quotes.length;
+      cr7Section.classList.remove('siuuu-active');
+
+      setTimeout(function() {
+        cr7Section.classList.add('siuuu-active');
+      }, 10);
+    });
+  }
+
+
   function openLightbox(src) {
     document.getElementById('lightbox-img').src = src;
     document.getElementById('lightbox').classList.add('active');
