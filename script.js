@@ -555,46 +555,89 @@
   }
 
   async function handleJarvisQuestion(question) {
-    if (!question) return;
+  if (!question) return;
 
-    // Language not selected yet
   if (!langSelectionDone) {
     addJarvisMessage(question, 'user');
+    const GEMINI_KEY = 'AIzaSyCdPLeeUirDFssLJcLuXW6r5EASyxFAu_4';
+
+async function translateWithGemini(text, targetLanguage) {
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Translate the following text to ${targetLanguage}. Return ONLY the translated text, nothing else, no explanation:\n\n${text}`
+            }]
+          }]
+        })
+      }
+    );
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text.trim();
+  } catch (error) {
+    return text;
+  }
+}
     showLanguageSelector();
     return;
   }
 
-    addJarvisMessage(question, 'user');
-    jarvisInput.value = '';
+  addJarvisMessage(question, 'user');
+  jarvisInput.value = '';
 
-    const localReply = getJarvisReply(question);
+  const localReply = getJarvisReply(question);
 
-    if (localReply) {
+  if (localReply) {
+    // Local reply কে selected language এ translate করো
+    if (selectedLanguage && selectedLanguage.code !== 'en-US') {
+      const translated = await translateWithGemini(localReply, selectedLanguage.name);
+      showJarvisReply(translated, 0);
+    } else {
       showJarvisReply(localReply, 0);
-      return;
     }
+    return;
+  }
 
-    const mathReply = getMathReply(question);
+  const mathReply = getMathReply(question);
 
-    if (mathReply) {
+  if (mathReply) {
+    if (selectedLanguage && selectedLanguage.code !== 'en-US') {
+      const translated = await translateWithGemini(mathReply, selectedLanguage.name);
+      showJarvisReply(translated, 0);
+    } else {
       showJarvisReply(mathReply, 0);
-      return;
     }
+    return;
+  }
 
-    const thinkingMessage = addJarvisMessage('Searching smart sources...', 'bot');
-    let leaderReply = null;
+  const thinkingMessage = addJarvisMessage('Thinking...', 'bot');
+  let leaderReply = null;
 
-    try {
-      leaderReply = await getLeaderReply(question);
-    } catch (error) {
-      leaderReply = null;
-    }
+  try {
+    leaderReply = await getLeaderReply(question);
+  } catch (error) {
+    leaderReply = null;
+  }
 
-    const finalReply = leaderReply || await getWikipediaReply(question);
+  const finalReply = leaderReply || await getWikipediaReply(question);
+
+  // Selected language এ translate করো
+  if (selectedLanguage && selectedLanguage.code !== 'en-US') {
+    const translated = await translateWithGemini(finalReply, selectedLanguage.name);
+    thinkingMessage.textContent = translated;
+    jarvisChat.scrollTop = jarvisChat.scrollHeight;
+    speakJarvis(translated);
+  } else {
     thinkingMessage.textContent = finalReply;
     jarvisChat.scrollTop = jarvisChat.scrollHeight;
     speakJarvis(finalReply);
   }
+}
 
   if (jarvisForm) {
     jarvisForm.addEventListener('submit', function(e) {
