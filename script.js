@@ -101,12 +101,9 @@
   const jarvisChat = document.getElementById('jarvis-chat');
   const jarvisVoiceButton = document.getElementById('jarvis-voice');
   const jarvisQuickButtons = document.querySelectorAll('[data-jarvis-question]');
-  let jarvisVoiceEnabled = true;
-  let jarvisVoiceUnlocked = false;
-  let jarvisVoices = [];
-  let selectedLanguage = null;
-  let selectedVoice = null;
-  let langSelectionDone = false;;
+ let jarvisVoiceEnabled = true;
+ let jarvisVoiceUnlocked = false;
+ let jarvisVoices = [];
 
   function loadJarvisVoices() {
     if (!('speechSynthesis' in window)) return;
@@ -131,6 +128,7 @@
   function speakJarvis(text) {
     if (!jarvisVoiceEnabled || !('speechSynthesis' in window)) return;
 
+    loadJarvisVoices();
     window.speechSynthesis.cancel();
     window.speechSynthesis.resume();
 
@@ -138,18 +136,21 @@
     speech.rate = 0.95;
     speech.pitch = 0.85;
     speech.volume = 1;
+    speech.lang = 'en-US';
 
-  if (selectedVoice) {
-    speech.voice = selectedVoice;
-    speech.lang = selectedVoice.lang;
-  } else {
-    speech.lang = selectedLanguage ? selectedLanguage.code : 'en-US';
-    const fallback = jarvisVoices.find(v => v.lang.startsWith('en')) || jarvisVoices[0];
-    if (fallback) speech.voice = fallback;
+    const fallbackVoice =
+      jarvisVoices.find(function(voice) { return voice.lang === 'en-US'; }) ||
+      jarvisVoices.find(function(voice) { return voice.lang === 'en-IN'; }) ||
+      jarvisVoices.find(function(voice) { return voice.lang && voice.lang.startsWith('en'); }) ||
+      jarvisVoices[0];
+
+    if (fallbackVoice) {
+      speech.voice = fallbackVoice;
+      speech.lang = fallbackVoice.lang || 'en-US';
+    }
+
+    window.speechSynthesis.speak(speech);
   }
-
-  window.speechSynthesis.speak(speech);
-}
 
   function unlockJarvisVoice() {
     if (jarvisVoiceUnlocked || !('speechSynthesis' in window)) return;
@@ -557,65 +558,23 @@
   async function handleJarvisQuestion(question) {
   if (!question) return;
 
-  if (!langSelectionDone) {
-    addJarvisMessage(question, 'user');
-    const GEMINI_KEY = 'AIzaSyCdPLeeUirDFssLJcLuXW6r5EASyxFAu_4';
-
-async function translateWithGemini(text, targetLanguage) {
-  try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `Translate the following text to ${targetLanguage}. Return ONLY the translated text, nothing else, no explanation:\n\n${text}`
-            }]
-          }]
-        })
-      }
-    );
-    const data = await response.json();
-    return data.candidates[0].content.parts[0].text.trim();
-  } catch (error) {
-    return text;
-  }
-}
-    showLanguageSelector();
-    return;
-  }
-
   addJarvisMessage(question, 'user');
   jarvisInput.value = '';
 
   const localReply = getJarvisReply(question);
 
   if (localReply) {
-    // Local reply কে selected language এ translate করো
-    if (selectedLanguage && selectedLanguage.code !== 'en-US') {
-      const translated = await translateWithGemini(localReply, selectedLanguage.name);
-      showJarvisReply(translated, 0);
-    } else {
-      showJarvisReply(localReply, 0);
-    }
+    showJarvisReply(localReply, 0);
     return;
   }
 
   const mathReply = getMathReply(question);
 
   if (mathReply) {
-    if (selectedLanguage && selectedLanguage.code !== 'en-US') {
-      const translated = await translateWithGemini(mathReply, selectedLanguage.name);
-      showJarvisReply(translated, 0);
-    } else {
-      showJarvisReply(mathReply, 0);
-    }
+    showJarvisReply(mathReply, 0);
     return;
   }
-
-  const thinkingMessage = addJarvisMessage('Thinking...', 'bot');
+  const thinkingMessage = addJarvisMessage('Searching smart sources...', 'bot');
   let leaderReply = null;
 
   try {
@@ -625,18 +584,9 @@ async function translateWithGemini(text, targetLanguage) {
   }
 
   const finalReply = leaderReply || await getWikipediaReply(question);
-
-  // Selected language এ translate করো
-  if (selectedLanguage && selectedLanguage.code !== 'en-US') {
-    const translated = await translateWithGemini(finalReply, selectedLanguage.name);
-    thinkingMessage.textContent = translated;
-    jarvisChat.scrollTop = jarvisChat.scrollHeight;
-    speakJarvis(translated);
-  } else {
-    thinkingMessage.textContent = finalReply;
-    jarvisChat.scrollTop = jarvisChat.scrollHeight;
-    speakJarvis(finalReply);
-  }
+  thinkingMessage.textContent = finalReply;
+  jarvisChat.scrollTop = jarvisChat.scrollHeight;
+  speakJarvis(finalReply);
 }
 
   if (jarvisForm) {
@@ -873,65 +823,3 @@ async function translateWithGemini(text, targetLanguage) {
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
   });
-
-  // ===== LANGUAGE SELECTION =====
-const languages = {
-  english: { code: 'en-US', name: 'English' },
-  hindi:   { code: 'hi-IN', name: 'Hindi' },
-  bengali: { code: 'bn-IN', name: 'Bengali' }
-};
-
-function showLanguageSelector() {
-  const existing = document.getElementById('lang-selector-msg');
-  if (existing) return;
-
-  const msg = document.createElement('div');
-  msg.className = 'jarvis-message bot';
-  msg.id = 'lang-selector-msg';
-  msg.innerHTML = `
-    Please select your preferred voice language:
-    <div class="lang-buttons">
-      <button onclick="selectLang('english')">🇬🇧 English</button>
-      <button onclick="selectLang('hindi')">🇮🇳 हिंदी</button>
-      <button onclick="selectLang('bengali')">🇧🇩 বাংলা</button>
-    </div>
-  `;
-  jarvisChat.appendChild(msg);
-  jarvisChat.scrollTop = jarvisChat.scrollHeight;
-}
-
-function selectLang(lang) {
-  const langData = languages[lang];
-  document.getElementById('lang-selector-msg')?.remove();
-
-  loadJarvisVoices();
-
-  const voice = jarvisVoices.find(v => v.lang.startsWith(langData.code.split('-')[0]));
-
-  if (!voice && lang !== 'english') {
-    selectedLanguage = languages['english'];
-    selectedVoice = jarvisVoices.find(v => v.lang.startsWith('en')) || jarvisVoices[0];
-    langSelectionDone = true;
-
-    const apology = `I apologize, but I am unable to speak in ${langData.name}, as I could not find it within your system. So, I am speaking in English.`;
-    addJarvisMessage(apology, 'bot');
-    speakJarvis(apology);
-  } else {
-    selectedLanguage = langData;
-    selectedVoice = voice || jarvisVoices.find(v => v.lang.startsWith('en')) || jarvisVoices[0];
-    langSelectionDone = true;
-
-    let greet = '';
-    if (lang === 'english') greet = "Hello! Welcome to Abdur's AI Assistant. How can I assist you today?";
-    if (lang === 'hindi')   greet = "नमस्ते! अब्दुर के AI सिस्टम में आपका स्वागत है।";
-    if (lang === 'bengali') greet = "হ্যালো! আব্দুরের AI সিস্টেমে আপনাকে স্বাগতম।";
-
-    addJarvisMessage(greet, 'bot');
-    speakJarvis(greet);
-  }
-}
-
-// Page load হলে language selector দেখাবে
-setTimeout(function() {
-  showLanguageSelector();
-}, 3600);
