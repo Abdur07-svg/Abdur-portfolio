@@ -104,6 +104,9 @@
   let jarvisVoiceEnabled = true;
   let jarvisVoiceUnlocked = false;
   let jarvisVoices = [];
+  let selectedLanguage = null;
+  let selectedVoice = null;
+  let langSelectionDone = false;;
 
   function loadJarvisVoices() {
     if (!('speechSynthesis' in window)) return;
@@ -132,25 +135,21 @@
     window.speechSynthesis.resume();
 
     const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = 'en-US';
     speech.rate = 0.95;
     speech.pitch = 0.85;
     speech.volume = 1;
 
-    loadJarvisVoices();
-
-    const preferredVoice = jarvisVoices.find(voice => voice.lang === 'en-US') ||
-      jarvisVoices.find(voice => voice.lang === 'en-IN') ||
-      jarvisVoices.find(voice => voice.lang.startsWith('en')) ||
-      jarvisVoices[0];
-
-    if (preferredVoice) {
-      speech.voice = preferredVoice;
-      speech.lang = preferredVoice.lang;
-    }
-
-    window.speechSynthesis.speak(speech);
+  if (selectedVoice) {
+    speech.voice = selectedVoice;
+    speech.lang = selectedVoice.lang;
+  } else {
+    speech.lang = selectedLanguage ? selectedLanguage.code : 'en-US';
+    const fallback = jarvisVoices.find(v => v.lang.startsWith('en')) || jarvisVoices[0];
+    if (fallback) speech.voice = fallback;
   }
+
+  window.speechSynthesis.speak(speech);
+}
 
   function unlockJarvisVoice() {
     if (jarvisVoiceUnlocked || !('speechSynthesis' in window)) return;
@@ -558,6 +557,13 @@
   async function handleJarvisQuestion(question) {
     if (!question) return;
 
+    // Language not selected yet
+  if (!langSelectionDone) {
+    addJarvisMessage(question, 'user');
+    showLanguageSelector();
+    return;
+  }
+
     addJarvisMessage(question, 'user');
     jarvisInput.value = '';
 
@@ -824,3 +830,65 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
   });
+
+  // ===== LANGUAGE SELECTION =====
+const languages = {
+  english: { code: 'en-US', name: 'English' },
+  hindi:   { code: 'hi-IN', name: 'Hindi' },
+  bengali: { code: 'bn-IN', name: 'Bengali' }
+};
+
+function showLanguageSelector() {
+  const existing = document.getElementById('lang-selector-msg');
+  if (existing) return;
+
+  const msg = document.createElement('div');
+  msg.className = 'jarvis-message bot';
+  msg.id = 'lang-selector-msg';
+  msg.innerHTML = `
+    Please select your preferred voice language:
+    <div class="lang-buttons">
+      <button onclick="selectLang('english')">🇬🇧 English</button>
+      <button onclick="selectLang('hindi')">🇮🇳 हिंदी</button>
+      <button onclick="selectLang('bengali')">🇧🇩 বাংলা</button>
+    </div>
+  `;
+  jarvisChat.appendChild(msg);
+  jarvisChat.scrollTop = jarvisChat.scrollHeight;
+}
+
+function selectLang(lang) {
+  const langData = languages[lang];
+  document.getElementById('lang-selector-msg')?.remove();
+
+  loadJarvisVoices();
+
+  const voice = jarvisVoices.find(v => v.lang.startsWith(langData.code.split('-')[0]));
+
+  if (!voice && lang !== 'english') {
+    selectedLanguage = languages['english'];
+    selectedVoice = jarvisVoices.find(v => v.lang.startsWith('en')) || jarvisVoices[0];
+    langSelectionDone = true;
+
+    const apology = `I apologize, but I am unable to speak in ${langData.name}, as I could not find it within your system. So, I am speaking in English.`;
+    addJarvisMessage(apology, 'bot');
+    speakJarvis(apology);
+  } else {
+    selectedLanguage = langData;
+    selectedVoice = voice || jarvisVoices.find(v => v.lang.startsWith('en')) || jarvisVoices[0];
+    langSelectionDone = true;
+
+    let greet = '';
+    if (lang === 'english') greet = "Hello! Welcome to Abdur's AI Assistant. How can I assist you today?";
+    if (lang === 'hindi')   greet = "नमस्ते! अब्दुर के AI सिस्टम में आपका स्वागत है।";
+    if (lang === 'bengali') greet = "হ্যালো! আব্দুরের AI সিস্টেমে আপনাকে স্বাগতম।";
+
+    addJarvisMessage(greet, 'bot');
+    speakJarvis(greet);
+  }
+}
+
+// Page load হলে language selector দেখাবে
+setTimeout(function() {
+  showLanguageSelector();
+}, 3600);
