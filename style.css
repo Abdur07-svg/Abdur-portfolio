@@ -246,108 +246,6 @@ section p {
   }
 }
 
-#social h2 {
-  margin-bottom: 20px;
-}
-
-.social-buttons {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-/* সব button একই base style */
-.btn-youtube,
-.btn-instagram,
-.btn-whatsapp,
-.btn-x,
-.btn-facebook {
-  width: 50px;
-  height: 50px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-/* YouTube */
-.btn-youtube {
-  background: rgba(255, 0, 0, 0.1);
-  border: 1px solid rgba(255, 80, 80, 0.5);
-  color: #ff4444;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
-}
-.btn-youtube:hover {
-  background: rgba(255, 0, 0, 0.25);
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-  color: #ffffff;
-}
-
-/* Instagram */
-.btn-instagram {
-  background: rgba(130, 0, 255, 0.1);
-  border: 1px solid rgba(180, 80, 255, 0.5);
-  color: #c080ff;
-  box-shadow: 0 0 10px rgba(130, 0, 255, 0.1);
-}
-.btn-instagram:hover {
-  background: rgba(130, 0, 255, 0.25);
-  box-shadow: 0 0 20px rgba(180, 80, 255, 0.4);
-  color: #ffffff;
-}
-
-/* WhatsApp */
-.btn-whatsapp {
-  background: rgba(0, 200, 80, 0.1);
-  border: 1px solid rgba(0, 200, 80, 0.5);
-  color: #25d366;
-  box-shadow: 0 0 10px rgba(0, 200, 80, 0.1);
-}
-.btn-whatsapp:hover {
-  background: rgba(0, 200, 80, 0.25);
-  box-shadow: 0 0 20px rgba(0, 200, 80, 0.4);
-  color: #ffffff;
-}
-
-/* X (Twitter) */
-.btn-x {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #cccccc;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-}
-.btn-x:hover {
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-/* Facebook */
-.btn-facebook {
-  background: rgba(24, 119, 242, 0.1);
-  border: 1px solid rgba(24, 119, 242, 0.5);
-  color: #0866ff;
-  box-shadow: 0 0 10px rgba(24, 119, 242, 0.1);
-}
-.btn-facebook:hover {
-  background: rgba(24, 119, 242, 0.25);
-  box-shadow: 0 0 20px rgba(24, 119, 242, 0.4);
-  color: #ffffff;
-}
-
-.star {
-  position: fixed;
-  width: 2px;
-  height: 2px;
-  background: white;
-  border-radius: 50%;
-  animation: twinkle 3s infinite;
-}
-
 @keyframes twinkle {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
@@ -1349,4 +1247,174 @@ footer {
   color: #ffffff;; font-size: 0.87rem; letter-spacing: 1px;
   border-top: 1px solid rgba(0,212,255,0.06);
   margin-top: 20px;
+}
+
+/* Floating Social Sidebar */
+.social-sidebar {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1000;
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 0 8px 8px 0;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  width: 48px;
+}
+
+.sidebar-btn span {
+  opacity: 0;
+  width: 0;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.sidebar-btn:hover {
+  width: 140px;
+  padding-right: 20px;
+}
+
+.sidebar-btn:hover span {
+  opacity: 1;
+  width: auto;
+}
+
+/* YouTube */
+.sidebar-btn.yt {
+  background: rgba(255, 0, 0, 0.15);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  border-left: none;
+  color: #ff4444;
+}
+.sidebar-btn.yt:hover {
+  background: rgba(255, 0, 0, 0.3);
+  box-shadow: 4px 0 20px rgba(255, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+/* Instagram */
+.sidebar-btn.ig {
+  background: rgba(130, 0, 255, 0.15);
+  border: 1px solid rgba(180, 80, 255, 0.4);
+  border-left: none;
+  color: #c080ff;
+}
+.sidebar-btn.ig:hover {
+  background: rgba(130, 0, 255, 0.3);
+  box-shadow: 4px 0 20px rgba(180, 80, 255, 0.3);
+  color: #ffffff;
+}
+
+/* WhatsApp */
+.sidebar-btn.wa {
+  background: rgba(0, 200, 80, 0.15);
+  border: 1px solid rgba(0, 200, 80, 0.4);
+  border-left: none;
+  color: #25d366;
+}
+.sidebar-btn.wa:hover {
+  background: rgba(0, 200, 80, 0.3);
+  box-shadow: 4px 0 20px rgba(0, 200, 80, 0.3);
+  color: #ffffff;
+}
+
+/* X */
+.sidebar-btn.x {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: none;
+  color: #cccccc;
+}
+.sidebar-btn.x:hover {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 4px 0 20px rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Facebook */
+.sidebar-btn.fb {
+  background: rgba(24, 119, 242, 0.15);
+  border: 1px solid rgba(24, 119, 242, 0.4);
+  border-left: none;
+  color: #0866ff;
+}
+.sidebar-btn.fb:hover {
+  background: rgba(24, 119, 242, 0.3);
+  box-shadow: 4px 0 20px rgba(24, 119, 242, 0.3);
+  color: #ffffff;
+}
+
+/* Mobile তে hide করো */
+@media (max-width: 768px) {
+  .social-sidebar {
+    display: none;
+  }
+}
+
+/* Mobile Bottom Social Bar */
+.social-mobile-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .social-mobile-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(2, 11, 24, 0.95);
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+  }
+
+  .social-mobile-bar a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .social-mobile-bar a span {
+    font-size: 0.6rem;
+    letter-spacing: 0.5px;
+  }
+
+  .social-mobile-bar a.yt { color: #ff4444; }
+  .social-mobile-bar a.ig { color: #c080ff; }
+  .social-mobile-bar a.wa { color: #25d366; }
+  .social-mobile-bar a.x  { color: #cccccc; }
+  .social-mobile-bar a.fb { color: #0866ff; }
+
+  .social-mobile-bar a:active {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+
+  /* Mobile এ নিচে bar এর জন্য জায়গা রাখো */
+  body {
+    padding-bottom: 70px;
+  }
 }
