@@ -100,6 +100,7 @@
   const jarvisInput = document.getElementById('jarvis-input');
   const jarvisChat = document.getElementById('jarvis-chat');
   const jarvisVoiceButton = document.getElementById('jarvis-voice');
+  const jarvisQuickButtons = document.querySelectorAll('[data-jarvis-question]');
   let jarvisVoiceEnabled = true;
   let jarvisVoiceUnlocked = false;
   let jarvisVoices = [];
@@ -192,7 +193,7 @@
       cleanQuestion.includes('ke tumi');
 
     if (asksIdentity) {
-      return 'I am JARVIS, today your personal AI assistant. Created by Abdur, He is a developer, AI researcher, and programmer. How can I assist you today, Sir?';
+      return 'I am JARVIS, today your personal AI assistant. Created by Abdur, He is a developer, AI enthusiast, and programmer. How can I assist you today, Sir?';
     }
 
     if (cleanQuestion === 'good morning' || cleanQuestion.startsWith('good morning ')) {
@@ -597,6 +598,15 @@
     });
   }
 
+  jarvisQuickButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      const question = button.getAttribute('data-jarvis-question');
+      unlockJarvisVoice();
+      jarvisInput.value = question;
+      handleJarvisQuestion(question);
+    });
+  });
+
   if (jarvisVoiceButton) {
     setJarvisVoiceButton();
 
@@ -616,6 +626,98 @@
     });
   }
 
+
+  const contactForm = document.getElementById('contact-form');
+  const contactName = document.getElementById('name');
+  const contactMessage = document.getElementById('message');
+  const contactButton = contactForm ? contactForm.querySelector('.btn-send') : null;
+  const contactButtonText = document.getElementById('btn-text');
+  const formSuccess = document.getElementById('form-success');
+  const formError = document.getElementById('form-error');
+
+  function setContactFeedback(type, message) {
+    formSuccess.style.display = 'none';
+    formError.style.display = 'none';
+
+    if (type === 'success') {
+      formSuccess.textContent = message;
+      formSuccess.style.display = 'block';
+    }
+
+    if (type === 'error') {
+      formError.textContent = message;
+      formError.style.display = 'block';
+    }
+  }
+
+  function setContactLoading(isLoading) {
+    contactButton.disabled = isLoading;
+    contactButton.classList.toggle('loading', isLoading);
+    contactButtonText.textContent = isLoading ? 'Sending...' : 'Send Message ➤';
+  }
+
+  function validateContactForm() {
+    const name = contactName.value.trim();
+    const message = contactMessage.value.trim();
+
+    contactName.classList.remove('input-error');
+    contactMessage.classList.remove('input-error');
+
+    if (name.length < 2) {
+      contactName.classList.add('input-error');
+      setContactFeedback('error', 'Please enter your name.');
+      contactName.focus();
+      return false;
+    }
+
+    if (message.length < 5) {
+      contactMessage.classList.add('input-error');
+      setContactFeedback('error', 'Please write a little more in your message.');
+      contactMessage.focus();
+      return false;
+    }
+
+    return true;
+  }
+
+  if (contactForm && contactButton && contactButtonText && formSuccess && formError) {
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!validateContactForm()) return;
+
+      setContactFeedback('', '');
+      setContactLoading(true);
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: {
+            Accept: 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Form submit failed');
+        }
+
+        contactForm.reset();
+        setContactFeedback('success', "Message sent successfully! I'll reply soon.");
+      } catch (error) {
+        setContactFeedback('error', 'Something went wrong. Please check your internet and try again.');
+      } finally {
+        setContactLoading(false);
+      }
+    });
+
+    [contactName, contactMessage].forEach(function(field) {
+      field.addEventListener('input', function() {
+        field.classList.remove('input-error');
+        formError.style.display = 'none';
+      });
+    });
+  }
 
 
   const cursorGlow = document.getElementById('cursor-glow');

@@ -881,6 +881,34 @@ a, button {
   color: #e9fff6;
 }
 
+.jarvis-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.jarvis-quick-actions button {
+  padding: 7px 10px;
+  border: 1px solid rgba(0, 212, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(0, 212, 255, 0.07);
+  color: #9eeeff;
+  font-family: 'Rajdhani', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  transition: all 0.22s ease;
+}
+
+.jarvis-quick-actions button:hover {
+  background: rgba(0, 255, 136, 0.12);
+  border-color: rgba(0, 255, 136, 0.42);
+  color: #00ff88;
+  box-shadow: 0 0 14px rgba(0, 255, 136, 0.12);
+  transform: translateY(-1px);
+}
+
 .jarvis-input-row {
   display: flex;
   gap: 10px;
@@ -963,6 +991,15 @@ a, button {
     width: 100%;
     min-height: 42px;
   }
+
+  .jarvis-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .jarvis-quick-actions button {
+    min-height: 38px;
+  }
 }
 .project-icon {
   font-size: 30px;
@@ -1021,6 +1058,12 @@ a, button {
   background: rgba(0, 212, 255, 0.08);
 }
 
+.form-group input.input-error,
+.form-group textarea.input-error {
+  border-color: rgba(255, 68, 68, 0.75);
+  box-shadow: 0 0 16px rgba(255, 68, 68, 0.16);
+}
+
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color: rgba(255, 255, 255, 0.25);
@@ -1052,6 +1095,23 @@ a, button {
   color: #ffffff;
 }
 
+.btn-send:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.btn-send.loading {
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.12), rgba(0, 255, 136, 0.14), rgba(0, 212, 255, 0.12));
+  background-size: 220% 100%;
+  animation: sendingPulse 1.2s linear infinite;
+}
+
+@keyframes sendingPulse {
+  0% { background-position: 0% 0; }
+  100% { background-position: 220% 0; }
+}
+
 .form-success {
   display: none;
   text-align: center;
@@ -1062,6 +1122,7 @@ a, button {
   border: 1px solid rgba(0, 255, 136, 0.3);
   border-radius: 4px;
   background: rgba(0, 255, 136, 0.05);
+  animation: formPop 0.28s ease;
 }
 
 .form-error {
@@ -1074,6 +1135,18 @@ a, button {
   border: 1px solid rgba(255, 68, 68, 0.3);
   border-radius: 4px;
   background: rgba(255, 68, 68, 0.05);
+  animation: formPop 0.28s ease;
+}
+
+@keyframes formPop {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 /* Demo Images */
 .demo-images {
