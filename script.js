@@ -193,7 +193,7 @@
       cleanQuestion.includes('ke tumi');
 
     if (asksIdentity) {
-      return 'I am JARVIS, today your personal AI assistant. Created by Abdur, He is a developer, AI enthusiast, and programmer. How can I assist you today, Sir?';
+      return 'I am JARVIS, today your personal AI assistant. Created by Abdur, He is a developer, AI enthusiast, and programmer. How can I assist you today sir?';
     }
 
     if (cleanQuestion === 'good morning' || cleanQuestion.startsWith('good morning ')) {
@@ -236,7 +236,7 @@
       cleanQuestion.includes('tarikh')
     ) {
       const now = new Date();
-      return 'Sir, the current date is ' + now.toLocaleDateString([], {
+      return 'The current date is ' + now.toLocaleDateString([], {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
@@ -249,7 +249,7 @@
       cleanQuestion.includes('somoy')
     ) {
       const now = new Date();
-      return 'Sir, the current time is ' + now.toLocaleTimeString([], {
+      return 'The current time is ' + now.toLocaleTimeString([], {
         hour: 'numeric',
         minute: '2-digit'
       }) + '.';
@@ -371,10 +371,10 @@
     if (result === null) return null;
 
     if (result === 'divide-by-zero') {
-      return 'Sir, division by zero is not possible.';
+      return 'The answer is undefined (division by zero).';
     }
 
-    return 'Sir, the answer is ' + result + '.';
+    return 'The answer is ' + result + '.';
   }
 
   function getLeaderQuestion(question) {
@@ -510,7 +510,7 @@
     const result = data.results && data.results.bindings && data.results.bindings[0];
 
     if (!result) {
-      return "Sir, I could not find the current " + roleName + " of " + country.label + ".";
+      return "Sir,I could not find the current " + roleName + " of " + country.label + ".";
     }
 
     const personName = result.personLabel.value;
@@ -523,14 +523,14 @@
       details = await getWikipediaReply(personName);
     }
 
-    return 'Sir, the current ' + roleName + ' of ' + country.label + ' is ' + personName + '. ' + details;
+    return 'The current ' + roleName + ' of ' + country.label + ' is ' + personName + '. ' + details;
   }
 
   async function getWikipediaReply(question) {
     const searchText = cleanWikipediaQuestion(question);
 
     if (!searchText) {
-      return "Sir, please ask me what you want to know from Wikipedia.";
+      return "The answer is undefined.";
     }
 
     try {
@@ -540,18 +540,18 @@
       const firstResult = searchData.query && searchData.query.search && searchData.query.search[0];
 
       if (!firstResult) {
-        return "Sir, I could not find a clear Wikipedia result for that question.";
+        return "The answer is undefined.";
       }
 
       const summaryText = await getWikipediaSummaryByTitle(firstResult.title);
 
       if (!summaryText) {
-        return "Sir, I found the topic on Wikipedia, but there is no short summary available.";
+        return "Sir,I found the topic on Wikipedia, but there is no short summary available.";
       }
 
       return summaryText;
     } catch (error) {
-      return "Sir, I cannot connect to Wikipedia right now. Please check your internet connection and try again.";
+      return "Sir,I cannot connect to Wikipedia right now. Please check your internet connection and try again.";
     }
   }
 
@@ -621,7 +621,7 @@
       setJarvisVoiceButton();
 
       if (jarvisVoiceEnabled) {
-        speakJarvis('Voice online, Sir.');
+        speakJarvis('Voice activate.');
       }
     });
   }
