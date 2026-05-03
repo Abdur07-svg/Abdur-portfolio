@@ -1066,17 +1066,17 @@
   const cr7Quote = document.getElementById('cr7-quote');
   const cr7Note = document.querySelector('.cr7-note');
   const cr7Quotes = [
-  '"Talent without work is nothing." ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â CR7',
+  '"Talent without work is nothing."- CR7',
   '"I\'m not perfectionist, but I like to feel that things are done well."',
   '"Your love makes me strong. Your hate makes me unstoppable."',
   '"Dreams are not what you see in your sleep. Dreams are the things which do not let you sleep."',
-  '"I don\'t need to prove anything to anyone ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â I only need to prove it to myself."',
+  '"I don\'t need to prove anything to anyone - I only need to prove it to myself."',
   '"Hard work beats talent when talent doesn\'t work hard."',
   '"Discipline turns dreams into reality."',
   '"Talent starts the journey. Consistency builds the legacy."',
   '"Train your mind like a champion, code like a builder."',
   '"Confidence, hard work, and focus."',
-  '"SIUUUU! ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥"',
+  '"SIUUUU! 🔥"',
   ];
   let cr7QuoteIndex = 0;
 
