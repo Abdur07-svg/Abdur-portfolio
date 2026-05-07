@@ -1395,14 +1395,15 @@ section p {
 .btn {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #159fc1;
-  color: rgb(9, 0, 0);
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.5);
+  color: var(--cyan);
   text-decoration: none;
   border-radius: 5px;
   font-weight: bold;
 }
 .btn:hover {
-  background-color: #007b80;
+  background: rgba(0, 212, 255, 0.2);
 }
 
 .btn-send {
