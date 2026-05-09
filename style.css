@@ -216,8 +216,20 @@ body > * {
   font-size: 0.99rem;
   font-weight: 900;
   color: var(--cyan);
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-shadow: 0 0 12px var(--cyan);
   letter-spacing: 4px;
+}
+
+.nav-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 10px #00f0ff88;
 }
 
 .nav-links {
