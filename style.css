@@ -240,41 +240,67 @@ body > * {
 
 .nav-links {
   display: flex;
-  gap: 32px;
+  gap: 8px;
+  align-items: center;
 }
 
-.nav-links a {
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  transition: color var(--transition-fast), text-shadow var(--transition-fast);
-  text-transform: uppercase;
+  transition: all var(--transition-fast);
   position: relative;
 }
 
-.nav-links a::after {
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
+  transition: all var(--transition-fast);
+}
+
+/* Hover effect */
+.nav-link:hover {
+  color: var(--cyan);
+  background: rgba(0, 212, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+.nav-link:hover .nav-icon {
+  stroke: var(--cyan);
+  filter: drop-shadow(0 0 6px var(--cyan-glow));
+  transform: scale(1.1);
+}
+
+/* Active state */
+.nav-link.active {
+  color: var(--cyan);
+  background: rgba(0, 212, 255, 0.12);
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.2), inset 0 0 8px rgba(0, 212, 255, 0.05);
+}
+
+.nav-link.active .nav-icon {
+  stroke: var(--cyan);
+  filter: drop-shadow(0 0 8px var(--cyan-glow));
+}
+
+/* Active indicator dot */
+.nav-link.active::after {
   content: '';
   position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
   background: var(--cyan);
-  transition: width var(--transition-base);
   box-shadow: 0 0 8px var(--cyan);
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  color: var(--cyan);
-  text-shadow: 0 0 8px var(--cyan-glow);
-}
-
-.nav-links a:hover::after,
-.nav-links a.active::after {
-  width: 100%;
 }
 
 .nav-toggle {
@@ -1567,21 +1593,60 @@ footer {
 .footer-links {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  gap: 40px;
   flex-wrap: wrap;
 }
 
-.footer-links a {
-  color: var(--text-dim);
+.footer-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   text-decoration: none;
-  font-size: 0.8rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  transition: color var(--transition-fast);
+  padding: 14px 18px;
+  border-radius: 12px;
+  color: var(--text-dim);
+  transition: all 0.3s ease;
+  min-width: 70px;
 }
 
-.footer-links a:hover {
+.footer-icon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.footer-link span {
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.footer-link:hover {
   color: var(--cyan);
+  background: rgba(0, 212, 255, 0.1);
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.2);
+  transform: translateY(-4px);
+}
+
+.footer-link:hover .footer-icon {
+  stroke: var(--cyan);
+  filter: drop-shadow(0 0 8px var(--cyan-glow));
+  transform: scale(1.2);
+}
+
+.footer-link:hover span {
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--cyan-glow);
+}
+
+/* Active/click effect */
+.footer-link:active {
+  transform: translateY(-1px) scale(0.95);
 }
 
 /* ===== BACK TO TOP ===== */
@@ -1779,15 +1844,16 @@ footer {
     padding: 12px 20px;
   }
 
-  .nav-links {
+    .nav-links {
     position: absolute;
     top: calc(100% + 10px);
     left: 16px;
     right: 16px;
     display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 10px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 72, 180, 0.06)), rgba(2, 11, 24, 0.96);
     border: 1px solid rgba(0, 212, 255, 0.28);
     border-radius: var(--radius-md);
@@ -1804,18 +1870,15 @@ footer {
     pointer-events: auto;
   }
 
-  .nav-links a {
-    padding: 13px 14px;
-    border-radius: 6px;
-    border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+  .nav-link {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
   }
 
-  .nav-links a:last-child {
-    border-bottom: 0;
-  }
-
-  .nav-links a:hover {
-    background: rgba(0, 212, 255, 0.08);
+  .nav-icon {
+    width: 24px;
+    height: 24px;
   }
 
   .nav-toggle {
@@ -1895,6 +1958,26 @@ footer {
 }
 
 @media (max-width: 480px) {
+  .footer-links {
+    gap: 16px;
+  }
+  
+  .footer-link {
+    padding: 10px 12px;
+    min-width: 60px;
+    gap: 6px;
+  }
+  
+  .footer-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .footer-link span {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+  }
+
   section {
     padding: 24px 16px;
     margin: 20px auto;

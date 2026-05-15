@@ -1,4 +1,4 @@
-// ===== STAR BACKGROUND =====
+﻿// ===== STAR BACKGROUND =====
 function createStars() {
   const starCount = Math.min(50, window.innerWidth < 768 ? 25 : 50);
   for (let i = 0; i < starCount; i++) {
@@ -43,6 +43,10 @@ window.addEventListener('load', function() {
     }, 500);
   }, 2500);
 });
+
+if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 
 // ===== TYPING ANIMATION =====
 const texts = [
