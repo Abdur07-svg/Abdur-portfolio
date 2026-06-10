@@ -33,21 +33,178 @@ document.head.appendChild(style);
 
 createStars();
 
+// ===== ANIMATED UI TRANSFORMATION =====
+function createUiProgress() {
+  const progress = document.createElement('div');
+  progress.className = 'ui-progress';
+  document.body.appendChild(progress);
+
+  function updateProgress() {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progressValue = scrollable > 0 ? window.scrollY / scrollable : 0;
+    progress.style.transform = 'scaleX(' + Math.min(progressValue, 1) + ')';
+  }
+
+  updateProgress();
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+}
+
+function createAmbientLayer() {
+  const layer = document.createElement('div');
+  layer.className = 'ambient-layer';
+  layer.setAttribute('aria-hidden', 'true');
+
+  const orbitCount = window.innerWidth < 768 ? 12 : 22;
+  for (let i = 0; i < orbitCount; i++) {
+    const orbit = document.createElement('span');
+    orbit.className = 'ambient-orbit';
+    orbit.style.setProperty('--orbit-x', Math.random() * 100 + 'vw');
+    orbit.style.setProperty('--orbit-y', Math.random() * 100 + 'vh');
+    orbit.style.setProperty('--orbit-speed', Math.random() * 7 + 7 + 's');
+    orbit.style.setProperty('--orbit-delay', Math.random() * -9 + 's');
+    layer.appendChild(orbit);
+  }
+
+  document.body.prepend(layer);
+}
+
+function enableTiltCards() {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  document.querySelectorAll('section, .project-card, .skill-item, .qual-item').forEach(function(card) {
+    card.classList.add('tilt-active');
+
+    card.addEventListener('mousemove', function(event) {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = 'perspective(900px) rotateX(' + (-y * 3.5) + 'deg) rotateY(' + (x * 3.5) + 'deg) translateY(-2px)';
+    });
+
+    card.addEventListener('mouseleave', function() {
+      card.style.transform = '';
+    });
+  });
+}
+
+function enableButtonRipples() {
+  document.querySelectorAll('a, button').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      const rect = button.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple-dot';
+      ripple.style.left = event.clientX - rect.left + 'px';
+      ripple.style.top = event.clientY - rect.top + 'px';
+      button.appendChild(ripple);
+      setTimeout(function() {
+        ripple.remove();
+      }, 650);
+    });
+  });
+}
+
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  createUiProgress();
+  createAmbientLayer();
+  enableTiltCards();
+  enableButtonRipples();
+} else {
+  createUiProgress();
+}
+
 // ===== LOADING SCREEN =====
+const loaderStatus = document.getElementById('loader-status');
+const loaderProgressFill = document.getElementById('loader-progress-fill');
+const loaderProgressGlow = document.querySelector('.loader-progress-glow');
+const loaderProgressText = document.getElementById('loader-progress-text');
+const metricCore = document.getElementById('metric-core');
+const metricMem = document.getElementById('metric-mem');
+const metricNet = document.getElementById('metric-net');
+const glitchText = document.querySelector('.glitch-text');
+
+const loaderPhrases = [
+  'BOOT SEQUENCE INITIATED',
+  'LOADING NEURAL NETWORK...',
+  'CALIBRATING QUANTUM CORE...',
+  'SYNCING ASSETS...',
+  'OPTIMIZING RENDER PIPELINE...',
+  'SYSTEM READY'
+];
+
+// Create floating particles
+function createLoaderParticles() {
+  const container = document.getElementById('loader-particles');
+  if (!container) return;
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'loader-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 8 + 4) + 's';
+    p.style.animationDelay = (Math.random() * 5) + 's';
+    p.style.opacity = Math.random() * 0.5 + 0.2;
+    const colors = ['var(--cyan)', 'var(--accent-pink)', 'var(--accent-green)', 'var(--accent-gold)'];
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    container.appendChild(p);
+  }
+}
+createLoaderParticles();
+
+// Progress animation
+let progress = 0;
+const totalDuration = 2800; // ms
+const interval = 40; // update every 40ms
+const increment = 100 / (totalDuration / interval);
+
+const progressTimer = setInterval(function() {
+  progress += increment + (Math.random() * 2 - 0.5);
+  if (progress >= 100) {
+    progress = 100;
+    clearInterval(progressTimer);
+  }
+
+  const pct = Math.min(Math.round(progress), 100);
+  if (loaderProgressFill) loaderProgressFill.style.width = pct + '%';
+  if (loaderProgressGlow) loaderProgressGlow.style.width = pct + '%';
+  if (loaderProgressText) loaderProgressText.textContent = pct + '%';
+
+  // Update metrics with random fluctuations
+  if (metricCore) metricCore.textContent = Math.min(Math.round(progress * 0.9 + Math.random() * 10), 100) + '%';
+  if (metricMem) metricMem.textContent = Math.min(Math.round(progress * 0.7 + Math.random() * 30), 100) + '%';
+  if (metricNet) metricNet.textContent = Math.min(Math.round(progress * 0.8 + Math.random() * 20), 100) + '%';
+
+  // Update status text based on progress
+  const phraseIndex = Math.min(Math.floor(progress / 20), loaderPhrases.length - 1);
+  if (loaderStatus && loaderStatus.textContent !== loaderPhrases[phraseIndex]) {
+    loaderStatus.textContent = loaderPhrases[phraseIndex];
+  }
+
+  // Glitch effect on text at certain points
+  if (pct === 33 || pct === 66 || pct === 99) {
+    if (glitchText) {
+      glitchText.style.animation = 'none';
+      glitchText.offsetHeight; // trigger reflow
+      glitchText.style.animation = '';
+    }
+  }
+}, interval);
+
+// Hide loader on window load
 window.addEventListener('load', function() {
   setTimeout(function() {
     const loader = document.getElementById('loader');
-    loader.classList.add('loader-hidden');
-    setTimeout(function() {
-      loader.style.display = 'none';
-    }, 500);
-  }, 2500);
+    if (loader) {
+      loader.classList.add('loader-hidden');
+      setTimeout(function() {
+        loader.style.display = 'none';
+      }, 800);
+    }
+  }, 3000);
 });
 
 if (typeof lucide !== 'undefined') {
     lucide.createIcons();
   }
-
 // ===== TYPING ANIMATION =====
 const texts = [
   "Student",
@@ -245,7 +402,7 @@ const cr7Quotes = [
   '"Talent starts the journey. Consistency builds the legacy."',
   '"Train your mind like a champion, code like a builder."',
   '"Confidence, hard work, and focus."',
-  '"SIUUUU! 🔥"'
+  '"SIUUUU!"'
 ];
 
 let cr7QuoteIndex = 0;
@@ -864,9 +1021,9 @@ if (contactForm && contactButton && formSuccess && formError) {
       if (!response.ok) throw new Error('Form submit failed');
 
       contactForm.reset();
-      setContactFeedback('success', "✅ Message sent successfully! I'll reply soon.");
+      setContactFeedback('success', "Message sent successfully! I'll reply soon.");
     } catch (error) {
-      setContactFeedback('error', '❌ Something went wrong. Please check your internet and try again.');
+      setContactFeedback('error', 'Something went wrong. Please check your internet and try again.');
     } finally {
       setContactLoading(false);
     }
@@ -941,6 +1098,6 @@ if ('IntersectionObserver' in window) {
 }
 
 // ===== CONSOLE EASTER EGG =====
-console.log('%c🔥 AR7 PORTFOLIO v2.0', 'color: #00d4ff; font-size: 24px; font-weight: bold; font-family: Orbitron;');
+console.log('%cAR7 PORTFOLIO v2.0', 'color: #00d4ff; font-size: 24px; font-weight: bold; font-family: Orbitron;');
 console.log('%cBuilt by Abdur Rajjak', 'color: #ffd166; font-size: 14px;');
-console.log('%c"Still learning, still improving — just getting started 🚀"', 'color: #00ff88; font-style: italic;');
+console.log('%c"Still learning, still improving - just getting started."', 'color: #00ff88; font-style: italic;');

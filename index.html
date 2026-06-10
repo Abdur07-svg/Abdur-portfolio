@@ -13,20 +13,62 @@
   <link rel="apple-touch-icon" href="images/favicon-180.png">
   <meta name="theme-color" content="#0a0a0a">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
   <!-- Loading Screen -->
   <div id="loader">
+    <div class="loader-bg-grid"></div>
+    <div class="loader-particles" id="loader-particles"></div>
     <div class="loader-content">
-      <div class="loader-logo">
-         <img src="images/logo.png" alt="logo">
-       </div>
-      <div class="loader-text">INITIALIZING SYSTEM...</div>
-      <div class="loader-bar">
-        <div class="loader-fill"></div>
+      <div class="quantum-core">
+        <div class="core-ring core-ring-1"></div>
+        <div class="core-ring core-ring-2"></div>
+        <div class="core-ring core-ring-3"></div>
+        <div class="core-center">
+          <img src="images/logo.png" alt="AR7" class="core-logo">
+          <div class="core-pulse"></div>
+        </div>
+        <div class="core-orbits">
+          <div class="orbit-particle"></div>
+          <div class="orbit-particle"></div>
+          <div class="orbit-particle"></div>
+          <div class="orbit-particle"></div>
+        </div>
       </div>
-      <div class="loader-status">LOADING AR7 PORTFOLIO v2.0</div>
+      <div class="loader-brand">AR7</div>
+      <div class="loader-text">
+        <span class="glitch-text" data-text="INITIALIZING SYSTEM">INITIALIZING SYSTEM</span>
+      </div>
+      <div class="loader-metrics">
+        <div class="metric">
+          <span class="metric-label">CORE</span>
+          <span class="metric-value" id="metric-core">0%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">MEM</span>
+          <span class="metric-value" id="metric-mem">0%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">NET</span>
+          <span class="metric-value" id="metric-net">0%</span>
+        </div>
+      </div>
+      <div class="loader-progress-container">
+        <div class="loader-progress-track">
+          <div class="loader-progress-fill" id="loader-progress-fill"></div>
+          <div class="loader-progress-glow"></div>
+        </div>
+        <div class="loader-progress-text" id="loader-progress-text">0%</div>
+      </div>
+      <div class="loader-status" id="loader-status">BOOT SEQUENCE INITIATED</div>
+      <div class="loader-terminal">
+        <div class="terminal-line" id="terminal-line-1">> <span class="term-cmd">connect</span> ar7.portfolio.net</div>
+        <div class="terminal-line" id="terminal-line-2">> <span class="term-cmd">load</span> assets.bundle.js</div>
+        <div class="terminal-line" id="terminal-line-3">> <span class="term-cmd">init</span> neural_interface.v2</div>
+        <div class="terminal-line" id="terminal-line-4">> <span class="term-cmd">sync</span> quantum_state...</div>
+      </div>
     </div>
   </div>
 
@@ -141,6 +183,11 @@
       <div class="scroll-mouse">
         <div class="scroll-wheel"></div>
       </div>
+      <div class="scroll-touch-cue" aria-hidden="true">
+        <i data-lucide="hand" class="scroll-hand"></i>
+        <i data-lucide="chevrons-down" class="scroll-chevrons"></i>
+      </div>
+      <span class="scroll-mobile-text">Swipe up</span>
       <span>Scroll to explore</span>
     </div>
   </section>
@@ -153,11 +200,11 @@
         <h2>Something About Me</h2>
       </div>
       <p class="about-text">
-        Hi, I'm <strong>Abdur</strong> <span class="wave">👋</span><br><br>
+        Hi, I'm <strong>Abdur</strong><br><br>
         I'm a student from West Bengal and a beginner web developer, currently learning and building projects with HTML, CSS, and JavaScript. Alongside coding, I'm also working on improving my spoken English to grow both technically and personally.<br><br>
         I enjoy turning simple ideas into real websites and improving my skills step by step. I have big goals, and I'm focused on building the consistency and discipline needed to achieve them.<br><br>
         Right now, I'm exploring AI and software development, aiming to create something meaningful in the future.<br><br>
-        <span class="highlight-text">Still learning, still improving — just getting started 🚀</span>
+        <span class="highlight-text">Still learning, still improving - just getting started.</span>
       </p>
     </section>
 
@@ -168,21 +215,21 @@
       </div>
       <div class="qual-timeline">
         <div class="qual-item">
-          <div class="qual-icon">🎓</div>
+          <div class="qual-icon">01</div>
           <div class="qual-content">
             <h3>Student</h3>
             <p>Preparing to begin my B.Tech in CSE this year, with a strong focus on building a solid foundation in programming, problem-solving, and core computer science concepts.</p>
           </div>
         </div>
         <div class="qual-item">
-          <div class="qual-icon">💻</div>
+          <div class="qual-icon">02</div>
           <div class="qual-content">
             <h3>Web Development</h3>
             <p>Currently learning and working with HTML, CSS, and JavaScript by building small real-world projects to strengthen my practical skills and understanding.</p>
           </div>
         </div>
         <div class="qual-item">
-          <div class="qual-icon">🧠</div>
+          <div class="qual-icon">03</div>
           <div class="qual-content">
             <h3>Continuous Learning</h3>
             <p>Actively exploring AI, improving logical thinking, and enhancing my spoken English to grow both technically and personally.</p>
@@ -223,7 +270,7 @@
   <section id="skills" class="reveal-section">
     <div class="section-header">
       <span class="section-kicker">03 / Skills</span>
-      <h2>⚡ Technical Arsenal</h2>
+      <h2>Technical Arsenal</h2>
     </div>
     <div class="skills-container">
       <div class="skill-item" data-skill="Python">
@@ -278,13 +325,13 @@
   <section id="projects" class="reveal-section">
     <div class="section-header">
       <span class="section-kicker">04 / Projects</span>
-      <h2>🚀 My Projects</h2>
+      <h2>My Projects</h2>
     </div>
     <div class="projects-container">
 
       <!-- JARVIS Project -->
       <article class="project-card" data-project="jarvis">
-        <div class="project-icon">🤖</div>
+        <div class="project-icon">AI</div>
         <div class="project-info">
           <div class="project-header">
             <h3>JARVIS AI Assistant</h3>
@@ -324,7 +371,7 @@
           </div>
 
           <div class="demo-images">
-            <p class="demo-label">📸 Project Screenshots</p>
+            <p class="demo-label">Project Screenshots</p>
             <div class="demo-grid">
               <img src="images/jarvis2.png.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 2" loading="lazy">
               <img src="images/jarvis3.png.jpg" class="demo-thumb" onclick="openLightbox(this.src)" alt="JARVIS Screenshot 3" loading="lazy">
@@ -338,7 +385,7 @@
 
       <!-- Portfolio Website -->
       <article class="project-card" data-project="portfolio">
-        <div class="project-icon">🌐</div>
+        <div class="project-icon">WEB</div>
         <div class="project-info">
           <div class="project-header">
             <h3>Website</h3>
@@ -358,7 +405,7 @@
               <a href="https://abdur07-svg.github.io/AR-Photo-Enhancer/" target="_blank">Photo Enhancer</a>
           </div>
           <div class="demo-images">
-            <p class="demo-label">📸 Project Screenshots</p>
+            <p class="demo-label">Project Screenshots</p>
             <div class="demo-grid">
               <img src="images/My portfolio1.png" class="demo-thumb" onclick="openLightbox(this.src)" alt="Portfolio Screenshot 1" loading="lazy">
               <img src="images/My portfolio2.png" class="demo-thumb" onclick="openLightbox(this.src)" alt="Portfolio Screenshot 2" loading="lazy">
@@ -372,7 +419,7 @@
 
       <!-- Temple Run Game -->
       <article class="project-card" data-project="game">
-        <div class="project-icon">🎮</div>
+        <div class="project-icon">GAME</div>
         <div class="project-info">
           <div class="project-header">
             <h3>Temple Run Game</h3>
@@ -398,9 +445,9 @@
   <section id="contact" class="reveal-section">
     <div class="section-header">
       <span class="section-kicker">05 / Contact</span>
-      <h2>📩 Send Me a Message</h2>
+      <h2>Send Me a Message</h2>
     </div>
-    <p class="contact-subtitle">Got something to say? Drop a message — I'll get back to you!</p>
+    <p class="contact-subtitle">Got something to say? Drop a message - I'll get back to you!</p>
 
     <form id="contact-form" action="https://formspree.io/f/xqewqknr" method="POST">
       <div class="form-row">
@@ -421,8 +468,8 @@
         <span id="btn-text">Send Message</span>
         <svg class="send-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
       </button>
-      <div id="form-success" class="form-success">✅ Message sent successfully! I'll reply soon.</div>
-      <div id="form-error" class="form-error">❌ Something went wrong. Please try again.</div>
+      <div id="form-success" class="form-success">Message sent successfully! I'll reply soon.</div>
+      <div id="form-error" class="form-error">Something went wrong. Please try again.</div>
     </form>
   </section>
 
@@ -430,7 +477,7 @@
   <footer>
     <div class="footer-content">
       <div class="footer-brand">AR7</div>
-      <p class="footer-text">© 2026 Abdur Rajjak · Built with ❤️ using HTML, CSS & JS</p>
+      <p class="footer-text">© 2026 Abdur Rajjak · Built with love using HTML, CSS & JS</p>
             <div class="footer-links">
         <a href="#hero" class="footer-link">
           <i data-lucide="home" class="footer-icon"></i>
@@ -455,7 +502,7 @@
   <!-- Lightbox -->
   <div id="lightbox" onclick="closeLightbox()">
     <div class="lightbox-content">
-      <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+      <span class="lightbox-close" onclick="closeLightbox()">x</span>
       <img id="lightbox-img" src="" alt="Preview">
     </div>
   </div>
