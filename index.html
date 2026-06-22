@@ -1,472 +1,618 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abdur Rajjak - AR7 Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>Abdur Rajjak - Professional Portfolio</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Caveat:wght@400..700&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+
   <link rel="stylesheet" href="style.css">
+
+  <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
-  <link rel="apple-touch-icon" href="images/favicon-180.png">
-  <meta name="theme-color" content="#0a0a0a">
-<base target="_blank">
-<base target="_blank">
+  <meta name="theme-color" content="#070707">
 </head>
-<body>
 
-  <!-- Loading Screen -->
-  <div id="loader">
-    <div class="loader-bg-grid"></div>
-    <div class="loader-particles" id="loader-particles"></div>
-    <div class="loader-content">
-      <div class="quantum-core">
-        <div class="core-ring core-ring-1"></div>
-        <div class="core-ring core-ring-2"></div>
-        <div class="core-ring core-ring-3"></div>
-        <div class="core-center">
-          <img src="images/logo.png" alt="AR7" class="core-logo">
-          <div class="core-pulse"></div>
-        </div>
-        <div class="core-orbits">
-          <div class="orbit-particle"></div>
-          <div class="orbit-particle"></div>
-          <div class="orbit-particle"></div>
-          <div class="orbit-particle"></div>
-        </div>
-      </div>
-      <div class="loader-brand">AR7</div>
-      <div class="loader-text">
-        <span class="glitch-text" data-text="INITIALIZING SYSTEM">INITIALIZING SYSTEM</span>
-      </div>
-      <div class="loader-metrics">
-        <div class="metric">
-          <span class="metric-label">CORE</span>
-          <span class="metric-value" id="metric-core">0%</span>
-        </div>
-        <div class="metric">
-          <span class="metric-label">MEM</span>
-          <span class="metric-value" id="metric-mem">0%</span>
-        </div>
-        <div class="metric">
-          <span class="metric-label">NET</span>
-          <span class="metric-value" id="metric-net">0%</span>
-        </div>
-      </div>
-      <div class="loader-progress-container">
-        <div class="loader-progress-track">
-          <div class="loader-progress-fill" id="loader-progress-fill"></div>
-          <div class="loader-progress-glow"></div>
-        </div>
-        <div class="loader-progress-text" id="loader-progress-text">0%</div>
-      </div>
-      <div class="loader-status" id="loader-status">BOOT SEQUENCE INITIATED</div>
-      <div class="loader-terminal">
-        <div class="terminal-line" id="terminal-line-1">> <span class="term-cmd">connect</span> ar7.portfolio.net</div>
-        <div class="terminal-line" id="terminal-line-2">> <span class="term-cmd">load</span> assets.bundle.js</div>
-        <div class="terminal-line" id="terminal-line-3">> <span class="term-cmd">init</span> neural_interface.v2</div>
-        <div class="terminal-line" id="terminal-line-4">> <span class="term-cmd">sync</span> quantum_state...</div>
-      </div>
-    </div>
+<body class="dark-theme">
+
+  <!-- Preloader -->
+  <div id="preloader" class="preloader">
+    <div class="preloader-text">hello</div>
   </div>
 
   <!-- Navigation -->
-  <nav id="navbar">
+  <nav id="navbar" class="navbar">
     <div class="nav-brand">
-  <img src="images/logo.png" alt="logo" class="nav-logo">
-  <span>AR7</span>
-  </div>
-    <div class="nav-links">
-  <a href="#hero" class="nav-link active">
-    <i data-lucide="house" class="nav-icon"></i>
-    <span></span>
-  </a>
-  <a href="#about" class="nav-link">
-    <i data-lucide="user" class="nav-icon"></i>
-    <span></span>
-  </a>
-  <a href="#cr7" class="nav-link">
-    <i data-lucide="trophy" class="nav-icon"></i>
-    <span></span>
-  </a>
-  <a href="#skills" class="nav-link">
-    <i data-lucide="zap" class="nav-icon"></i>
-    <span></span>
-  </a>
-  <a href="#projects" class="nav-link">
-    <i data-lucide="folder-code" class="nav-icon"></i>
-    <span></span>
-  </a>
-  <a href="#contact" class="nav-link">
-    <i data-lucide="mail" class="nav-icon"></i>
-    <span></span>
-  </a>
-</div>
-    <div class="nav-toggle" id="nav-toggle">
-      <span></span><span></span><span></span>
+      <a href="#hero" class="brand-link">
+        <span class="brand-text">AR7</span>
+      </a>
     </div>
+
+    <div class="nav-links">
+      <a href="#hero" class="nav-link group">
+        <span class="nav-link-inner">
+          <span class="nav-link-front">Home</span>
+          <span class="nav-link-back">Home</span>
+        </span>
+      </a>
+      <a href="#about" class="nav-link group">
+        <span class="nav-link-inner">
+          <span class="nav-link-front">About</span>
+          <span class="nav-link-back">About</span>
+        </span>
+      </a>
+      <a href="#projects" class="nav-link group">
+        <span class="nav-link-inner">
+          <span class="nav-link-front">Projects</span>
+          <span class="nav-link-back">Projects</span>
+        </span>
+      </a>
+      <a href="#contact" class="nav-link group">
+        <span class="nav-link-inner">
+          <span class="nav-link-front">Contact</span>
+          <span class="nav-link-back">Contact</span>
+        </span>
+      </a>
+    </div>
+
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+      <i data-lucide="menu"></i>
+    </button>
   </nav>
 
-  <!-- Glowing Cursor -->
-  <div id="cursor-glow"></div>
-
-  <!-- Floating Social Sidebar -->
-  <div class="social-sidebar">
-    <a href="https://youtube.com/@ar7ffofficial" class="sidebar-btn yt" target="_blank" rel="noopener">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.1c-.6.1-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.7 12 21.8 12 21.8s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1c0-2.3-.3-4.6-.3-4.6zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
-      <span>YouTube</span>
-    </a>
-    <a href="https://instagram.com/void_ms07" class="sidebar-btn ig" target="_blank" rel="noopener">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1.0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24c3.3 0 3.7 0 4.9-.1 4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z"/></svg>
-      <span>Instagram</span>
-    </a>
-    <a href="https://wa.me/919800590053" class="sidebar-btn wa" target="_blank" rel="noopener">
-      <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 2C8.28 2 2 8.28 2 16c0 2.46.66 4.76 1.8 6.74L2 30l7.5-1.96A13.9 13.9 0 0 0 16 30c7.72 0 14-6.28 14-14S23.72 2 16 2zm0 25.5c-2.18 0-4.22-.6-5.96-1.64l-.42-.26-4.46 1.16 1.2-4.34-.28-.44A11.44 11.44 0 0 1 4.5 16C4.5 9.6 9.6 4.5 16 4.5S27.5 9.6 27.5 16 22.4 27.5 16 27.5zm6.28-8.54c-.34-.17-2.02-.98-2.34-1.1-.32-.1-.54-.17-.78.18-.22.34-.88 1.1-1.08 1.32-.2.22-.4.26-.74.08-.34-.18-1.44-.52-2.74-1.66-1.02-.9-1.7-2-1.9-2.34-.2-.34-.02-.52.14-.68.16-.16.34-.4.52-.6.18-.2.24-.34.34-.56.1-.22.06-.42-.02-.6-.08-.16-.78-1.86-1.06-2.54-.28-.68-.56-.58-.78-.58h-.66c-.22 0-.58.08-.88.42-.3.34-1.16 1.12-1.16 2.74s1.18 3.18 1.34 3.4c.18.22 2.34 3.56 5.66 4.98.78.34 1.4.54 1.88.7.78.24 1.5.2 2.06.12.62-.1 1.92-.78 2.2-1.54.26-.76.26-1.4.18-1.54-.08-.14-.3-.22-.64-.38z"/></svg>
-      <span>WhatsApp</span>
-    </a>
-    <a href="https://x.com/Abdur2007" class="sidebar-btn x" target="_blank" rel="noopener">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 4H5.1l11.9 16z"/></svg>
-      <span>X</span>
-    </a>
-    <a href="https://facebook.com/A.Rajjak07" class="sidebar-btn fb" target="_blank" rel="noopener">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.49h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
-      <span>Facebook</span>
-    </a>
-  </div>
-
-  <!-- Mobile Bottom Social Bar -->
-  <div class="social-mobile-bar">
-    <a href="https://youtube.com/@ar7ffofficial" class="yt" target="_blank" rel="noopener">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.1c-.6.1-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.7 12 21.8 12 21.8s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1c0-2.3-.3-4.6-.3-4.6zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
-      <span>YouTube</span>
-    </a>
-    <a href="https://instagram.com/void_ms07" class="ig" target="_blank" rel="noopener">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1.0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24c3.3 0 3.7 0 4.9-.1 4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z"/></svg>
-      <span>Instagram</span>
-    </a>
-    <a href="https://wa.me/919800590053" class="wa" target="_blank" rel="noopener">
-      <svg width="22" height="22" viewBox="0 0 32 32" fill="currentColor"><path d="M16 2C8.28 2 2 8.28 2 16c0 2.46.66 4.76 1.8 6.74L2 30l7.5-1.96A13.9 13.9 0 0 0 16 30c7.72 0 14-6.28 14-14S23.72 2 16 2zm0 25.5c-2.18 0-4.22-.6-5.96-1.64l-.42-.26-4.46 1.16 1.2-4.34-.28-.44A11.44 11.44 0 0 1 4.5 16C4.5 9.6 9.6 4.5 16 4.5S27.5 9.6 27.5 16 22.4 27.5 16 27.5zm6.28-8.54c-.34-.17-2.02-.98-2.34-1.1-.32-.1-.54-.17-.78.18-.22.34-.88 1.1-1.08 1.32-.2.22-.4.26-.74.08-.34-.18-1.44-.52-2.74-1.66-1.02-.9-1.7-2-1.9-2.34-.2-.34-.02-.52.14-.68.16-.16.34-.4.52-.6.18-.2.24-.34.34-.56.1-.22.06-.42-.02-.6-.08-.16-.78-1.86-1.06-2.54-.28-.68-.56-.58-.78-.58h-.66c-.22 0-.58.08-.88.42-.3.34-1.16 1.12-1.16 2.74s1.18 3.18 1.34 3.4c.18.22 2.34 3.56 5.66 4.98.78.34 1.4.54 1.88.7.78.24 1.5.2 2.06.12.62-.1 1.92-.78 2.2-1.54.26-.76.26-1.4.18-1.54-.08-.14-.3-.22-.64-.38z"/></svg>
-      <span>WhatsApp</span>
-    </a>
-    <a href="https://x.com/Abdur2007" class="x" target="_blank" rel="noopener">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 4H5.1l11.9 16z"/></svg>
-      <span>X</span>
-    </a>
-    <a href="https://facebook.com/A.Rajjak07" class="fb" target="_blank" rel="noopener">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.49h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
-      <span>Facebook</span>
-    </a>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-links">
+      <a href="#hero" class="mobile-link">Home</a>
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#contact" class="mobile-link highlight">Contact</a>
+    </div>
   </div>
 
   <!-- Hero Section -->
-  <section id="hero" class="reveal-section">
-    <div class="hero-content">
-      <div class="hero-image-wrapper">
-        <img src="images\Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Abdur Rajjak" class="hero-image">
-        <div class="hero-image-ring"></div>
-      </div>
-      <h1 class="hero-title">Abdur Rajjak</h1>
-      <p id="typing-text"></p>
-      <div class="hero-btns">
-        <a href="#projects" class="btn-primary magnetic-btn">
-          <span>View Projects</span>
-          <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#contact" class="btn-outline magnetic-btn">
-          <span>Contact Me</span>
-        </a>
+  <section id="hero" class="hero-section">
+    <div class="hero-bg-grid"></div>
+    <div class="container hero-container"
+      style="display: flex; justify-content: center; align-items: center; text-align: center; width: 100%; grid-template-columns: 1fr; position: relative; z-index: 10;">
+      <div class="hero-content-anim"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;">
+
+        <!-- Available for work badge -->
+        <div
+          style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px; font-size: 0.85rem; color: #a3a3a3; backdrop-filter: blur(10px);">
+          <span class="status-dot"></span>
+          Available for new opportunities
+        </div>
+
+        <!-- Main text -->
+        <h1
+          style="font-size: clamp(3rem, 8vw, 6.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.03em;">
+          Hi, I'm <span
+            style="color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(90deg, #ffffff, #737373);">Abdur</span>
+          <br />
+          I build digital <span
+            style="font-family: 'Times New Roman', Times, serif; font-style: italic; font-weight: 400; color: #d4d4d4;">experiences.</span>
+        </h1>
+
+        <!-- Subtext -->
+        <p style="color: #a3a3a3; font-size: clamp(1rem, 2vw, 1.25rem); max-width: 500px; line-height: 1.6; margin: 0;">
+          A frontend developer passionate about crafting beautiful, interactive, and modern web applications.
+        </p>
+
+        <!-- Action buttons -->
+        <div style="display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
+          <a href="#projects"
+            style="padding: 14px 32px; background: white; color: black; border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;"
+            onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+            View Projects <i data-lucide="arrow-right" style="width: 18px;"></i>
+          </a>
+          <a href="#contact"
+            style="padding: 14px 32px; background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;"
+            onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+            onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+            Contact Me
+          </a>
+        </div>
+
       </div>
     </div>
-    <div class="scroll-indicator">
-      <div class="scroll-mouse">
-        <div class="scroll-wheel"></div>
-      </div>
-      <div class="scroll-touch-cue" aria-hidden="true">
-        <i data-lucide="hand" class="scroll-hand"></i>
-        <i data-lucide="chevrons-down" class="scroll-chevrons"></i>
-      </div>
-      <span class="scroll-mobile-text">Swipe up</span>
-      <span>Scroll to explore</span>
+
+    <div class="scroll-indicator" style="bottom: 48px;">
+      <a href="#about" class="group" aria-label="Scroll">
+        <svg class="w-8 h-8 scroll-arrow" style="color: rgba(255,255,255,0.6);" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </a>
     </div>
-  </section>
 
-  <!-- About + Qualifications -->
-  <div class="dual-section">
-    <section id="about" class="reveal-section">
-      <div class="section-header">
-        <span class="section-kicker">01 / About</span>
-        <h2>Something About Me</h2>
-      </div>
-      <p class="about-text">
-        Hi, I'm <strong>Abdur</strong><br><br>
-        I'm a student from West Bengal and a beginner web developer, currently learning and building projects with HTML, CSS, and JavaScript. Alongside coding, I'm also working on improving my spoken English to grow both technically and personally.<br><br>
-        I enjoy turning simple ideas into real websites and improving my skills step by step. I have big goals, and I'm focused on building the consistency and discipline needed to achieve them.<br><br>
-        Right now, I'm exploring AI and software development, aiming to create something meaningful in the future.<br><br>
-        <span class="highlight-text">Still learning, still improving - just getting started.</span>
-      </p>
-    </section>
-
-    <section id="qualifications" class="reveal-section">
-      <div class="section-header">
-        <span class="section-kicker">02 / Qualifications</span>
-        <h2>My Journey</h2>
-      </div>
-      <div class="qual-timeline">
-        <div class="qual-item">
-          <div class="qual-icon">01</div>
-          <div class="qual-content">
-            <h3>Student</h3>
-            <p>Preparing to begin my B.Tech in CSE this year, with a strong focus on building a solid foundation in programming, problem-solving, and core computer science concepts.</p>
-          </div>
-        </div>
-        <div class="qual-item">
-          <div class="qual-icon">02</div>
-          <div class="qual-content">
-            <h3>Web Development</h3>
-            <p>Currently learning and working with HTML, CSS, and JavaScript by building small real-world projects to strengthen my practical skills and understanding.</p>
-          </div>
-        </div>
-        <div class="qual-item">
-          <div class="qual-icon">03</div>
-          <div class="qual-content">
-            <h3>Continuous Learning</h3>
-            <p>Actively exploring AI, improving logical thinking, and enhancing my spoken English to grow both technically and personally.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- CR7 Inspiration Section -->
-  <section id="cr7" class="reveal-section">
-    <div class="cr7-card">
-      <div class="cr7-visual">
-        <div class="cr7-mark">CR7</div>
-        <div class="cr7-glow"></div>
-      </div>
-      <div class="cr7-content">
-        <span class="cr7-kicker">Personal Inspiration</span>
-        <h2>Cristiano Ronaldo Mindset</h2>
-        <p>I am a big Cristiano Ronaldo fan. His discipline, confidence, hard work, and never-give-up mentality inspire me to keep improving in coding, AI, and life.</p>
-        <div class="cr7-values">
-          <span class="value-tag">Discipline</span>
-          <span class="value-tag">Consistency</span>
-          <span class="value-tag">Confidence</span>
-          <span class="value-tag">Hard Work</span>
-        </div>
-        <button type="button" class="cr7-btn magnetic-btn" id="cr7-btn">
-          <span>SIUUU Mode</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        </button>
-        <p class="cr7-quote" id="cr7-quote"></p>
-        <p class="cr7-note">Click the button for a little motivation.</p>
-      </div>
+    <!-- Hero Social Links (Bottom Left) -->
+    <div class="hero-social-links">
+      <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+      </a>
+      <a href="https://github.com/Abdur07-svg" target="_blank" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+      </a>
+      <a href="mailto:abdurrajjak07@example.com" aria-label="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+      </a>
     </div>
   </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="reveal-section">
-    <div class="section-header">
-      <span class="section-kicker">03 / Skills</span>
-      <h2>Technical Arsenal</h2>
-    </div>
-    <div class="skills-container">
-      <div class="skill-item" data-skill="Python">
-        <div class="skill-header">
-          <span class="skill-name">Python</span>
-          <span class="skill-percent">5%</span>
-        </div>
-        <div class="skill-bar">
-          <div class="skill-fill" data-width="5"></div>
-        </div>
+  <!-- About Section -->
+  <section id="about" class="about-section section-padding" style="background-color: var(--bg-alt);">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <h2 class="section-title">About</h2>
       </div>
-      <div class="skill-item" data-skill="Web Development">
-        <div class="skill-header">
-          <span class="skill-name">Web Development</span>
-          <span class="skill-percent">60%</span>
+
+      <div class="about-grid">
+        <div class="about-image reveal-up" style="border-radius: 24px; overflow: hidden; max-width: 300px;">
+          <img src="images/Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Abdur Rajjak"
+            style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 4/5;"
+            onerror="this.src='images/logo.png'">
         </div>
-        <div class="skill-bar">
-          <div class="skill-fill" data-width="60"></div>
-        </div>
-      </div>
-      <div class="skill-item" data-skill="AI / Machine Learning">
-        <div class="skill-header">
-          <span class="skill-name">AI / Machine Learning</span>
-          <span class="skill-percent">5%</span>
-        </div>
-        <div class="skill-bar">
-          <div class="skill-fill" data-width="5"></div>
-        </div>
-      </div>
-      <div class="skill-item" data-skill="Game Development">
-        <div class="skill-header">
-          <span class="skill-name">Game Development</span>
-          <span class="skill-percent">1%</span>
-        </div>
-        <div class="skill-bar">
-          <div class="skill-fill" data-width="1"></div>
-        </div>
-      </div>
-      <div class="skill-item" data-skill="Problem Solving">
-        <div class="skill-header">
-          <span class="skill-name">Problem Solving</span>
-          <span class="skill-percent">50%</span>
-        </div>
-        <div class="skill-bar">
-          <div class="skill-fill" data-width="50"></div>
+
+        <div class="about-content reveal-up">
+          <div class="about-header" style="margin-bottom: 24px;">
+            <h3 style="font-size: 2rem; font-weight: 500;">Abdur</h3>
+            <h4 style="font-size: 4rem; font-weight: 800; line-height: 1;">Rajjak</h4>
+          </div>
+
+          <div class="about-pills" style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px;">
+            <span class="pill"><i data-lucide="map-pin"
+                style="width: 16px; height: 16px; display: inline-block; margin-right: 4px; vertical-align: middle;"></i>
+              West Bengal</span>
+            <span class="pill">Web Development</span>
+            <span class="pill">Web Design</span>
+            <span class="pill">AI Integration</span>
+          </div>
+
+          <p
+            style="font-size: 1.1rem; color: var(--text-muted); max-width: 800px; margin-bottom: 40px; line-height: 1.7;">
+            I'm a student from West Bengal and an aspiring software developer with a strong focus on web technologies.
+            Currently preparing to begin my B.Tech in CSE. My journey started with a curiosity for how things work on
+            the internet, which quickly turned into a passion for building websites from scratch using HTML, CSS, and
+            JavaScript. I draw inspiration from my idol, Cristiano Ronaldo. His discipline, consistency, and
+            never-give-up mentality drive me to keep pushing my boundaries in coding and personal growth.
+          </p>
+
+          <h5 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 24px;">My Journey</h5>
+          <div class="about-timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot" style="background: white;"></div>
+              <div class="timeline-content"
+                style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                <div>
+                  <h6 style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase;">B.Tech in CSE</h6>
+                  <p style="color: var(--text-muted);">Upcoming Student</p>
+                </div>
+                <span class="timeline-date-simple"
+                  style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">Upcoming</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot" style="background: white;"></div>
+              <div class="timeline-content"
+                style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                <div>
+                  <h6 style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase;">Web Developer</h6>
+                  <p style="color: var(--text-muted);">Learning & Building Real-World Projects</p>
+                </div>
+                <span class="timeline-date-simple"
+                  style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">Present</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot" style="background: white;"></div>
+              <div class="timeline-content"
+                style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                <div>
+                  <h6 style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase;">AI & Game Dev Explorer
+                  </h6>
+                  <p style="color: var(--text-muted);">Experimenting with AI APIs and Game Logic</p>
+                </div>
+                <span class="timeline-date-simple"
+                  style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">Continuous</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 40px;">
+            <a href="#contact" class="btn btn-primary" style="background: white; color: black; font-weight: 600;">
+              Get in touch <i data-lucide="external-link" style="width: 18px;"></i>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Projects Section -->
-  <section id="projects" class="reveal-section">
-    <div class="section-header">
-      <span class="section-kicker">04 / Projects</span>
-      <h2>My Projects</h2>
-    </div>
-    <div class="projects-container">
+  <section id="projects" class="projects-section section-padding">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <h2 class="section-title">Projects</h2>
+      </div>
 
-      <!-- JARVIS Project -->
-      <article class="project-card" data-project="jarvis">
-        <div class="project-icon">AI</div>
-        <div class="project-info">
-          <div class="project-header">
-            <h3>JARVIS AI Assistant</h3>
-            <div class="project-status">
-              <span class="status-dot"></span>
-              <span class="status-text">In Progress</span>
+      <div class="projects-slider-container">
+        <div class="projects-slider-track">
+          <!-- Project 1 -->
+          <a href="#" class="vgil-card reveal-up" style="transition-delay: 0.3s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="bot"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>In Progress <i data-lucide="clock"></i></span>
+              </div>
             </div>
-          </div>
-          <p>A voice-controlled AI assistant built with Python, LiveKit and Gemini API. Features include wake word detection, weather updates, news, and app control.</p>
-          <div class="project-tags">
-            <span class="tag">Python</span>
-            <span class="tag">Gemini API</span>
-            <span class="tag">LiveKit</span>
-            <span class="tag">Voice AI</span>
-          </div>
-
-          <div class="project-links">
-               <a href="https://abdur07-svg.github.io/JARVIS/" target="_blank">JARVIS Project</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Portfolio Website -->
-      <article class="project-card" data-project="portfolio">
-        <div class="project-icon">WEB</div>
-        <div class="project-info">
-          <div class="project-header">
-            <h3>Website</h3>
-            <div class="project-status">
-              <span class="status-dot"></span>
-              <span class="status-text">In Progress</span>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">JARVIS AI Assistant</h3>
+              <p class="vgil-card-desc">A voice-controlled AI assistant built with Python, LiveKit, and the Gemini API.
+                Features wake word detection and conversational abilities.</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">Python</span><span class="tech-pill">Gemini API</span><span
+                    class="tech-pill">LiveKit</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <p>A collection of modern web projects including a real-time photo enhancement tool and a sci-fi themed personal portfolio, both built using HTML, CSS, and JavaScript, focusing on performance, interactivity, and visually engaging user experience.</p>
-          <div class="project-tags">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
-            <span class="tag">API</span>
-          </div>
-          <div class="project-links">
-              <a href="https://abdur07-svg.github.io/AR-Photo-Enhancer/" target="_blank">Photo Enhancer</a>
-              <a href="https://abdur07-svg.github.io/Abdur-FIFA-2026-Guide/" target="_blank">FIFA 2026 Guide</a>
-              <a href="https://abdur07-svg.github.io/Translator/" target="_blank">TRANSLATOR</a>
-          </div>
-        </div>
-      </article>
+          </a>
 
-      <!-- Temple Run Game -->
-      <article class="project-card" data-project="game">
-        <div class="project-icon">GAME</div>
-        <div class="project-info">
-          <div class="project-header">
-            <h3>Temple Run Game</h3>
-            <div class="project-status">
-              <span class="status-dot"></span>
-              <span class="status-text">In Progress</span>
+          <!-- Project 2 -->
+          <a href="https://abdur07-svg.github.io/AR-Photo-Enhancer/" target="_blank" rel="noopener noreferrer"
+            class="vgil-card reveal-up" style="transition-delay: 0.1s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="image"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>View Project <i data-lucide="external-link"></i></span>
+              </div>
             </div>
-          </div>
-          <p>A Temple Run-style endless runner mobile game built in Android Studio. Currently building core mechanics and preparing for Play Store launch.</p>
-          <div class="project-tags">
-            <span class="tag">Android Studio</span>
-            <span class="tag">Java</span>
-            <span class="tag">Game Dev</span>
-            <span class="tag">APK</span>
-          </div>
-        </div>
-      </article>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">Photo Enhancer</h3>
+              <p class="vgil-card-desc">A modern web tool for enhancing photos, focusing on an intuitive user interface
+                and smooth image processing features. This is only basic Photo Enhancer</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+                </div>
+              </div>
+            </div>
+          </a>
 
+          <!-- Project 3 -->
+          <a href="https://abdur07-svg.github.io/Abdur-FIFA-2026-Guide/" target="_blank" rel="noopener noreferrer"
+            class="vgil-card reveal-up" style="transition-delay: 0.2s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="trophy"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>View Project <i data-lucide="external-link"></i></span>
+              </div>
+            </div>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">FIFA 2026 Guide</h3>
+              <p class="vgil-card-desc">A comprehensive web guide dedicated to the upcoming FIFA 2026 World Cup, featuring
+                clean layouts and dynamic data presentation.</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Project 4 -->
+          <a href="https://abdur07-svg.github.io/Translator/" target="_blank" rel="noopener noreferrer"
+            class="vgil-card reveal-up" style="transition-delay: 0.2s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="languages"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>View Project <i data-lucide="external-link"></i></span>
+              </div>
+            </div>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">Translator</h3>
+              <p class="vgil-card-desc">A modern web tool for translating text to different languages, focusing on an intuitive user interface and smooth translation features.</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Project 5 -->
+          <a href="#" class="vgil-card reveal-up" style="transition-delay: 0.3s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="gamepad-2"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>In Progress <i data-lucide="clock"></i></span>
+              </div>
+            </div>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">Endless Runner Game</h3>
+              <p class="vgil-card-desc">A Temple Run-style 3D endless runner mobile game built using Android Studio and
+                Java. <br> Currently in active development.</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">Android Studio</span><span class="tech-pill">Java</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- DUPLICATED PROJECTS FOR INFINITE SCROLL -->
+          <!-- Project 1 (Dup) -->
+          <a href="#" class="vgil-card reveal-up" style="transition-delay: 0.3s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="bot"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>In Progress <i data-lucide="clock"></i></span>
+              </div>
+            </div>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">JARVIS AI Assistant</h3>
+              <p class="vgil-card-desc">A voice-controlled AI assistant built with Python, LiveKit, and the Gemini API.
+                Features wake word detection and conversational abilities.</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">Python</span><span class="tech-pill">Gemini API</span><span
+                    class="tech-pill">LiveKit</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Project 2 (Dup) -->
+          <a href="https://abdur07-svg.github.io/AR-Photo-Enhancer/" target="_blank" rel="noopener noreferrer"
+            class="vgil-card reveal-up" style="transition-delay: 0.1s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="image"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>View Project <i data-lucide="external-link"></i></span>
+              </div>
+            </div>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">Photo Enhancer</h3>
+              <p class="vgil-card-desc">A modern web tool for enhancing photos, focusing on an intuitive user interface
+                and smooth image processing features. This is only basic Photo Enhancer</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Project 3 (Dup) -->
+          <a href="https://abdur07-svg.github.io/Abdur-FIFA-2026-Guide/" target="_blank" rel="noopener noreferrer"
+            class="vgil-card reveal-up" style="transition-delay: 0.2s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="trophy"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>View Project <i data-lucide="external-link"></i></span>
+              </div>
+            </div>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">FIFA 2026 Guide</h3>
+              <p class="vgil-card-desc">A comprehensive web guide dedicated to the upcoming FIFA 2026 World Cup, featuring
+                clean layouts and dynamic data presentation.</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Project 4 (Dup) -->
+          <a href="https://abdur07-svg.github.io/Translator/" target="_blank" rel="noopener noreferrer"
+            class="vgil-card reveal-up" style="transition-delay: 0.2s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="languages"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>View Project <i data-lucide="external-link"></i></span>
+              </div>
+            </div>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">Translator</h3>
+              <p class="vgil-card-desc">A modern web tool for translating text to different languages, focusing on an intuitive user interface and smooth translation features.</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Project 5 (Dup) -->
+          <a href="#" class="vgil-card reveal-up" style="transition-delay: 0.3s;">
+            <div class="vgil-card-image">
+              <div class="vgil-card-placeholder">
+                <i data-lucide="gamepad-2"></i>
+              </div>
+              <div class="vgil-card-overlay">
+                <span>In Progress <i data-lucide="clock"></i></span>
+              </div>
+            </div>
+            <div class="vgil-card-content">
+              <h3 class="vgil-card-title">Endless Runner Game</h3>
+              <p class="vgil-card-desc">A Temple Run-style 3D endless runner mobile game built using Android Studio and
+                Java. <br> Currently in active development.</p>
+              <div class="vgil-card-footer">
+                <span class="vgil-card-date">2026</span>
+                <div class="vgil-card-tech">
+                  <span class="tech-pill">Android Studio</span><span class="tech-pill">Java</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="reveal-section">
-    <div class="section-header">
-      <span class="section-kicker">05 / Contact</span>
-      <h2>Send Me a Message</h2>
-    </div>
-    <p class="contact-subtitle">Got something to say? Drop a message - I'll get back to you!</p>
+  <section id="contact" class="contact-section section-padding" style="background-color: var(--bg-alt);">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <h2 class="section-title">Contact</h2>
+      </div>
 
-    <form id="contact-form" action="https://formspree.io/f/xqewqknr" method="POST">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="name">Your Name</label>
-          <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      <div class="contact-layout reveal-up">
+
+        <div class="contact-left">
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+            <img src="images/Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Profile"
+              style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;"
+              onerror="this.src='images/logo.png'">
+            <div>
+              <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Abdur Rajjak</h3>
+              <span
+                style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.5); border-radius: 50px; font-size: 0.8rem; color: #4ade80;">
+                <span class="status-dot" style="width: 6px; height: 6px;"></span> Available
+              </span>
+            </div>
+          </div>
+
+          <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Useful Links:</h4>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
+            <a href="https://x.com/Abdur2007" target="_blank" class="pill pill-link"><i data-lucide="twitter"
+                style="width: 14px;"></i> X (Twitter)</a>
+            <a href="https://github.com/Abdur07-svg" target="_blank" class="pill pill-link"
+              style="background: white; color: black;"><i data-lucide="github" style="width: 14px;"></i> GitHub</a>
+          </div>
+
+          <a href="mailto:abdurrajjak07@example.com" class="pill pill-link"
+            style="background: rgba(255,255,255,0.05); border: none;"><i data-lucide="mail" style="width: 14px;"></i>
+            abdurrajjak07@example.com</a>
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email">
+
+        <div class="contact-right">
+          <h3 style="font-size: 2rem; font-weight: 600; margin-bottom: 24px;">Send me a message</h3>
+          <form id="contact-form" action="https://formspree.io/f/xqewqknr" method="POST"
+            style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <input type="text" name="name" placeholder="Name" required class="vgil-input">
+              <input type="text" name="surname" placeholder="Surname" required class="vgil-input">
+            </div>
+            <input type="email" name="email" placeholder="Email" required class="vgil-input">
+            <textarea name="message" placeholder="Message" rows="6" required class="vgil-input"
+              style="resize: none;"></textarea>
+
+            <div style="margin-top: 12px;">
+              <button type="submit" class="btn"
+                style="background: white; color: black; font-weight: 600; padding: 12px 32px;">
+                Send <i data-lucide="send" style="width: 16px;"></i>
+              </button>
+            </div>
+            <div id="form-status" class="form-status"></div>
+          </form>
         </div>
+
       </div>
-      <div class="form-group">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
-      </div>
-      <button type="submit" class="btn-send magnetic-btn">
-        <span id="btn-text">Send Message</span>
-        <svg class="send-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-      </button>
-      <div id="form-success" class="form-success">Message sent successfully! I'll reply soon.</div>
-      <div id="form-error" class="form-error">Something went wrong. Please try again.</div>
-    </form>
+    </div>
   </section>
 
   <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-brand">AR7</div>
-      <p class="footer-text">© 2026 Abdur Rajjak · Built with love using HTML, CSS & JS</p>
-            <div class="footer-links">
-        <a href="#hero" class="footer-link">
-          <i data-lucide="home" class="footer-icon"></i>
-          <span>Home</span>
-        </a>
-        <a href="#about" class="footer-link">
-          <i data-lucide="user" class="footer-icon"></i>
-          <span>About</span>
-        </a>
-        <a href="#projects" class="footer-link">
-          <i data-lucide="folder-code" class="footer-icon"></i>
-          <span>Projects</span>
-        </a>
-        <a href="#contact" class="footer-link">
-          <i data-lucide="mail" class="footer-icon"></i>
-          <span>Contact</span>
-        </a>
+  <footer class="footer"
+    style="background: var(--bg-main); border-top: 1px solid var(--border-color); padding: 80px 0 40px 0;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 16px;">Abdur Rajjak</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 300px;">
+            Aspiring software developer passionate about building modern, interactive web experiences and exploring AI.
+          </p>
+        </div>
+        <div class="footer-links-col">
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 16px;">Navigation</h3>
+            <ul style="display: flex; flex-direction: column; gap: 12px;">
+              <li><a href="#hero" style="color: var(--text-muted); font-size: 0.95rem;" class="hover-white">Home</a></li>
+              <li><a href="#about" style="color: var(--text-muted); font-size: 0.95rem;" class="hover-white">About</a>
+              </li>
+              <li><a href="#projects" style="color: var(--text-muted); font-size: 0.95rem;"
+                  class="hover-white">Projects</a></li>
+              <li><a href="#contact" style="color: var(--text-muted); font-size: 0.95rem;" class="hover-white">Contact</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 16px;">Contact & Socials</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <a href="mailto:abdurrajjak07@example.com"
+                style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;"
+                class="hover-white"><i data-lucide="mail" style="width: 16px;"></i> abdurrajjak07@example.com</a>
+              <span style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;"><i
+                  data-lucide="map-pin" style="width: 16px;"></i> West Bengal, India</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin: 24px 0 12px 0;">Follow me:</p>
+            <div style="display: flex; gap: 16px;">
+              <a href="https://x.com/Abdur2007" target="_blank" style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 4H5.1l11.9 16z"></path></svg>
+              </a>
+              <a href="https://github.com/Abdur07-svg" target="_blank" style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+              </a>
+              <a href="https://instagram.com/void_ms07" target="_blank" style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+              </a>
+              <a href="https://youtube.com/@ar7ffofficial" target="_blank" style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.1C2.5 7.1 2.3 5.3 3.1 4.5 4 3.6 5.1 3.6 5.6 3.5 9 3.2 12 3.2 12 3.2s3 0 6.4.3c.5.1 1.6.1 2.5 1 .8.8 1 2.6 1 2.6s.3 2.1.3 4.2v1.8c0 2.1-.3 4.2-.3 4.2s-.2 1.8-1 2.6c-.9.9-2.1.9-2.6 1-3.6.3-6.4.3-6.4.3s-3 0-6.4-.3c-.5-.1-1.5-.1-2.4-1-.8-.8-1-2.6-1-2.6s-.3-2.1-.3-4.2v-1.8c0-2.1.3-4.2.3-4.2z"></path><path d="M9.8 14.5l6-3.3-6-3.3v6.6z"></path></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 Abdur Rajjak. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Back to Top -->
-  <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
-  </button>
-
   <script src="script.js"></script>
 </body>
+
 </html>
