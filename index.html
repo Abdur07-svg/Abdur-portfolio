@@ -16,7 +16,7 @@
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=4">
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
@@ -66,9 +66,17 @@
       </a>
     </div>
 
-    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
-      <i data-lucide="menu"></i>
-    </button>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" class="btn-nav" aria-label="Toggle Theme" style="cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px;">
+        <i data-lucide="sun" class="theme-icon-light" style="display: none; width: 20px; height: 20px;"></i>
+        <i data-lucide="moon" class="theme-icon-dark" style="width: 20px; height: 20px;"></i>
+      </button>
+
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
   </nav>
 
   <!-- Mobile Menu -->
@@ -91,7 +99,7 @@
 
         <!-- Available for work badge -->
         <div
-          style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px; font-size: 0.85rem; color: #a3a3a3; backdrop-filter: blur(10px);">
+          style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 16px; background: var(--bg-glass); border: 1px solid var(--border-color); border-radius: 50px; font-size: 0.85rem; color: var(--text-muted); backdrop-filter: blur(10px);">
           <span class="status-dot"></span>
           Available for new opportunities
         </div>
@@ -100,28 +108,28 @@
         <h1
           style="font-size: clamp(3rem, 8vw, 6.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.03em;">
           Hi, I'm <span
-            style="color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(90deg, #ffffff, #737373);">Abdur</span>
+            style="color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(90deg, var(--text-primary), #737373);">Abdur</span>
           <br />
           I build digital <span
-            style="font-family: 'Times New Roman', Times, serif; font-style: italic; font-weight: 400; color: #d4d4d4;">experiences.</span>
+            style="font-family: 'Times New Roman', Times, serif; font-style: italic; font-weight: 400; color: var(--text-muted);">experiences.</span>
         </h1>
 
         <!-- Subtext -->
-        <p style="color: #a3a3a3; font-size: clamp(1rem, 2vw, 1.25rem); max-width: 500px; line-height: 1.6; margin: 0;">
+        <p style="color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.25rem); max-width: 500px; line-height: 1.6; margin: 0;">
           A frontend developer passionate about crafting beautiful, interactive, and modern web applications.
         </p>
 
         <!-- Action buttons -->
         <div style="display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
           <a href="#projects"
-            style="padding: 14px 32px; background: white; color: black; border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;"
+            style="padding: 14px 32px; background: var(--text-primary); color: var(--bg-main); border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;"
             onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
             View Projects <i data-lucide="arrow-right" style="width: 18px;"></i>
           </a>
           <a href="#contact"
-            style="padding: 14px 32px; background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;"
-            onmouseover="this.style.background='rgba(255,255,255,0.1)'"
-            onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+            style="padding: 14px 32px; background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;"
+            onmouseover="this.style.background='var(--border-color)'"
+            onmouseout="this.style.background='transparent'">
             Contact Me
           </a>
         </div>
@@ -232,7 +240,7 @@
           </div>
 
           <div style="margin-top: 40px;">
-            <a href="#contact" class="btn btn-primary" style="background: white; color: black; font-weight: 600;">
+            <a href="#contact" class="btn btn-primary" style="background: var(--text-primary); color: var(--bg-main); font-weight: 600;">
               Get in touch <i data-lucide="external-link" style="width: 18px;"></i>
             </a>
           </div>
@@ -516,15 +524,13 @@
 
           <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Useful Links:</h4>
           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
-            <a href="https://x.com/Abdur2007" target="_blank" class="pill pill-link"><i data-lucide="twitter"
-                style="width: 14px;"></i> X (Twitter)</a>
+            <a href="https://x.com/Abdur2007" target="_blank" class="pill pill-link">X (Twitter)</a>
             <a href="https://github.com/Abdur07-svg" target="_blank" class="pill pill-link"
-              style="background: white; color: black;"><i data-lucide="github" style="width: 14px;"></i> GitHub</a>
+              style="background: var(--text-primary); color: var(--bg-main);">GitHub</a>
           </div>
 
           <a href="mailto:abdurrajjak07@example.com" class="pill pill-link"
-            style="background: rgba(255,255,255,0.05); border: none;"><i data-lucide="mail" style="width: 14px;"></i>
-            abdurrajjak07@example.com</a>
+            style="background: var(--bg-glass); border: 1px solid var(--border-color);">abdurrajjak07@example.com</a>
         </div>
 
         <div class="contact-right">
@@ -541,7 +547,7 @@
 
             <div style="margin-top: 12px;">
               <button type="submit" class="btn"
-                style="background: white; color: black; font-weight: 600; padding: 12px 32px;">
+                style="background: var(--text-primary); color: var(--bg-main); font-weight: 600; padding: 12px 32px;">
                 Send <i data-lucide="send" style="width: 16px;"></i>
               </button>
             </div>
@@ -612,7 +618,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 
 </html>

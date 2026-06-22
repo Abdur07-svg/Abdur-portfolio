@@ -140,6 +140,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // --- Theme Toggle ---
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const themeIconLight = document.querySelector('.theme-icon-light');
+  const themeIconDark = document.querySelector('.theme-icon-dark');
+  
+  // Check for saved user preference, if any, on load of the website
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    document.body.className = savedTheme;
+    updateThemeIcon(savedTheme);
+  } else {
+    // Default to dark theme
+    document.body.className = 'dark-theme';
+    updateThemeIcon('dark-theme');
+  }
+
+  function updateThemeIcon(theme) {
+    if (theme === 'light-theme') {
+      // In light theme, we want to show the Moon icon (so user can switch to dark)
+      themeIconLight.style.display = 'none'; // hide sun
+      themeIconDark.style.display = 'block'; // show moon
+    } else {
+      // In dark theme, we want to show the Sun icon (so user can switch to light)
+      themeIconLight.style.display = 'block'; // show sun
+      themeIconDark.style.display = 'none'; // hide moon
+    }
+  }
+
+  themeToggleBtn.addEventListener('click', () => {
+    if (document.body.classList.contains('dark-theme')) {
+      document.body.className = 'light-theme';
+      localStorage.setItem('theme', 'light-theme');
+      updateThemeIcon('light-theme');
+    } else {
+      document.body.className = 'dark-theme';
+      localStorage.setItem('theme', 'dark-theme');
+      updateThemeIcon('dark-theme');
+    }
+  });
+
 });
 
 // Add spin animation to CSS dynamically for the loader
