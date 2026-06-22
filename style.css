@@ -316,6 +316,35 @@ h1, h2, h3, h4, .brand-text {
   color: var(--text-primary);
 }
 
+/* Theme Toggle Animations */
+#theme-toggle {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+}
+
+#theme-toggle:hover {
+  color: var(--accent-cyan);
+  transform: scale(1.1);
+}
+
+#theme-toggle:hover .theme-icon-light {
+  animation: spin-slow 4s linear infinite;
+}
+
+#theme-toggle:hover .theme-icon-dark {
+  animation: moon-rock 1.5s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes moon-rock {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  75% { transform: rotate(15deg); }
+}
+
 .mobile-toggle {
   display: none;
   background: none;
