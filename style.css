@@ -197,6 +197,11 @@ h1, h2, h3, h4, .brand-text {
 /* =========================================
    NAVIGATION
    ========================================= */
+@keyframes navbarFadeDown {
+  0% { opacity: 0; transform: translate(-50%, -20px); }
+  100% { opacity: 1; transform: translate(-50%, 0); }
+}
+
 .navbar {
   position: fixed;
   top: 24px;
@@ -206,6 +211,9 @@ h1, h2, h3, h4, .brand-text {
   min-width: 300px;
   height: 60px;
   border-radius: 100px;
+  opacity: 0;
+  animation: navbarFadeDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 2.8s;
   background: var(--white-alpha-01);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -314,6 +322,19 @@ h1, h2, h3, h4, .brand-text {
 
 .btn-nav:hover .nav-link-front, .btn-nav:hover .nav-link-back {
   color: var(--text-primary);
+}
+
+/* View Transition Theme Toggle Animation */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
 }
 
 /* Theme Toggle Animations */
@@ -441,7 +462,9 @@ h1, h2, h3, h4, .brand-text {
 }
 
 .hero-content-anim {
-  animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 2.7s;
+  opacity: 0;
 }
 
 .hero-container {
@@ -1553,5 +1576,64 @@ h1, h2, h3, h4, .brand-text {
   .footer-links-col {
     gap: 10px;
   }
+}
+
+/* =========================================
+   PRELOADER (Apple 'hello' style)
+   ========================================= */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease-out, visibility 0.8s ease-out, transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.05); /* Zoom in effect */
+}
+
+.hello-svg {
+  width: 300px;
+  height: auto;
+  overflow: visible;
+  color: #ffffff;
+}
+
+.hello-path-1 {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawHello 0.8s ease-in-out forwards;
+}
+
+.hello-path-2 {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawHello 2s ease-in-out 0.7s forwards;
+}
+
+@keyframes drawHello {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+body.light-theme .preloader {
+  background-color: #f9fafb;
+}
+
+body.light-theme .hello-svg {
+  color: #111827;
 }
 

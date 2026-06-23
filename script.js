@@ -169,16 +169,48 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      if (document.body.classList.contains('dark-theme')) {
-        document.body.className = 'light-theme';
-        localStorage.setItem('theme', 'light-theme');
-        updateThemeIcon('light-theme');
-      } else {
-        document.body.className = 'dark-theme';
-        localStorage.setItem('theme', 'dark-theme');
-        updateThemeIcon('dark-theme');
+    themeToggleBtn.addEventListener('click', (e) => {
+      const toggle = () => {
+        if (document.body.classList.contains('dark-theme')) {
+          document.body.className = 'light-theme';
+          localStorage.setItem('theme', 'light-theme');
+          updateThemeIcon('light-theme');
+        } else {
+          document.body.className = 'dark-theme';
+          localStorage.setItem('theme', 'dark-theme');
+          updateThemeIcon('dark-theme');
+        }
+      };
+
+      if (!document.startViewTransition) {
+        toggle();
+        return;
       }
+
+      const x = e.clientX;
+      const y = e.clientY;
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y)
+      );
+
+      const transition = document.startViewTransition(toggle);
+
+      transition.ready.then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 600,
+            easing: 'ease-out',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        );
+      });
     });
   }
 
@@ -200,9 +232,9 @@ document.head.appendChild(style);
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
   if (preloader) {
-    // Hide preloader slightly before animation completely finishes
+    // Hide preloader slightly after animation finishes
     setTimeout(() => {
       preloader.classList.add('hide');
-    }, 2400); 
+    }, 2800); 
   }
 });
