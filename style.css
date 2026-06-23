@@ -249,6 +249,12 @@ h1, h2, h3, h4, .brand-text {
   width: auto;
 }
 
+body.dark-theme .logo-light { display: none; }
+body.dark-theme .logo-dark { display: block; }
+
+body.light-theme .logo-light { display: block; }
+body.light-theme .logo-dark { display: none; }
+
 .brand-text {
   font-size: 1.5rem;
   font-weight: 700;
