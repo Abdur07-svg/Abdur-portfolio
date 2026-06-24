@@ -109,34 +109,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const sections = document.querySelectorAll('section');
   const navLinks = document.querySelectorAll('.nav-link');
 
-  const navObserverOptions = {
-    threshold: 0.3,
-    rootMargin: "-100px 0px -20% 0px"
-  };
-
-  const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        // Remove active class from all
+  function updateActiveSection() {
+    let scrollY = window.scrollY;
+    
+    sections.forEach(section => {
+      const sectionHeight = section.offsetHeight;
+      const sectionTop = section.offsetTop - 150; // Offset to trigger slightly before reaching
+      const sectionId = section.getAttribute('id');
+      
+      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
         navLinks.forEach(link => link.classList.remove('active'));
         mobileLinks.forEach(link => link.classList.remove('highlight'));
         
-        // Add active class to corresponding link
-        const id = entry.target.getAttribute('id');
-        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
-        if (activeLink) {
-          activeLink.classList.add('active');
-        }
+        const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+        if (activeLink) activeLink.classList.add('active');
         
-        const activeMobileLink = document.querySelector(`.mobile-link[href="#${id}"]`);
-        if (activeMobileLink) {
-          activeMobileLink.classList.add('highlight');
-        }
+        const activeMobileLink = document.querySelector(`.mobile-link[href="#${sectionId}"]`);
+        if (activeMobileLink) activeMobileLink.classList.add('highlight');
       }
     });
-  }, navObserverOptions);
+  }
 
-  sections.forEach(section => navObserver.observe(section));
+  window.addEventListener('scroll', updateActiveSection);
+  // Call once to set initial state
+  window.addEventListener('load', updateActiveSection);
+  updateActiveSection();
 
   // Also handle click to update active immediately
   navLinks.forEach(link => {
