@@ -119,12 +119,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (entry.isIntersecting) {
         // Remove active class from all
         navLinks.forEach(link => link.classList.remove('active'));
+        mobileLinks.forEach(link => link.classList.remove('highlight'));
         
         // Add active class to corresponding link
         const id = entry.target.getAttribute('id');
         const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
         if (activeLink) {
           activeLink.classList.add('active');
+        }
+        
+        const activeMobileLink = document.querySelector(`.mobile-link[href="#${id}"]`);
+        if (activeMobileLink) {
+          activeMobileLink.classList.add('highlight');
         }
       }
     });
@@ -137,6 +143,13 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', function() {
       navLinks.forEach(l => l.classList.remove('active'));
       this.classList.add('active');
+    });
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      mobileLinks.forEach(l => l.classList.remove('highlight'));
+      this.classList.add('highlight');
     });
   });
 
