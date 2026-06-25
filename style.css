@@ -1972,12 +1972,10 @@ body.light-theme .hello-svg {
   object-fit: cover;
   transition: all 0.3s ease-out;
   transform: scale(1.1);
-  filter: grayscale(100%);
 }
 
 .expanding-card.active .card-bg-img {
   transform: scale(1);
-  filter: grayscale(0%);
 }
 
 .expanding-card .card-overlay {
