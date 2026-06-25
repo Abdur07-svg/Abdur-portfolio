@@ -83,23 +83,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         if (response.ok) {
-          formStatus.textContent = 'Message sent successfully! I will reply soon.';
-          formStatus.className = 'form-status success';
+          showToast('Message sent successfully! I will reply soon.', 'success');
           contactForm.reset();
         } else {
           throw new Error('Network response was not ok');
         }
       } catch (error) {
-        formStatus.textContent = 'Something went wrong. Please try again.';
-        formStatus.className = 'form-status error';
+        showToast('Something went wrong. Please try again.', 'error');
       } finally {
         btn.innerHTML = originalText;
         lucide.createIcons();
-        
-        setTimeout(() => {
-          formStatus.textContent = '';
-          formStatus.className = 'form-status';
-        }, 5000);
       }
     });
   }
@@ -357,5 +350,194 @@ document.addEventListener('DOMContentLoaded', () => {
       card.addEventListener('focus', handleInteract);
       card.addEventListener('click', handleClick);
     });
+  }
+
+  // ==========================================
+  // NEW FEATURES IMPLEMENTATION
+  // ==========================================
+
+  // 1. Toast Notification Logic
+  window.showToast = function(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icon = type === 'success' ? 'check-circle' : 'alert-circle';
+    
+    toast.innerHTML = `
+      <i data-lucide="${icon}" class="toast-icon"></i>
+      <span>${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    lucide.createIcons();
+    
+    // Trigger animation
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+    
+    // Remove after 3s
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+      }, 400); // Wait for transition
+    }, 3000);
+  };
+
+  // 2. Custom Cursor Logic
+  const cursor = document.querySelector('.custom-cursor');
+  const cursorFollower = document.querySelector('.custom-cursor-follower');
+  
+  if (cursor && cursorFollower) {
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      
+      // Add slight delay to follower
+      setTimeout(() => {
+        cursorFollower.style.left = e.clientX + 'px';
+        cursorFollower.style.top = e.clientY + 'px';
+      }, 50);
+    });
+
+    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .expanding-card');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        cursorFollower.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        cursorFollower.classList.remove('hover');
+      });
+    });
+  }
+
+
+
+  // 5. Hero Particles Background
+  const canvas = document.getElementById('hero-particles');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let particlesArray = [];
+    let isDarkTheme = document.body.classList.contains('dark-theme');
+    
+    // Watch for theme changes to update particle colors
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        // Small delay to let the theme class update on body
+        setTimeout(() => {
+          isDarkTheme = document.body.classList.contains('dark-theme');
+          initParticles(); // Re-init with new colors
+        }, 50);
+      });
+    }
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      canvas.width = canvas.parentElement.offsetWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
+      initParticles();
+    });
+
+    const mouse = { x: null, y: null, radius: 150 };
+
+    canvas.addEventListener('mousemove', (e) => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    });
+    canvas.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    class Particle {
+      constructor(x, y, directionX, directionY, size) {
+        this.x = x;
+        this.y = y;
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.size = size;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        ctx.fillStyle = isDarkTheme ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.3)';
+        ctx.fill();
+      }
+      update() {
+        if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+        if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+        
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx*dx + dy*dy);
+        
+        if (distance < mouse.radius) {
+          if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
+          if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
+          if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
+          if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+        }
+        
+        this.x += this.directionX;
+        this.y += this.directionY;
+        this.draw();
+      }
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      canvas.width = canvas.parentElement.offsetWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
+      let numberOfParticles = (canvas.width * canvas.height) / 9000;
+      for (let i = 0; i < numberOfParticles; i++) {
+        let size = (Math.random() * 2) + 1;
+        let x = (Math.random() * ((canvas.width - size * 2) - (size * 2)) + size * 2);
+        let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
+        let directionX = (Math.random() * 2) - 1;
+        let directionY = (Math.random() * 2) - 1;
+        particlesArray.push(new Particle(x, y, directionX, directionY, size));
+      }
+    }
+
+    function connect() {
+      let opacityValue = 1;
+      for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+          let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                         ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+          if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+            opacityValue = 1 - (distance / 15000);
+            ctx.strokeStyle = isDarkTheme ? `rgba(255, 255, 255, ${opacityValue * 0.2})` : `rgba(0, 0, 0, ${opacityValue * 0.1})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animateParticles() {
+      requestAnimationFrame(animateParticles);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+      }
+      connect();
+    }
+
+    // Small delay to ensure layout is complete before init
+    setTimeout(() => {
+      initParticles();
+      animateParticles();
+    }, 100);
   }
 });

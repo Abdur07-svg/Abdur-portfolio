@@ -100,6 +100,7 @@
   <!-- Hero Section -->
   <section id="hero" class="hero-section">
     <div class="hero-bg-grid"></div>
+    <canvas id="hero-particles" class="hero-particles"></canvas>
     <div class="container hero-container"
       style="display: flex; justify-content: center; align-items: center; text-align: center; width: 100%; grid-template-columns: 1fr; position: relative; z-index: 10;">
       <div class="hero-content-anim"
@@ -400,7 +401,7 @@
             style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <input type="text" name="name" placeholder="Name" required class="vgil-input">
-              <input type="text" name="surname" placeholder="Surname" required class="vgil-input">
+              <input type="text" name="surname" placeholder="Surname" class="vgil-input">
             </div>
             <input type="email" name="email" placeholder="Email" required class="vgil-input">
             <textarea name="message" placeholder="Message" rows="6" required class="vgil-input"
@@ -478,6 +479,10 @@
       </div>
     </div>
   </footer>
+
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+  <div id="toast-container" class="toast-container"></div>
 
   <script src="script.js?v=2"></script>
 </body>
