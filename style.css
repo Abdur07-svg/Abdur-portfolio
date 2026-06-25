@@ -2000,9 +2000,7 @@ body.light-theme .hello-svg {
 }
 
 .expanding-card .card-title-vertical {
-  display: none;
-  transform-origin: left bottom;
-  transform: rotate(-90deg);
+  display: block;
   font-size: 0.875rem;
   font-weight: 400;
   text-transform: uppercase;
@@ -2012,13 +2010,18 @@ body.light-theme .hello-svg {
   transition: all 0.3s ease-out;
   white-space: nowrap;
   position: absolute;
-  bottom: 20px;
-  left: 48px;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
 }
 
 @media (min-width: 768px) {
   .expanding-card .card-title-vertical {
-    display: block;
+    top: auto;
+    bottom: 20px;
+    left: 48px;
+    transform-origin: left bottom;
+    transform: rotate(-90deg);
   }
 }
 
