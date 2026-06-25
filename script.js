@@ -251,3 +251,111 @@ window.addEventListener('load', () => {
     }, 2800); 
   }
 });
+
+// Expanding Cards Logic
+document.addEventListener('DOMContentLoaded', () => {
+  const expandingCards = document.querySelectorAll('.expanding-card');
+  const cardsContainer = document.getElementById('expanding-cards');
+  
+  if (cardsContainer && expandingCards.length > 0) {
+    let activeIndex = 0;
+    
+    function updateGrid() {
+      const isDesktop = window.innerWidth >= 768;
+      
+      const gridTemplate = Array.from({length: expandingCards.length}).map((_, i) => {
+        return i === activeIndex ? '5fr' : '1fr';
+      }).join(' ');
+
+      if (isDesktop) {
+        cardsContainer.style.gridTemplateColumns = gridTemplate;
+        cardsContainer.style.gridTemplateRows = '1fr';
+      } else {
+        cardsContainer.style.gridTemplateColumns = '1fr';
+        cardsContainer.style.gridTemplateRows = gridTemplate;
+      }
+      
+      expandingCards.forEach((card, index) => {
+        if (index === activeIndex) {
+          card.classList.add('active');
+          card.setAttribute('data-active', 'true');
+        } else {
+          card.classList.remove('active');
+          card.setAttribute('data-active', 'false');
+        }
+      });
+    }
+
+    // Initial setup
+    updateGrid();
+    
+    // Resize listener
+    window.addEventListener('resize', updateGrid);
+    
+    // Interaction listeners
+    expandingCards.forEach((card, index) => {
+      const handleInteract = () => {
+        if (activeIndex !== index) {
+          activeIndex = index;
+          updateGrid();
+        }
+      };
+      
+      const showProcessing = (link) => {
+        if (!link) return;
+        const originalContent = link.innerHTML;
+        link.innerHTML = '<span style="font-size: 0.75rem; font-weight: 600; padding: 0 4px; white-space: nowrap;">Processing...</span>';
+        link.style.borderRadius = '12px';
+        setTimeout(() => {
+          link.innerHTML = originalContent;
+          link.style.borderRadius = '';
+          lucide.createIcons();
+        }, 2000);
+      };
+
+      const handleClick = (e) => {
+        // If clicking on the actual link button, handle it here
+        const linkBtn = e.target.closest('.card-link');
+        if (linkBtn) {
+          e.preventDefault();
+          const href = linkBtn.getAttribute('href');
+          if (!href || href === '#') {
+            showProcessing(linkBtn);
+          } else {
+            if (linkBtn.getAttribute('target') === '_blank') {
+              window.open(href, '_blank');
+            } else {
+              window.location.href = href;
+            }
+          }
+          return;
+        }
+
+        const isDesktop = window.innerWidth >= 768;
+        if (isDesktop) {
+          // On Desktop: Clicking the card redirects to the project link or shows processing
+          const link = card.querySelector('.card-link');
+          if (link) {
+            const href = link.getAttribute('href');
+            if (href && href !== '#') {
+              if (link.getAttribute('target') === '_blank') {
+                window.open(href, '_blank');
+              } else {
+                window.location.href = href;
+              }
+            } else {
+              showProcessing(link);
+            }
+          }
+        } else {
+          // On Mobile: Clicking expands the card
+          handleInteract();
+        }
+      };
+
+      card.addEventListener('mouseenter', handleInteract);
+      card.addEventListener('focus', handleInteract);
+      card.addEventListener('click', handleClick);
+    });
+  }
+});
