@@ -15,13 +15,14 @@
 
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  
   <link rel="stylesheet" href="style.css?v=5">
 
   <!-- Favicons for Light Mode -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon1-32.png" media="(prefers-color-scheme: light)">
   <link rel="icon" type="image/png" sizes="16x16" href="images/favicon1-16.png" media="(prefers-color-scheme: light)">
-  
+
   <!-- Favicons for Dark Mode -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" media="(prefers-color-scheme: dark)">
@@ -32,9 +33,12 @@
 
   <!-- Preloader -->
   <div id="preloader" class="preloader">
-    <svg class="hello-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 638 200" fill="none" stroke="currentColor" stroke-width="14.8883" stroke-linecap="round">
-      <path class="hello-path-1" pathLength="1" d="M8.69214 166.553C36.2393 151.239 61.3409 131.548 89.8191 98.0295C109.203 75.1488 119.625 49.0228 120.122 31.0026C120.37 17.6036 113.836 7.43883 101.759 7.43883C88.3598 7.43883 79.9231 17.6036 74.7122 40.9363C69.005 66.5793 64.7866 96.0036 54.1166 190.356" />
-      <path class="hello-path-2" pathLength="1" d="M55.1624 181.135C60.6251 133.114 81.4118 98.0479 107.963 98.0479C123.844 98.0479 133.937 110.703 131.071 128.817C129.457 139.487 127.587 150.405 125.408 163.06C122.869 178.941 130.128 191.348 152.122 191.348C184.197 191.348 219.189 173.523 237.097 145.915C243.198 136.509 245.68 128.073 245.928 119.884C246.176 104.996 237.739 93.8296 222.851 93.8296C203.992 93.8296 189.6 115.17 189.6 142.465C189.6 171.745 205.481 192.341 239.208 192.341C285.066 192.341 335.86 137.292 359.199 75.8585C365.788 58.513 368.26 42.4065 368.26 31.1512C368.26 17.8057 364.042 7.55823 352.131 7.55823C340.469 7.55823 332.777 16.6141 325.829 30.9129C317.688 47.4967 311.667 71.4162 309.203 98.4549C303 166.301 316.896 191.348 349.936 191.348C390 191.348 434.542 135.534 457.286 75.6686C463.803 58.513 466.275 42.4065 466.275 31.1512C466.275 17.8057 462.057 7.55823 450.146 7.55823C438.484 7.55823 430.792 16.6141 423.844 30.9129C415.703 47.4967 409.682 71.4162 407.218 98.4549C401.015 166.301 414.911 191.348 444.416 191.348C473.874 191.348 489.877 165.67 499.471 138.402C508.955 111.447 520.618 94.8221 544.935 94.8221C565.035 94.8221 580.916 109.71 580.916 137.75C580.916 168.768 560.792 192.093 535.362 192.341C512.984 192.589 498.285 174.475 499.774 147.179C501.511 116.907 519.873 94.8221 543.943 94.8221C557.839 94.8221 569.51 100.999 578.682 107.725C603.549 125.866 622.709 114.656 630.047 96.7186" />
+    <svg class="hello-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 638 200" fill="none" stroke="currentColor"
+      stroke-width="14.8883" stroke-linecap="round">
+      <path class="hello-path-1" pathLength="1"
+        d="M8.69214 166.553C36.2393 151.239 61.3409 131.548 89.8191 98.0295C109.203 75.1488 119.625 49.0228 120.122 31.0026C120.37 17.6036 113.836 7.43883 101.759 7.43883C88.3598 7.43883 79.9231 17.6036 74.7122 40.9363C69.005 66.5793 64.7866 96.0036 54.1166 190.356" />
+      <path class="hello-path-2" pathLength="1"
+        d="M55.1624 181.135C60.6251 133.114 81.4118 98.0479 107.963 98.0479C123.844 98.0479 133.937 110.703 131.071 128.817C129.457 139.487 127.587 150.405 125.408 163.06C122.869 178.941 130.128 191.348 152.122 191.348C184.197 191.348 219.189 173.523 237.097 145.915C243.198 136.509 245.68 128.073 245.928 119.884C246.176 104.996 237.739 93.8296 222.851 93.8296C203.992 93.8296 189.6 115.17 189.6 142.465C189.6 171.745 205.481 192.341 239.208 192.341C285.066 192.341 335.86 137.292 359.199 75.8585C365.788 58.513 368.26 42.4065 368.26 31.1512C368.26 17.8057 364.042 7.55823 352.131 7.55823C340.469 7.55823 332.777 16.6141 325.829 30.9129C317.688 47.4967 311.667 71.4162 309.203 98.4549C303 166.301 316.896 191.348 349.936 191.348C390 191.348 434.542 135.534 457.286 75.6686C463.803 58.513 466.275 42.4065 466.275 31.1512C466.275 17.8057 462.057 7.55823 450.146 7.55823C438.484 7.55823 430.792 16.6141 423.844 30.9129C415.703 47.4967 409.682 71.4162 407.218 98.4549C401.015 166.301 414.911 191.348 444.416 191.348C473.874 191.348 489.877 165.67 499.471 138.402C508.955 111.447 520.618 94.8221 544.935 94.8221C565.035 94.8221 580.916 109.71 580.916 137.75C580.916 168.768 560.792 192.093 535.362 192.341C512.984 192.589 498.285 174.475 499.774 147.179C501.511 116.907 519.873 94.8221 543.943 94.8221C557.839 94.8221 569.51 100.999 578.682 107.725C603.549 125.866 622.709 114.656 630.047 96.7186" />
     </svg>
   </div>
 
@@ -42,7 +46,8 @@
   <nav id="navbar" class="navbar">
     <div class="nav-brand">
       <a href="#hero" class="brand-link" aria-label="Logo">
-        <img src="images/ar-logo.svg" alt="AR Logo Light" class="nav-logo logo-light" style="height: 36px; width: auto;">
+        <img src="images/ar-logo.svg" alt="AR Logo Light" class="nav-logo logo-light"
+          style="height: 36px; width: auto;">
         <img src="images/ar-logo1.svg" alt="AR Logo Dark" class="nav-logo logo-dark" style="height: 36px; width: auto;">
       </a>
     </div>
@@ -76,7 +81,8 @@
 
     <div style="display: flex; align-items: center; gap: 16px;">
       <!-- Theme Toggle -->
-      <button id="theme-toggle" class="btn-nav" aria-label="Toggle Theme" style="cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px;">
+      <button id="theme-toggle" class="btn-nav" aria-label="Toggle Theme"
+        style="cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px;">
         <i data-lucide="sun" class="theme-icon-light" style="display: none; width: 20px; height: 20px;"></i>
         <i data-lucide="moon" class="theme-icon-dark" style="width: 20px; height: 20px;"></i>
       </button>
@@ -124,7 +130,8 @@
         </h1>
 
         <!-- Subtext -->
-        <p style="color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.25rem); max-width: 500px; line-height: 1.6; margin: 0;">
+        <p
+          style="color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.25rem); max-width: 500px; line-height: 1.6; margin: 0;">
           A frontend developer passionate about crafting beautiful, interactive, and modern web applications.
         </p>
 
@@ -137,8 +144,7 @@
           </a>
           <a href="#contact"
             style="padding: 14px 32px; background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;"
-            onmouseover="this.style.background='var(--border-color)'"
-            onmouseout="this.style.background='transparent'">
+            onmouseover="this.style.background='var(--border-color)'" onmouseout="this.style.background='transparent'">
             Contact Me
           </a>
         </div>
@@ -158,13 +164,28 @@
     <!-- Hero Social Links (Bottom Left) -->
     <div class="hero-social-links">
       <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+          <rect width="4" height="12" x="2" y="9"></rect>
+          <circle cx="4" cy="4" r="2"></circle>
+        </svg>
       </a>
       <a href="https://github.com/Abdur07-svg" target="_blank" aria-label="GitHub">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4">
+          </path>
+          <path d="M9 18c-4.51 2-5-2-7-2"></path>
+        </svg>
       </a>
       <a href="mailto:abdurrajjak07@example.com" aria-label="Email">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </svg>
       </a>
     </div>
   </section>
@@ -179,8 +200,7 @@
       <div class="about-grid">
         <div class="about-image reveal-up" style="border-radius: 24px; overflow: hidden; max-width: 300px;">
           <div class="face-reveal-container" ontouchstart="">
-            <img src="images/Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Abdur Rajjak"
-              class="face-reveal-img"
+            <img src="images/Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Abdur Rajjak" class="face-reveal-img"
               style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 4/5;"
               onerror="this.src='images/logo.png'">
           </div>
@@ -252,11 +272,50 @@
           </div>
 
           <div style="margin-top: 40px;">
-            <a href="#contact" class="btn btn-primary" style="background: var(--text-primary); color: var(--bg-main); font-weight: 600;">
+            <a href="#contact" class="btn btn-primary"
+              style="background: var(--text-primary); color: var(--bg-main); font-weight: 600;">
               Get in touch <i data-lucide="external-link" style="width: 18px;"></i>
             </a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Marquee Section -->
+  <section class="skills-marquee-section">
+    <div class="container" style="margin-bottom: 30px;">
+      <div class="section-header reveal-up">
+        <h2 class="section-title">Skills</h2>
+      </div>
+    </div>
+    <div class="marquee-container">
+      <div class="marquee-track">
+        <!-- Original set -->
+        <div class="marquee-item" title="GitHub"><i class="devicon-github-original"></i></div>
+        <div class="marquee-item" title="Figma"><i class="devicon-figma-plain colored"></i></div>
+        <div class="marquee-item" title="VS Code"><i class="devicon-vscode-plain colored"></i></div>
+        <div class="marquee-item" title="Android Studio"><i class="devicon-androidstudio-plain colored"></i></div>
+        <div class="marquee-item" title="Java"><i class="devicon-java-plain colored"></i></div>
+        <div class="marquee-item" title="HTML5"><i class="devicon-html5-plain colored"></i></div>
+        <div class="marquee-item" title="CSS3"><i class="devicon-css3-plain colored"></i></div>
+        <div class="marquee-item" title="JavaScript"><i class="devicon-javascript-plain colored"></i></div>
+        <div class="marquee-item" title="React"><i class="devicon-react-original colored"></i></div>
+        <div class="marquee-item" title="Tailwind CSS"><i class="devicon-tailwindcss-original colored"></i></div>
+        <div class="marquee-item" title="Python"><i class="devicon-python-plain colored"></i></div>
+        
+        <!-- Duplicated set for infinite loop -->
+        <div class="marquee-item" title="GitHub"><i class="devicon-github-original"></i></div>
+        <div class="marquee-item" title="Figma"><i class="devicon-figma-plain colored"></i></div>
+        <div class="marquee-item" title="VS Code"><i class="devicon-vscode-plain colored"></i></div>
+        <div class="marquee-item" title="Android Studio"><i class="devicon-androidstudio-plain colored"></i></div>
+        <div class="marquee-item" title="Java"><i class="devicon-java-plain colored"></i></div>
+        <div class="marquee-item" title="HTML5"><i class="devicon-html5-plain colored"></i></div>
+        <div class="marquee-item" title="CSS3"><i class="devicon-css3-plain colored"></i></div>
+        <div class="marquee-item" title="JavaScript"><i class="devicon-javascript-plain colored"></i></div>
+        <div class="marquee-item" title="React"><i class="devicon-react-original colored"></i></div>
+        <div class="marquee-item" title="Tailwind CSS"><i class="devicon-tailwindcss-original colored"></i></div>
+        <div class="marquee-item" title="Python"><i class="devicon-python-plain colored"></i></div>
       </div>
     </div>
   </section>
@@ -271,77 +330,91 @@
       <ul class="expanding-cards-container reveal-up" id="expanding-cards">
         <!-- Project 1 -->
         <li class="expanding-card active" data-index="0" tabindex="0">
-          <img src="images/jarvis.png" alt="JARVIS AI Assistant" class="card-bg-img" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200'" />
+          <img src="images/jarvis.png" alt="JARVIS AI Assistant" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
             <h3 class="card-title-vertical">JARVIS AI</h3>
             <div class="card-icon"><i data-lucide="mic" style="width: 24px; height: 24px;"></i></div>
             <h3 class="card-title-expanded">JARVIS AI Assistant</h3>
-            <p class="card-desc">A voice-controlled AI assistant built with Python, LiveKit, and the Gemini API. Features wake word detection and conversational abilities.</p>
+            <p class="card-desc">A voice-controlled AI assistant built with Python, LiveKit, and the Gemini API.
+              Features wake word detection and conversational abilities.</p>
             <div class="card-tech">
-              <span class="tech-pill">Python</span><span class="tech-pill">Gemini API</span><span class="tech-pill">LiveKit</span>
+              <span class="tech-pill">Python</span><span class="tech-pill">Gemini API</span><span
+                class="tech-pill">LiveKit</span>
             </div>
             <a href="#" class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
-        
+
         <!-- Project 2 -->
         <li class="expanding-card" data-index="1" tabindex="0">
-          <img src="images/photo_enhance.png" alt="Photo Enhancer" class="card-bg-img" onerror="this.src='https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=1200'" />
+          <img src="images/photo_enhance.png" alt="Photo Enhancer" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
             <h3 class="card-title-vertical">Photo Enhancer</h3>
             <div class="card-icon"><i data-lucide="image" style="width: 24px; height: 24px;"></i></div>
             <h3 class="card-title-expanded">Photo Enhancer</h3>
-            <p class="card-desc">A modern web tool for enhancing photos, focusing on an intuitive user interface and smooth image processing features.</p>
+            <p class="card-desc">A modern web tool for enhancing photos, focusing on an intuitive user interface and
+              smooth image processing features.</p>
             <div class="card-tech">
               <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
             </div>
-            <a href="https://abdur07-svg.github.io/AR-Photo-Enhancer/" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="https://abdur07-svg.github.io/AR-Photo-Enhancer/" target="_blank" rel="noopener noreferrer"
+              class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 3 -->
         <li class="expanding-card" data-index="2" tabindex="0">
-          <img src="images/fifa_2026.png" alt="FIFA 2026 Guide" class="card-bg-img" onerror="this.src='https://images.unsplash.com/photo-1518605368461-1e1252220a4c?auto=format&fit=crop&w=1200'" />
+          <img src="images/fifa_2026.png" alt="FIFA 2026 Guide" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1518605368461-1e1252220a4c?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
             <h3 class="card-title-vertical">FIFA 2026</h3>
             <div class="card-icon"><i data-lucide="trophy" style="width: 24px; height: 24px;"></i></div>
             <h3 class="card-title-expanded">FIFA 2026 Guide</h3>
-            <p class="card-desc">A comprehensive web guide dedicated to the upcoming FIFA 2026 World Cup, featuring clean layouts and dynamic data presentation.</p>
+            <p class="card-desc">A comprehensive web guide dedicated to the upcoming FIFA 2026 World Cup, featuring
+              clean layouts and dynamic data presentation.</p>
             <div class="card-tech">
               <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
             </div>
-            <a href="https://abdur07-svg.github.io/Abdur-FIFA-2026-Guide/" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="https://abdur07-svg.github.io/Abdur-FIFA-2026-Guide/" target="_blank" rel="noopener noreferrer"
+              class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 4 -->
         <li class="expanding-card" data-index="3" tabindex="0">
-          <img src="images/transloter.png" alt="Translator" class="card-bg-img" onerror="this.src='https://images.unsplash.com/photo-1451226428352-cf66bf8a0317?auto=format&fit=crop&w=1200'" />
+          <img src="images/transloter.png" alt="Translator" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1451226428352-cf66bf8a0317?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
             <h3 class="card-title-vertical">Translator</h3>
             <div class="card-icon"><i data-lucide="languages" style="width: 24px; height: 24px;"></i></div>
             <h3 class="card-title-expanded">Translator</h3>
-            <p class="card-desc">A modern web tool for translating text to different languages, focusing on an intuitive user interface and smooth translation features.</p>
+            <p class="card-desc">A modern web tool for translating text to different languages, focusing on an intuitive
+              user interface and smooth translation features.</p>
             <div class="card-tech">
               <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
             </div>
-            <a href="https://abdur07-svg.github.io/Translator/" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="https://abdur07-svg.github.io/Translator/" target="_blank" rel="noopener noreferrer"
+              class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 5 -->
         <li class="expanding-card" data-index="4" tabindex="0">
-          <img src="images/logo.png" alt="Endless Runner Game" class="card-bg-img" onerror="this.src='https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=1200'" />
+          <img src="" alt="Endless Runner Game" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
             <h3 class="card-title-vertical">Endless Runner</h3>
             <div class="card-icon"><i data-lucide="gamepad-2" style="width: 24px; height: 24px;"></i></div>
             <h3 class="card-title-expanded">Endless Runner Game</h3>
-            <p class="card-desc">A Temple Run-style 3D endless runner mobile game built using Android Studio and Java.</p>
+            <p class="card-desc">A Temple Run-style 3D endless runner mobile game built using Android Studio and Java.
+            </p>
             <div class="card-tech">
               <span class="tech-pill">Android Studio</span><span class="tech-pill">Java</span>
             </div>
@@ -349,21 +422,40 @@
           </article>
         </li>
 
-        <li class="expanding-card" data-index="3" tabindex="0">
-          <img src="images/calculator.png" alt="Calculator" class="card-bg-img" onerror="this.src='https://images.unsplash.com/photo-1451226428352-cf66bf8a0317?auto=format&fit=crop&w=1200'" />
+        <li class="expanding-card" data-index="5" tabindex="0">
+          <img src="images/calculator.png" alt="Calculator" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1451226428352-cf66bf8a0317?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
             <h3 class="card-title-vertical">Calculator</h3>
             <div class="card-icon"><i data-lucide="calculator" style="width: 24px; height: 24px;"></i></div>
             <h3 class="card-title-expanded">Calculator</h3>
-            <p class="card-desc">A simple yet elegant calculator application with a clean design and smooth functionality.</p>
+            <p class="card-desc">A simple yet elegant calculator application with a clean design and smooth
+              functionality.</p>
             <div class="card-tech">
               <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
             </div>
-            <a href="https://abdur07-svg.github.io/Omni-Calculator/" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="https://abdur07-svg.github.io/Omni-Calculator/" target="_blank" rel="noopener noreferrer"
+              class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
       </ul>
+
+      <!-- Project Stats -->
+      <div class="project-stats-container reveal-up">
+        <div class="stat-box">
+          <h3>6+</h3>
+          <p>Projects Built</p>
+        </div>
+        <div class="stat-box">
+          <h3>4+</h3>
+          <p>Live Demos</p>
+        </div>
+        <div class="stat-box">
+          <h3>12+</h3>
+          <p>Technologies</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -393,19 +485,34 @@
           <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Useful Links:</h4>
           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
             <a href="https://x.com/Abdur2007" target="_blank" class="pill pill-link" style="gap: 8px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 4H5.1l11.9 16z"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 4H5.1l11.9 16z">
+                </path>
+              </svg>
               Twitter
             </a>
             <a href="https://github.com/Abdur07-svg" target="_blank" class="pill pill-link"
               style="background: var(--text-primary); color: var(--bg-main); gap: 8px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4">
+                </path>
+                <path d="M9 18c-4.51 2-5-2-7-2"></path>
+              </svg>
               GitHub
             </a>
           </div>
 
           <a href="mailto:abdurrajjak07@example.com" class="pill pill-link"
             style="background: var(--bg-glass); border: 1px solid var(--border-color); gap: 8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
             abdurrajjak07@example.com
           </a>
         </div>
@@ -451,12 +558,14 @@
           <div>
             <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 16px;">Navigation</h3>
             <ul style="display: flex; flex-direction: column; gap: 12px;">
-              <li><a href="#hero" style="color: var(--text-muted); font-size: 0.95rem;" class="hover-white">Home</a></li>
+              <li><a href="#hero" style="color: var(--text-muted); font-size: 0.95rem;" class="hover-white">Home</a>
+              </li>
               <li><a href="#about" style="color: var(--text-muted); font-size: 0.95rem;" class="hover-white">About</a>
               </li>
               <li><a href="#projects" style="color: var(--text-muted); font-size: 0.95rem;"
                   class="hover-white">Projects</a></li>
-              <li><a href="#contact" style="color: var(--text-muted); font-size: 0.95rem;" class="hover-white">Contact</a>
+              <li><a href="#contact" style="color: var(--text-muted); font-size: 0.95rem;"
+                  class="hover-white">Contact</a>
               </li>
             </ul>
           </div>
@@ -466,22 +575,53 @@
               <a href="mailto:abdurrajjak07@example.com"
                 style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;"
                 class="hover-white"><i data-lucide="mail" style="width: 16px;"></i> abdurrajjak07@example.com</a>
-              <span style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;"><i
+              <span
+                style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;"><i
                   data-lucide="map-pin" style="width: 16px;"></i> West Bengal, India</span>
             </div>
             <p style="color: var(--text-muted); font-size: 0.95rem; margin: 24px 0 12px 0;">Follow me:</p>
             <div style="display: flex; gap: 16px;">
-              <a href="https://x.com/Abdur2007" target="_blank" style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 4H5.1l11.9 16z"></path></svg>
+              <a href="https://x.com/Abdur2007" target="_blank"
+                style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;"
+                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 4H5.1l11.9 16z">
+                  </path>
+                </svg>
               </a>
-              <a href="https://github.com/Abdur07-svg" target="_blank" style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+              <a href="https://github.com/Abdur07-svg" target="_blank"
+                style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;"
+                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4">
+                  </path>
+                  <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                </svg>
               </a>
-              <a href="https://instagram.com/void_ms07" target="_blank" style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+              <a href="https://instagram.com/void_ms07" target="_blank"
+                style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;"
+                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                </svg>
               </a>
-              <a href="https://youtube.com/@ar7ffofficial" target="_blank" style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.1C2.5 7.1 2.3 5.3 3.1 4.5 4 3.6 5.1 3.6 5.6 3.5 9 3.2 12 3.2 12 3.2s3 0 6.4.3c.5.1 1.6.1 2.5 1 .8.8 1 2.6 1 2.6s.3 2.1.3 4.2v1.8c0 2.1-.3 4.2-.3 4.2s-.2 1.8-1 2.6c-.9.9-2.1.9-2.6 1-3.6.3-6.4.3-6.4.3s-3 0-6.4-.3c-.5-.1-1.5-.1-2.4-1-.8-.8-1-2.6-1-2.6s-.3-2.1-.3-4.2v-1.8c0-2.1.3-4.2.3-4.2z"></path><path d="M9.8 14.5l6-3.3-6-3.3v6.6z"></path></svg>
+              <a href="https://youtube.com/@ar7ffofficial" target="_blank"
+                style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;"
+                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M2.5 7.1C2.5 7.1 2.3 5.3 3.1 4.5 4 3.6 5.1 3.6 5.6 3.5 9 3.2 12 3.2 12 3.2s3 0 6.4.3c.5.1 1.6.1 2.5 1 .8.8 1 2.6 1 2.6s.3 2.1.3 4.2v1.8c0 2.1-.3 4.2-.3 4.2s-.2 1.8-1 2.6c-.9.9-2.1.9-2.6 1-3.6.3-6.4.3-6.4.3s-3 0-6.4-.3c-.5-.1-1.5-.1-2.4-1-.8-.8-1-2.6-1-2.6s-.3-2.1-.3-4.2v-1.8c0-2.1.3-4.2.3-4.2z">
+                  </path>
+                  <path d="M9.8 14.5l6-3.3-6-3.3v6.6z"></path>
+                </svg>
               </a>
             </div>
           </div>
