@@ -2167,7 +2167,7 @@ body.light-theme .hello-svg {
 }
 
 .stat-box p {
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   font-weight: 500;
   text-transform: uppercase;
