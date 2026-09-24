@@ -60,42 +60,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealElements.forEach(el => revealObserver.observe(el));
 
-  // --- Form Handling ---
-  const contactForm = document.getElementById('contact-form');
-  const formStatus = document.getElementById('form-status');
+// --- Form Handling ---
+const contactForm = document.getElementById('contact-form');
+const formStatus = document.getElementById('form-status');
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const btn = contactForm.querySelector('button[type="submit"]');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Sending...';
-      lucide.createIcons();
-      
-      try {
-        const response = await fetch(contactForm.action, {
-          method: 'POST',
-          body: new FormData(contactForm),
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          showToast('Message sent successfully! I will reply soon.', 'success');
-          contactForm.reset();
-        } else {
-          throw new Error('Network response was not ok');
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const btn = contactForm.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Sending...';
+    lucide.createIcons();
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: {
+          'Accept': 'application/json'
         }
-      } catch (error) {
-        showToast('Something went wrong. Please try again.', 'error');
-      } finally {
-        btn.innerHTML = originalText;
-        lucide.createIcons();
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showToast('Message sent successfully! I will reply soon.', 'success');
+        contactForm.reset();
+      } else {
+        console.error('Formspree Error:', data);
+
+        const errorMessage =
+          data?.errors?.map(error => error.message).join(', ') ||
+          data?.error ||
+          'Unable to send your message. Please try again.';
+
+        showToast(errorMessage, 'error');
       }
-    });
-  }
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+      showToast('Network error. Please check your internet connection.', 'error');
+
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+      lucide.createIcons();
+    }
+  });
+}
 
   // Back to Top Button removed
   // --- Active Nav Link (Scroll Spy) ---
