@@ -698,28 +698,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initParticles() {
       particlesArray = [];
-      canvas.width = canvas.parentElement.offsetWidth;
-      canvas.height = canvas.parentElement.offsetHeight;
-      let numberOfParticles = (canvas.width * canvas.height) / 9000;
+      const parentW = canvas.parentElement ? canvas.parentElement.offsetWidth : window.innerWidth;
+      const parentH = canvas.parentElement ? canvas.parentElement.offsetHeight : window.innerHeight;
+      if (parentW <= 0 || parentH <= 0) return;
+      
+      canvas.width = parentW;
+      canvas.height = parentH;
+
+      const isMobileDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches || (window.innerWidth < 768);
+      const numberOfParticles = isMobileDevice 
+        ? Math.min(16, Math.max(8, Math.floor((canvas.width * canvas.height) / 32000)))
+        : Math.floor((canvas.width * canvas.height) / 9000);
+
       for (let i = 0; i < numberOfParticles; i++) {
         let size = (Math.random() * 2) + 1;
         let x = (Math.random() * ((canvas.width - size * 2) - (size * 2)) + size * 2);
         let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
-        let directionX = (Math.random() * 2) - 1;
-        let directionY = (Math.random() * 2) - 1;
+        let directionX = (Math.random() * 1.5) - 0.75;
+        let directionY = (Math.random() * 1.5) - 0.75;
         particlesArray.push(new Particle(x, y, directionX, directionY, size));
       }
     }
 
     function connect() {
-      let opacityValue = 1;
+      if (particlesArray.length < 2) return;
+      const isMobileDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches || (window.innerWidth < 768);
+      
+      // On mobile, limit connection checks to nearest neighbors to prevent O(N²) CPU stalls
+      const maxInner = isMobileDevice ? 2 : particlesArray.length;
+      const distLimit = isMobileDevice ? (canvas.width / 9) * (canvas.height / 9) : (canvas.width / 7) * (canvas.height / 7);
+
       for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-          let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
-            ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-          if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-            opacityValue = 1 - (distance / 15000);
-            ctx.strokeStyle = isDarkTheme ? `rgba(255, 0, 124, ${opacityValue * 0.4})` : `rgba(0, 240, 255, ${opacityValue * 0.3})`;
+        const endB = isMobileDevice ? Math.min(particlesArray.length, a + maxInner) : particlesArray.length;
+        for (let b = a + 1; b < endB; b++) {
+          let dx = particlesArray[a].x - particlesArray[b].x;
+          let dy = particlesArray[a].y - particlesArray[b].y;
+          let distance = dx * dx + dy * dy;
+          if (distance < distLimit) {
+            let opacityValue = 1 - (distance / 15000);
+            ctx.strokeStyle = isDarkTheme ? `rgba(255, 0, 124, ${opacityValue * 0.35})` : `rgba(0, 240, 255, ${opacityValue * 0.25})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particlesArray[a].x, particlesArray[a].y);

@@ -2745,6 +2745,22 @@ body.light-theme .ar7-click-pulse::after {
   a, button, .custom-option, .custom-select-trigger, [role="button"] {
     cursor: pointer !important;
   }
+
+  /* Mobile Hero Rendering Performance Optimization */
+  .hero-section {
+    contain: layout style paint;
+  }
+  .dark-only-bg, .light-only-bg {
+    transform: translateZ(0);
+    will-change: auto;
+  }
+  .text-gradient {
+    animation: none !important;
+    background-position: 0% 50% !important;
+  }
+  .hero-bg-light::before {
+    animation-duration: 35s !important;
+  }
 }
 
 .toast-container {

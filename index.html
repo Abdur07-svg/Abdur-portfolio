@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 
-  <link rel="stylesheet" href="style.css?v=18">
+  <link rel="stylesheet" href="style.css?v=19">
 
   <!-- Favicons for Light Mode -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon1-32.png" media="(prefers-color-scheme: light)">
@@ -741,14 +741,34 @@
       const canvas = document.getElementById('aurora-canvas');
       if (!canvas) return;
 
+      const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
+      const isMobile = isTouch || (window.innerWidth < 768);
+      const isLowEnd = isMobile && (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, powerPreference: 'low-power', antialias: false });
+      } catch (e) {
+        console.warn('WebGL initialization failed, falling back to CSS background');
+        return;
+      }
+
+      // Capped DPR for mobile to prevent GPU fill-rate exhaustion
+      const pixelRatio = isMobile ? Math.min(window.devicePixelRatio || 1, 0.75) : Math.min(window.devicePixelRatio || 1, 2);
+      renderer.setPixelRatio(pixelRatio);
+
       const scene = new THREE.Scene();
       const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
       
+      const maxIterValue = isMobile ? (isLowEnd ? 10.0 : 15.0) : 32.0;
+      const octavesValue = isMobile ? (isLowEnd ? 1.0 : 2.0) : 3.0;
+
       const material = new THREE.ShaderMaterial({
           uniforms: {
               iTime: { value: 0 },
-              iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+              iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+              uMaxIter: { value: maxIterValue },
+              uOctaves: { value: octavesValue }
           },
           vertexShader: `
               void main() {
@@ -758,8 +778,8 @@
           fragmentShader: `
               uniform float iTime;
               uniform vec2 iResolution;
-
-              #define NUM_OCTAVES 3
+              uniform float uMaxIter;
+              uniform float uOctaves;
 
               float rand(vec2 n) { 
                   return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
@@ -781,17 +801,22 @@
                   float a = 0.3;
                   vec2 shift = vec2(100.0);    
                   mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
-                  for (int i = 0; i < NUM_OCTAVES; ++i) {
-                      v += a * noise(x);
+                  v += a * noise(x);
+                  if (uOctaves > 1.5) {
                       x = rot * x * 2.0 + shift;
                       a *= 0.4;
+                      v += a * noise(x);
+                  }
+                  if (uOctaves > 2.5) {
+                      x = rot * x * 2.0 + shift;
+                      a *= 0.4;
+                      v += a * noise(x);
                   }
                   return v;
               }
 
               void main() {
                   vec2 shake = vec2(sin(iTime * 1.2) * 0.005, cos(iTime * 2.1) * 0.005);
-                  
                   vec2 p = ((gl_FragCoord.xy + shake * iResolution.xy) - iResolution.xy * 0.5) / iResolution.y * mat2(6.0, -4.0, 4.0, 6.0);
                   vec2 v;
                   vec4 o = vec4(0.0);
@@ -800,9 +825,10 @@
                   
                   for(float i = 0.0; i++ < 35.0;)
                   {
+                      if (i > uMaxIter) break;
                       v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5 + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
                       
-                      float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0)); 
+                      float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / uMaxIter)); 
                       
                       vec4 auroraColors = vec4(
                           0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
@@ -813,7 +839,7 @@
                       
                       vec4 currentContribution = auroraColors * exp(sin(i * i + iTime * 0.8)) / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));
                       
-                      float thinnessFactor = smoothstep(0.0, 1.0, i / 35.0) * 0.6; 
+                      float thinnessFactor = smoothstep(0.0, 1.0, i / uMaxIter) * (32.0 / uMaxIter) * 0.6; 
                       o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor;
                   }
                   
@@ -835,13 +861,16 @@
       let isHeroVisible = false;
 
       function resize() {
-          const width = canvas.parentElement.clientWidth || window.innerWidth;
-          const height = canvas.parentElement.clientHeight || window.innerHeight;
-          renderer.setSize(width, height);
-          material.uniforms.iResolution.value.set(width, height);
+          const width = canvas.parentElement ? canvas.parentElement.clientWidth : window.innerWidth;
+          const height = canvas.parentElement ? canvas.parentElement.clientHeight : window.innerHeight;
+          if (width > 0 && height > 0) {
+              renderer.setSize(width, height, false);
+              material.uniforms.iResolution.value.set(width, height);
+          }
       }
       
       window.addEventListener('resize', resize, { passive: true });
+      window.addEventListener('orientationchange', resize, { passive: true });
       resize();
 
       function animate() {
@@ -893,7 +922,7 @@
   <!-- GSAP & ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="script.js?v=11"></script>
+  <script src="script.js?v=12"></script>
 </body>
 
 </html>
