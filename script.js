@@ -721,4 +721,333 @@ document.addEventListener('DOMContentLoaded', () => {
       animateParticles();
     }, 100);
   }
+
+  // Custom Select Logic
+  const selectWrappers = document.querySelectorAll('.custom-select-wrapper');
+  selectWrappers.forEach(wrapper => {
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+    const options = wrapper.querySelector('.custom-select-options');
+    const optionElements = wrapper.querySelectorAll('.custom-option');
+    const valueDisplay = wrapper.querySelector('.custom-select-value');
+    const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = options.style.display === 'block';
+      document.querySelectorAll('.custom-select-options').forEach(opt => opt.style.display = 'none');
+      options.style.display = isOpen ? 'none' : 'block';
+    });
+
+    optionElements.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        valueDisplay.textContent = option.textContent;
+        hiddenInput.value = option.dataset.value;
+        options.style.display = 'none';
+        valueDisplay.style.color = 'var(--text-primary)';
+      });
+    });
+
+    document.addEventListener('click', () => {
+      options.style.display = 'none';
+    });
+  });
+
+  // Initialize Interactive Physics Spider-Man & Web
+  initSpidermanPhysics();
 });
+
+/* ==========================================================================
+   Interactive Spider-Man Hanging Directly from Navbar (AR Logo Area)
+   Verlet Integration Multi-Segment Single-Web Physics Simulation
+   ========================================================================== */
+function initSpidermanPhysics() {
+  const container = document.getElementById('spiderman-hanging-system');
+  const webOutline = document.getElementById('spiderman-web-outline');
+  const webSilk = document.getElementById('spiderman-web-silk');
+  const character = document.getElementById('spiderman-character');
+  const navbar = document.getElementById('navbar');
+
+  if (!container || !webOutline || !webSilk || !character || !navbar) return;
+
+  const NUM_POINTS = 10;
+  let points = [];
+  let restLength = 135;
+  let segmentLength = restLength / (NUM_POINTS - 1);
+  let anchorX = 0;
+  let anchorY = 0;
+
+  // Interaction and velocity tracking
+  let isDragging = false;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+  let lastPointerX = 0;
+  let lastPointerY = 0;
+  let pointerVx = 0;
+  let pointerVy = 0;
+  let lastMoveTime = performance.now();
+  let characterAngle = 0;
+  let characterAngularVelocity = 0;
+  let idleTime = 0;
+
+  // Physics constants
+  const GRAVITY = 0.42;
+  const DAMPING = 0.985;
+  const CONSTRAINT_ITERATIONS = 8;
+  const ANGULAR_SPRING = 0.09;
+  const ANGULAR_DAMPING = 0.86;
+
+  function getNavbarAnchor() {
+    const brandEl = navbar.querySelector('.nav-brand') || navbar.querySelector('.brand-link');
+    const navRect = navbar.getBoundingClientRect();
+    if (brandEl) {
+      const brandRect = brandEl.getBoundingClientRect();
+      return {
+        x: brandRect.left + brandRect.width * 0.5,
+        y: navRect.bottom - 2
+      };
+    }
+    return {
+      x: navRect.left + 48,
+      y: navRect.bottom - 2
+    };
+  }
+
+  function updateDimensions() {
+    const isMobile = window.innerWidth < 768;
+    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+
+    if (window.innerWidth < 480) {
+      restLength = 65;
+    } else if (isMobile) {
+      restLength = 80;
+    } else if (isTablet) {
+      restLength = 115;
+    } else {
+      restLength = 135;
+    }
+    segmentLength = restLength / (NUM_POINTS - 1);
+
+    const anchor = getNavbarAnchor();
+    anchorX = anchor.x;
+    anchorY = anchor.y;
+
+    if (points.length !== NUM_POINTS) {
+      points = [];
+      for (let i = 0; i < NUM_POINTS; i++) {
+        const y = anchorY + i * segmentLength;
+        const x = anchorX;
+        points.push({
+          x: x,
+          y: y,
+          oldX: x,
+          oldY: y,
+          isPinned: i === 0
+        });
+      }
+    } else {
+      points[0].x = anchorX;
+      points[0].y = anchorY;
+    }
+
+    // Immediately position character underneath the AR logo
+    const endPoint = points[points.length - 1];
+    character.style.transform = `translate3d(${endPoint.x}px, ${endPoint.y}px, 0) translate(-50%, 0) rotate(0deg)`;
+    character.style.opacity = '1';
+
+    const pathD = generateWebPath(points);
+    if (webOutline) webOutline.setAttribute('d', pathD);
+    if (webSilk) webSilk.setAttribute('d', pathD);
+  }
+
+  updateDimensions();
+  window.addEventListener('resize', updateDimensions);
+  window.addEventListener('scroll', () => {
+    const anchor = getNavbarAnchor();
+    anchorX = anchor.x;
+    anchorY = anchor.y;
+    if (points.length > 0) {
+      points[0].x = anchorX;
+      points[0].y = anchorY;
+    }
+  }, { passive: true });
+
+  // Generate single continuous smooth spline path
+  function generateWebPath(pts) {
+    if (pts.length < 2) return '';
+    let pathD = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const xc = (pts[i].x + pts[i + 1].x) / 2;
+      const yc = (pts[i].y + pts[i + 1].y) / 2;
+      pathD += ` Q ${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)}, ${xc.toFixed(1)} ${yc.toFixed(1)}`;
+    }
+    const last = pts[pts.length - 1];
+    pathD += ` L ${last.x.toFixed(1)} ${last.y.toFixed(1)}`;
+    return pathD;
+  }
+
+  // Pointer drag handling
+  function onPointerDown(e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    
+    // Prevent accidental mobile page scroll during character drag
+    if (e.cancelable) e.preventDefault();
+
+    isDragging = true;
+    character.classList.add('is-dragging');
+
+    const endPoint = points[points.length - 1];
+    dragOffsetX = endPoint.x - e.clientX;
+    dragOffsetY = endPoint.y - e.clientY;
+
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
+    pointerVx = 0;
+    pointerVy = 0;
+    lastMoveTime = performance.now();
+
+    try {
+      character.setPointerCapture(e.pointerId);
+    } catch (err) {}
+  }
+
+  function onPointerMove(e) {
+    if (!isDragging) return;
+
+    if (e.cancelable) e.preventDefault();
+
+    const now = performance.now();
+    const dt = Math.max(8, now - lastMoveTime);
+
+    const vx = ((e.clientX - lastPointerX) / dt) * 16.67;
+    const vy = ((e.clientY - lastPointerY) / dt) * 16.67;
+    pointerVx = pointerVx * 0.35 + vx * 0.65;
+    pointerVy = pointerVy * 0.35 + vy * 0.65;
+
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
+    lastMoveTime = now;
+
+    const targetX = e.clientX + dragOffsetX;
+    const targetY = Math.max(anchorY + 25, e.clientY + dragOffsetY);
+
+    const endPoint = points[points.length - 1];
+    endPoint.x = targetX;
+    endPoint.y = targetY;
+    endPoint.oldX = targetX - pointerVx * 0.45;
+    endPoint.oldY = targetY - pointerVy * 0.45;
+  }
+
+  function onPointerUp(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    character.classList.remove('is-dragging');
+
+    try {
+      character.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+
+    const clampedVx = Math.max(-28, Math.min(28, pointerVx * 1.15));
+    const clampedVy = Math.max(-24, Math.min(28, pointerVy * 1.15));
+
+    const endPoint = points[points.length - 1];
+    endPoint.oldX = endPoint.x - clampedVx;
+    endPoint.oldY = endPoint.y - clampedVy;
+
+    for (let i = 1; i < points.length - 1; i++) {
+      const factor = i / points.length;
+      points[i].oldX = points[i].x - clampedVx * factor * 0.75;
+      points[i].oldY = points[i].y - clampedVy * factor * 0.75;
+    }
+  }
+
+  character.addEventListener('pointerdown', onPointerDown);
+  window.addEventListener('pointermove', onPointerMove, { passive: false });
+  window.addEventListener('pointerup', onPointerUp);
+  window.addEventListener('pointercancel', onPointerUp);
+
+  // Physics loop
+  function physicsStep() {
+    idleTime += 0.022;
+
+    // Anchor updates continuously in case navbar is animated / adjusted
+    const anchor = getNavbarAnchor();
+    anchorX = anchor.x;
+    anchorY = anchor.y;
+    points[0].x = anchorX;
+    points[0].y = anchorY;
+
+    // 1. Verlet Integration
+    for (let i = 1; i < NUM_POINTS; i++) {
+      const p = points[i];
+      if (p.isPinned) continue;
+      if (isDragging && i === NUM_POINTS - 1) continue;
+
+      let vx = (p.x - p.oldX) * DAMPING;
+      let vy = (p.y - p.oldY) * DAMPING;
+
+      if (!isDragging) {
+        const ambientSway = Math.sin(idleTime * 1.4 + i * 0.25) * 0.05 * (i / NUM_POINTS);
+        vx += ambientSway;
+      }
+
+      p.oldX = p.x;
+      p.oldY = p.y;
+      p.x += vx;
+      p.y += vy + GRAVITY;
+    }
+
+    // 2. Constraint Relaxation
+    for (let iter = 0; iter < CONSTRAINT_ITERATIONS; iter++) {
+      for (let i = 0; i < NUM_POINTS - 1; i++) {
+        const p1 = points[i];
+        const p2 = points[i + 1];
+
+        const dx = p2.x - p1.x;
+        const dy = p2.y - p1.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+        const diff = (dist - segmentLength) / dist;
+
+        if (p1.isPinned) {
+          if (!p2.isPinned && !(isDragging && i + 1 === NUM_POINTS - 1)) {
+            p2.x -= dx * diff;
+            p2.y -= dy * diff;
+          }
+        } else if (p2.isPinned || (isDragging && i + 1 === NUM_POINTS - 1)) {
+          p1.x += dx * diff;
+          p1.y += dy * diff;
+        } else {
+          p1.x += dx * 0.5 * diff;
+          p1.y += dy * 0.5 * diff;
+          p2.x -= dx * 0.5 * diff;
+          p2.y -= dy * 0.5 * diff;
+        }
+      }
+    }
+
+    // 3. Render single continuous web line
+    const pathD = generateWebPath(points);
+    webOutline.setAttribute('d', pathD);
+    webSilk.setAttribute('d', pathD);
+
+    // 4. Update Spider-Man Transform & Orientation
+    const endPoint = points[NUM_POINTS - 1];
+    const prevPoint = points[NUM_POINTS - 2];
+    const p3 = points[NUM_POINTS - 3] || prevPoint;
+
+    const dx = endPoint.x - (prevPoint.x * 0.65 + p3.x * 0.35);
+    const dy = endPoint.y - (prevPoint.y * 0.65 + p3.y * 0.35);
+    const targetAngle = Math.atan2(dx, Math.max(5, dy)) * (180 / Math.PI);
+
+    const angleDiff = -targetAngle - characterAngle;
+    characterAngularVelocity += angleDiff * ANGULAR_SPRING;
+    characterAngularVelocity *= ANGULAR_DAMPING;
+    characterAngle += characterAngularVelocity;
+
+    character.style.transform = `translate3d(${endPoint.x}px, ${endPoint.y}px, 0) translate(-50%, 0) rotate(${characterAngle.toFixed(2)}deg)`;
+
+    requestAnimationFrame(physicsStep);
+  }
+
+  requestAnimationFrame(physicsStep);
+}
