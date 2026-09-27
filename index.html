@@ -10,14 +10,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Caveat:wght@400..700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Caveat:wght@400..700&family=Poppins:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
-  
-  <link rel="stylesheet" href="style.css?v=5">
+
+  <link rel="stylesheet" href="style.css?v=16">
 
   <!-- Favicons for Light Mode -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon1-32.png" media="(prefers-color-scheme: light)">
@@ -43,7 +43,7 @@
   </div>
 
   <!-- Navigation -->
-  <nav id="navbar" class="navbar">
+  <nav id="navbar" class="navbar" style="overflow: visible;">
     <div class="nav-brand">
       <a href="#hero" class="brand-link" aria-label="Logo">
         <img src="images/ar-logo.svg" alt="AR Logo Light" class="nav-logo logo-light"
@@ -93,6 +93,17 @@
     </div>
   </nav>
 
+  <!-- Interactive Spider-Man Hanging from Navbar -->
+  <div id="spiderman-hanging-system" class="spiderman-hanging-system" aria-label="Interactive Spider-Man hanging from navbar">
+    <svg id="spiderman-web-svg" class="spiderman-web-svg" xmlns="http://www.w3.org/2000/svg">
+      <path id="spiderman-web-outline" class="spiderman-web-outline" d=""></path>
+      <path id="spiderman-web-silk" class="spiderman-web-silk" d=""></path>
+    </svg>
+    <div id="spiderman-character" class="spiderman-character" tabindex="0" role="button" aria-label="Spider-Man interactive character. Drag and swing!">
+      <img src="images/spiderman-body.png" alt="Spider-Man Hanging" class="spiderman-sprite" draggable="false">
+    </div>
+  </div>
+
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobile-menu">
     <div class="mobile-links">
@@ -104,9 +115,17 @@
   </div>
 
   <!-- Hero Section -->
-  <section id="hero" class="hero-section">
-    <div class="hero-bg-grid"></div>
-    <canvas id="hero-particles" class="hero-particles"></canvas>
+  <section id="hero" class="hero-section" style="position: relative; overflow: hidden;">
+    <!-- WebGL Aurora Background -->
+    <div class="dark-only-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; transition: opacity 0.5s ease;">
+      <canvas id="aurora-canvas" style="width: 100%; height: 100%; pointer-events: none;"></canvas>
+    </div>
+
+    <!-- Light Mode Background -->
+    <div class="hero-bg-light light-only-bg"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; transition: opacity 0.5s ease;">
+      <iframe src="https://my.spline.design/celestialflowabstractdigitalform-ObUlVgj70g2y4bbx5vBKSfxN/" frameborder="0" width="100%" height="100%" id="aura-spline" style="pointer-events: auto;"></iframe>
+    </div>
     <div class="container hero-container"
       style="display: flex; justify-content: center; align-items: center; text-align: center; width: 100%; grid-template-columns: 1fr; position: relative; z-index: 10;">
       <div class="hero-content-anim"
@@ -121,30 +140,32 @@
 
         <!-- Main text -->
         <h1
-          style="font-size: clamp(3rem, 8vw, 6.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.03em;">
-          Hi, I'm <span
-            style="color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(90deg, var(--text-primary), #737373);">Abdur</span>
+          style="font-family: 'Inter', sans-serif; font-size: clamp(3rem, 8vw, 6.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.03em;">
+          Hi, I'm <span class="text-gradient">Abdu</span><span style="position: relative; display: inline-block;">
+            <img src="images/naruto-sitting.png" alt="Naruto"
+              style="position: absolute; width: 0.7em; height: auto; bottom: 45%; left: 35%; transform: translateX(-50%); z-index: 10; pointer-events: none;">
+            <span class="text-gradient">r</span>
+          </span>
           <br />
-          I build digital <span
+          I b<span style="position: relative; display: inline-block;">
+            <img src="images/luffy-sitting.png" alt="Luffy"
+              style="position: absolute; width: 0.55em; height: auto; bottom: 45%; left: 80%; transform: translateX(-50%); z-index: 10; pointer-events: none;">
+            u</span>ild digital <span
             style="font-family: 'Times New Roman', Times, serif; font-style: italic; font-weight: 400; color: var(--text-muted);">experiences.</span>
         </h1>
 
         <!-- Subtext -->
         <p
           style="color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.25rem); max-width: 500px; line-height: 1.6; margin: 0;">
-          A frontend developer passionate about crafting beautiful, interactive, and modern web applications.
+          A Data Science student passionate about machine learning, AI, and building intelligent data-driven solutions.
         </p>
 
         <!-- Action buttons -->
         <div style="display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
-          <a href="#projects"
-            style="padding: 14px 32px; background: var(--text-primary); color: var(--bg-main); border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;"
-            onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+          <a href="#projects" class="btn-view-projects">
             View Projects <i data-lucide="arrow-right" style="width: 18px;"></i>
           </a>
-          <a href="#contact"
-            style="padding: 14px 32px; background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 50px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;"
-            onmouseover="this.style.background='var(--border-color)'" onmouseout="this.style.background='transparent'">
+          <a href="#contact" class="btn-contact">
             Contact Me
           </a>
         </div>
@@ -216,18 +237,20 @@
             <span class="pill"><i data-lucide="map-pin"
                 style="width: 16px; height: 16px; display: inline-block; margin-right: 4px; vertical-align: middle;"></i>
               West Bengal</span>
-            <span class="pill">Web Development</span>
-            <span class="pill">Web Design</span>
-            <span class="pill">AI Integration</span>
+            <span class="pill">Data Science</span>
+            <span class="pill">Machine Learning</span>
+            <span class="pill">Python</span>
           </div>
 
           <p
             style="font-size: 1.1rem; color: var(--text-muted); max-width: 800px; margin-bottom: 40px; line-height: 1.7;">
-            I'm a student from West Bengal and an aspiring software developer with a strong focus on web technologies.
-            Currently preparing to begin my B.Tech in CSE. My journey started with a curiosity for how things work on
-            the internet, which quickly turned into a passion for building websites from scratch using HTML, CSS, and
-            JavaScript. I draw inspiration from my idol, Cristiano Ronaldo. His discipline, consistency, and
-            never-give-up mentality drive me to keep pushing my boundaries in coding and personal growth.
+            I'm a student from West Bengal and an aspiring Data Scientist with a strong focus on AI and machine
+            learning.
+            Currently preparing to begin my B.Tech in CSE (Data Science). My journey started with a curiosity for how
+            algorithms learn from data, which quickly turned into a passion for building predictive models and
+            intelligent solutions using Python. I draw inspiration from my idol, Cristiano Ronaldo. His discipline,
+            consistency, and never-give-up mentality drive me to keep pushing my boundaries in coding and personal
+            growth.
           </p>
 
           <h5 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 24px;">My Journey</h5>
@@ -249,8 +272,9 @@
               <div class="timeline-content"
                 style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
                 <div>
-                  <h6 style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase;">Web Developer</h6>
-                  <p style="color: var(--text-muted);">Learning & Building Real-World Projects</p>
+                  <h6 style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase;">Data Scientist / ML
+                    Engineer</h6>
+                  <p style="color: var(--text-muted);">Learning & Building Predictive Models</p>
                 </div>
                 <span class="timeline-date-simple"
                   style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">Upcoming</span>
@@ -261,9 +285,9 @@
               <div class="timeline-content"
                 style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
                 <div>
-                  <h6 style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase;">AI & Game Dev Explorer
+                  <h6 style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase;">Deep Learning Researcher
                   </h6>
-                  <p style="color: var(--text-muted);">Experimenting with AI APIs and Game Logic</p>
+                  <p style="color: var(--text-muted);">Experimenting with Neural Networks & AI APIs</p>
                 </div>
                 <span class="timeline-date-simple"
                   style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">Upcoming</span>
@@ -282,40 +306,60 @@
     </div>
   </section>
 
-  <!-- Skills Marquee Section -->
-  <section class="skills-marquee-section">
-    <div class="container" style="margin-bottom: 30px;">
+  <!-- Skills Section — Icons with Names -->
+  <section class="skills-grid-section section-padding">
+    <div class="container">
       <div class="section-header reveal-up">
-        <h2 class="section-title">Skills</h2>
+        <h2 class="section-title">Skills & Technologies</h2>
+        <p class="section-subtitle" style="margin-top: 10px; color: var(--text-muted); text-align: center;">The tools
+          and languages I work with</p>
       </div>
-    </div>
-    <div class="marquee-container">
-      <div class="marquee-track">
-        <!-- Original set -->
-        <div class="marquee-item" title="GitHub"><i class="devicon-github-original"></i></div>
-        <div class="marquee-item" title="Figma"><i class="devicon-figma-plain colored"></i></div>
-        <div class="marquee-item" title="VS Code"><i class="devicon-vscode-plain colored"></i></div>
-        <div class="marquee-item" title="Android Studio"><i class="devicon-androidstudio-plain colored"></i></div>
-        <div class="marquee-item" title="Java"><i class="devicon-java-plain colored"></i></div>
-        <div class="marquee-item" title="HTML5"><i class="devicon-html5-plain colored"></i></div>
-        <div class="marquee-item" title="CSS3"><i class="devicon-css3-plain colored"></i></div>
-        <div class="marquee-item" title="JavaScript"><i class="devicon-javascript-plain colored"></i></div>
-        <div class="marquee-item" title="React"><i class="devicon-react-original colored"></i></div>
-        <div class="marquee-item" title="Tailwind CSS"><i class="devicon-tailwindcss-original colored"></i></div>
-        <div class="marquee-item" title="Python"><i class="devicon-python-plain colored"></i></div>
-        
-        <!-- Duplicated set for infinite loop -->
-        <div class="marquee-item" title="GitHub"><i class="devicon-github-original"></i></div>
-        <div class="marquee-item" title="Figma"><i class="devicon-figma-plain colored"></i></div>
-        <div class="marquee-item" title="VS Code"><i class="devicon-vscode-plain colored"></i></div>
-        <div class="marquee-item" title="Android Studio"><i class="devicon-androidstudio-plain colored"></i></div>
-        <div class="marquee-item" title="Java"><i class="devicon-java-plain colored"></i></div>
-        <div class="marquee-item" title="HTML5"><i class="devicon-html5-plain colored"></i></div>
-        <div class="marquee-item" title="CSS3"><i class="devicon-css3-plain colored"></i></div>
-        <div class="marquee-item" title="JavaScript"><i class="devicon-javascript-plain colored"></i></div>
-        <div class="marquee-item" title="React"><i class="devicon-react-original colored"></i></div>
-        <div class="marquee-item" title="Tailwind CSS"><i class="devicon-tailwindcss-original colored"></i></div>
-        <div class="marquee-item" title="Python"><i class="devicon-python-plain colored"></i></div>
+
+      <div class="skills-grid reveal-up">
+        <div class="skill-item-simple">
+          <i class="devicon-python-plain colored skill-icon" title="Python"></i>
+          <span class="skill-name">Python</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-pandas-plain colored skill-icon" title="Pandas"></i>
+          <span class="skill-name">Pandas</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-numpy-plain colored skill-icon" title="NumPy"></i>
+          <span class="skill-name">NumPy</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-tensorflow-original colored skill-icon" title="TensorFlow"></i>
+          <span class="skill-name">TensorFlow</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-pytorch-original colored skill-icon" title="PyTorch"></i>
+          <span class="skill-name">PyTorch</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-jupyter-plain colored skill-icon" title="Jupyter"></i>
+          <span class="skill-name">Jupyter</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-azuresqldatabase-plain colored skill-icon" title="SQL"></i>
+          <span class="skill-name">SQL</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-cplusplus-plain colored skill-icon" title="C++"></i>
+          <span class="skill-name">C++</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-java-plain colored skill-icon" title="Java"></i>
+          <span class="skill-name">Java</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-github-original skill-icon" title="GitHub"></i>
+          <span class="skill-name">GitHub</span>
+        </div>
+        <div class="skill-item-simple">
+          <i class="devicon-vscode-plain colored skill-icon" title="VS Code"></i>
+          <span class="skill-name">VS Code</span>
+        </div>
       </div>
     </div>
   </section>
@@ -349,58 +393,64 @@
 
         <!-- Project 2 -->
         <li class="expanding-card" data-index="1" tabindex="0">
-          <img src="images/photo_enhance.png" alt="Photo Enhancer" class="card-bg-img"
-            onerror="this.src='https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=1200'" />
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200"
+            alt="Customer Segmentation Analytics" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
-            <h3 class="card-title-vertical">Photo Enhancer</h3>
-            <div class="card-icon"><i data-lucide="image" style="width: 24px; height: 24px;"></i></div>
-            <h3 class="card-title-expanded">Photo Enhancer</h3>
-            <p class="card-desc">A modern web tool for enhancing photos, focusing on an intuitive user interface and
-              smooth image processing features.</p>
+            <h3 class="card-title-vertical">Data Analytics</h3>
+            <div class="card-icon"><i data-lucide="bar-chart-2" style="width: 24px; height: 24px;"></i></div>
+            <h3 class="card-title-expanded">Customer Segmentation</h3>
+            <p class="card-desc">An exploratory data analysis and clustering project to identify key customer segments
+              using K-Means and Pandas.</p>
             <div class="card-tech">
-              <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+              <span class="tech-pill">Python</span><span class="tech-pill">Pandas</span><span
+                class="tech-pill">Scikit-learn</span>
             </div>
-            <a href="https://abdur07-svg.github.io/AR-Photo-Enhancer/" target="_blank" rel="noopener noreferrer"
-              class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link"
+                style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 3 -->
         <li class="expanding-card" data-index="2" tabindex="0">
-          <img src="images/fifa_2026.png" alt="FIFA 2026 Guide" class="card-bg-img"
-            onerror="this.src='https://images.unsplash.com/photo-1518605368461-1e1252220a4c?auto=format&fit=crop&w=1200'" />
+          <img src="https://images.unsplash.com/photo-1527474305487-b87b222841cc?auto=format&fit=crop&w=1200"
+            alt="Predictive Sales Model" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1527474305487-b87b222841cc?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
-            <h3 class="card-title-vertical">FIFA 2026</h3>
-            <div class="card-icon"><i data-lucide="trophy" style="width: 24px; height: 24px;"></i></div>
-            <h3 class="card-title-expanded">FIFA 2026 Guide</h3>
-            <p class="card-desc">A comprehensive web guide dedicated to the upcoming FIFA 2026 World Cup, featuring
-              clean layouts and dynamic data presentation.</p>
+            <h3 class="card-title-vertical">Predictive ML</h3>
+            <div class="card-icon"><i data-lucide="trending-up" style="width: 24px; height: 24px;"></i></div>
+            <h3 class="card-title-expanded">Predictive Sales Model</h3>
+            <p class="card-desc">A machine learning regression model designed to forecast future sales based on
+              historical data patterns and trends.</p>
             <div class="card-tech">
-              <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+              <span class="tech-pill">Python</span><span class="tech-pill">XGBoost</span><span
+                class="tech-pill">NumPy</span>
             </div>
-            <a href="https://abdur07-svg.github.io/Abdur-FIFA-2026-Guide/" target="_blank" rel="noopener noreferrer"
-              class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link"
+                style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 4 -->
         <li class="expanding-card" data-index="3" tabindex="0">
-          <img src="images/transloter.png" alt="Translator" class="card-bg-img"
-            onerror="this.src='https://images.unsplash.com/photo-1451226428352-cf66bf8a0317?auto=format&fit=crop&w=1200'" />
+          <img src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=1200"
+            alt="Computer Vision App" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
-            <h3 class="card-title-vertical">Translator</h3>
-            <div class="card-icon"><i data-lucide="languages" style="width: 24px; height: 24px;"></i></div>
-            <h3 class="card-title-expanded">Translator</h3>
-            <p class="card-desc">A modern web tool for translating text to different languages, focusing on an intuitive
-              user interface and smooth translation features.</p>
+            <h3 class="card-title-vertical">Computer Vision</h3>
+            <div class="card-icon"><i data-lucide="eye" style="width: 24px; height: 24px;"></i></div>
+            <h3 class="card-title-expanded">Image Classification</h3>
+            <p class="card-desc">A deep learning model utilizing Convolutional Neural Networks (CNN) to accurately
+              classify and detect objects in images.</p>
             <div class="card-tech">
-              <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+              <span class="tech-pill">TensorFlow</span><span class="tech-pill">OpenCV</span><span
+                class="tech-pill">Python</span>
             </div>
-            <a href="https://abdur07-svg.github.io/Translator/" target="_blank" rel="noopener noreferrer"
-              class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link"
+                style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
@@ -422,18 +472,21 @@
           </article>
         </li>
 
+        <!-- Project 6 -->
         <li class="expanding-card" data-index="5" tabindex="0">
-          <img src="images/calculator.png" alt="Calculator" class="card-bg-img"
-            onerror="this.src='https://images.unsplash.com/photo-1451226428352-cf66bf8a0317?auto=format&fit=crop&w=1200'" />
+          <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200"
+            alt="NLP Sentiment Analysis" class="card-bg-img"
+            onerror="this.src='https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
-            <h3 class="card-title-vertical">Calculator</h3>
-            <div class="card-icon"><i data-lucide="calculator" style="width: 24px; height: 24px;"></i></div>
-            <h3 class="card-title-expanded">Calculator</h3>
-            <p class="card-desc">A simple yet elegant calculator application with a clean design and smooth
-              functionality.</p>
+            <h3 class="card-title-vertical">NLP</h3>
+            <div class="card-icon"><i data-lucide="message-square" style="width: 24px; height: 24px;"></i></div>
+            <h3 class="card-title-expanded">Sentiment Analyzer</h3>
+            <p class="card-desc">Natural Language Processing model to analyze text data and predict user sentiment as
+              positive, negative, or neutral.</p>
             <div class="card-tech">
-              <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span>
+              <span class="tech-pill">NLTK</span><span class="tech-pill">PyTorch</span><span
+                class="tech-pill">Python</span>
             </div>
             <a href="https://abdur07-svg.github.io/Nexus-Calculator/" target="_blank" rel="noopener noreferrer"
               class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
@@ -524,7 +577,21 @@
             <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <input type="text" name="name" placeholder="Name" required class="vgil-input">
-              <input type="text" name="surname" placeholder="Surname" class="vgil-input">
+              <div class="custom-select-wrapper" style="position: relative; width: 100%;">
+                <input type="hidden" name="subject" required>
+                <div class="custom-select-trigger vgil-input"
+                  style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: var(--text-secondary); width: 100%;">
+                  <span class="custom-select-value">Subject</span>
+                  <i data-lucide="chevron-down" style="width: 16px; height: 16px; color: var(--text-muted);"></i>
+                </div>
+                <div class="custom-select-options"
+                  style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; margin-top: 4px; z-index: 50; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);">
+                  <div class="custom-option" data-value="General Inquiry">General Inquiry</div>
+                  <div class="custom-option" data-value="Project Proposal">Project Proposal</div>
+                  <div class="custom-option" data-value="Feedback">Feedback</div>
+                  <div class="custom-option" data-value="Other">Other</div>
+                </div>
+              </div>
             </div>
             <input type="email" name="email" placeholder="Email" required class="vgil-input">
             <textarea name="message" placeholder="Message" rows="6" required class="vgil-input"
@@ -552,7 +619,8 @@
         <div class="footer-brand-col">
           <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 16px;">Abdur Rajjak</h3>
           <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 300px;">
-            Aspiring software developer passionate about building modern, interactive web experiences and exploring AI.
+            Aspiring Data Scientist passionate about machine learning, extracting insights from data, and building
+            intelligent AI systems.
           </p>
         </div>
         <div class="footer-links-col">
@@ -636,11 +704,161 @@
     </div>
   </footer>
 
-  <div class="custom-cursor"></div>
-  <div class="custom-cursor-follower"></div>
+  <!-- AR7 Futuristic HUD Custom Cursor System -->
+  <div id="ar7-cursor-system" class="ar7-cursor-system" aria-hidden="true">
+    <!-- Trail Ghost Tracers -->
+    <div class="ar7-cursor-trail trail-2"></div>
+    <div class="ar7-cursor-trail trail-1"></div>
+    <!-- Secondary Outer HUD Tracer Orbit -->
+    <div class="ar7-cursor-tracer"></div>
+    <!-- Inner Precision HUD Tracking Ring -->
+    <div class="ar7-cursor-ring">
+      <span class="ar7-ring-bracket b-top"></span>
+      <span class="ar7-ring-bracket b-bottom"></span>
+      <span class="ar7-ring-bracket b-left"></span>
+      <span class="ar7-ring-bracket b-right"></span>
+      <div class="ar7-spider-hud">
+        <svg viewBox="0 0 24 24" class="ar7-spider-svg" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M12 2v20M2 12h20M5 5l14 14M5 19L19 5"/>
+          <circle cx="12" cy="12" r="6" stroke-dasharray="2.5 1.5"/>
+        </svg>
+        <span class="ar7-spider-tag">DRAG</span>
+      </div>
+    </div>
+    <!-- Central Reticle Point -->
+    <div class="ar7-cursor-point">
+      <div class="ar7-point-cross-h"></div>
+      <div class="ar7-point-cross-v"></div>
+      <div class="ar7-point-core"></div>
+    </div>
+  </div>
   <div id="toast-container" class="toast-container"></div>
 
-  <script src="script.js?v=2"></script>
+  <!-- Three.js and Aurora WebGL Shader for Dark Mode -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    (function() {
+      const canvas = document.getElementById('aurora-canvas');
+      if (!canvas) return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+      
+      const material = new THREE.ShaderMaterial({
+          uniforms: {
+              iTime: { value: 0 },
+              iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+          },
+          vertexShader: `
+              void main() {
+                  gl_Position = vec4(position, 1.0);
+              }
+          `,
+          fragmentShader: `
+              uniform float iTime;
+              uniform vec2 iResolution;
+
+              #define NUM_OCTAVES 3
+
+              float rand(vec2 n) { 
+                  return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+              }
+
+              float noise(vec2 p){
+                  vec2 ip = floor(p);
+                  vec2 u = fract(p);
+                  u = u*u*(3.0-2.0*u);
+                  
+                  float res = mix(
+                      mix(rand(ip),rand(ip+vec2(1.0,0.0)),u.x),
+                      mix(rand(ip+vec2(0.0,1.0)),rand(ip+vec2(1.0,1.0)),u.x),u.y);
+                  return res*res;
+              }
+
+              float fbm(vec2 x) {
+                  float v = 0.0;
+                  float a = 0.3;
+                  vec2 shift = vec2(100.0);    
+                  mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
+                  for (int i = 0; i < NUM_OCTAVES; ++i) {
+                      v += a * noise(x);
+                      x = rot * x * 2.0 + shift;
+                      a *= 0.4;
+                  }
+                  return v;
+              }
+
+              void main() {
+                  vec2 shake = vec2(sin(iTime * 1.2) * 0.005, cos(iTime * 2.1) * 0.005);
+                  
+                  vec2 p = ((gl_FragCoord.xy + shake * iResolution.xy) - iResolution.xy * 0.5) / iResolution.y * mat2(6.0, -4.0, 4.0, 6.0);
+                  vec2 v;
+                  vec4 o = vec4(0.0);
+                  
+                  float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5; 
+                  
+                  for(float i = 0.0; i++ < 35.0;)
+                  {
+                      v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5 + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
+                      
+                      float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0)); 
+                      
+                      vec4 auroraColors = vec4(
+                          0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
+                          0.3 + 0.5 * cos(i * 0.3 + iTime * 0.5),
+                          0.7 + 0.3 * sin(i * 0.4 + iTime * 0.3),
+                          1.0
+                      );
+                      
+                      vec4 currentContribution = auroraColors * exp(sin(i * i + iTime * 0.8)) / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));
+                      
+                      float thinnessFactor = smoothstep(0.0, 1.0, i / 35.0) * 0.6; 
+                      o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor;
+                  }
+                  
+                  o = o / 100.0;
+                  vec4 x_pow = pow(o, vec4(1.6));
+                  vec4 e = exp(2.0 * x_pow);
+                  o = (e - 1.0) / (e + 1.0); 
+                  
+                  gl_FragColor = o * 1.5;
+              }
+          `
+      });
+
+      const geometry = new THREE.PlaneGeometry(2, 2);
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      function resize() {
+          const width = canvas.parentElement.clientWidth || window.innerWidth;
+          const height = canvas.parentElement.clientHeight || window.innerHeight;
+          renderer.setSize(width, height);
+          material.uniforms.iResolution.value.set(width, height);
+      }
+      
+      window.addEventListener('resize', resize);
+      resize();
+
+      function animate() {
+          requestAnimationFrame(animate);
+          if (document.body.classList.contains('dark-theme')) {
+              material.uniforms.iTime.value += 0.016;
+              renderer.render(scene, camera);
+          }
+      }
+
+      animate();
+    })();
+  </script>
+
+  <!-- Lenis Smooth Scrolling -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="script.js?v=7"></script>
 </body>
 
 </html>
