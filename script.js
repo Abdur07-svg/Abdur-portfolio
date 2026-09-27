@@ -629,7 +629,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   const canvas = document.getElementById('hero-particles');
-  if (canvas) {
+  const isTouchDeviceCheck = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
+  const isMobileForParticles = isTouchDeviceCheck || (window.innerWidth <= 768);
+
+  // Desktop Only: Heavy 2D Canvas Particles
+  if (canvas && !isMobileForParticles) {
     const ctx = canvas.getContext('2d');
     let particlesArray = [];
     let isDarkTheme = document.body.classList.contains('dark-theme');
@@ -639,27 +643,31 @@ document.addEventListener('DOMContentLoaded', () => {
       themeToggle.addEventListener('click', () => {
         setTimeout(() => {
           isDarkTheme = document.body.classList.contains('dark-theme');
-          initParticles(); // Re-init with new colors
+          initParticles();
         }, 50);
       });
     }
 
     window.addEventListener('resize', () => {
+      if (window.innerWidth <= 768) {
+        stopParticles();
+        return;
+      }
       canvas.width = canvas.parentElement.offsetWidth;
       canvas.height = canvas.parentElement.offsetHeight;
       initParticles();
-    });
+    }, { passive: true });
 
     const mouse = { x: null, y: null, radius: 150 };
 
     canvas.addEventListener('mousemove', (e) => {
       mouse.x = e.x;
       mouse.y = e.y;
-    });
+    }, { passive: true });
     canvas.addEventListener('mouseleave', () => {
       mouse.x = null;
       mouse.y = null;
-    });
+    }, { passive: true });
 
     class Particle {
       constructor(x, y, directionX, directionY, size) {
@@ -705,38 +713,29 @@ document.addEventListener('DOMContentLoaded', () => {
       canvas.width = parentW;
       canvas.height = parentH;
 
-      const isMobileDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches || (window.innerWidth < 768);
-      const numberOfParticles = isMobileDevice 
-        ? Math.min(16, Math.max(8, Math.floor((canvas.width * canvas.height) / 32000)))
-        : Math.floor((canvas.width * canvas.height) / 9000);
+      const numberOfParticles = Math.floor((canvas.width * canvas.height) / 9000);
 
       for (let i = 0; i < numberOfParticles; i++) {
         let size = (Math.random() * 2) + 1;
         let x = (Math.random() * ((canvas.width - size * 2) - (size * 2)) + size * 2);
         let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
-        let directionX = (Math.random() * 1.5) - 0.75;
-        let directionY = (Math.random() * 1.5) - 0.75;
+        let directionX = (Math.random() * 2) - 1;
+        let directionY = (Math.random() * 2) - 1;
         particlesArray.push(new Particle(x, y, directionX, directionY, size));
       }
     }
 
     function connect() {
       if (particlesArray.length < 2) return;
-      const isMobileDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches || (window.innerWidth < 768);
-      
-      // On mobile, limit connection checks to nearest neighbors to prevent O(N²) CPU stalls
-      const maxInner = isMobileDevice ? 2 : particlesArray.length;
-      const distLimit = isMobileDevice ? (canvas.width / 9) * (canvas.height / 9) : (canvas.width / 7) * (canvas.height / 7);
-
+      let opacityValue = 1;
       for (let a = 0; a < particlesArray.length; a++) {
-        const endB = isMobileDevice ? Math.min(particlesArray.length, a + maxInner) : particlesArray.length;
-        for (let b = a + 1; b < endB; b++) {
+        for (let b = a + 1; b < particlesArray.length; b++) {
           let dx = particlesArray[a].x - particlesArray[b].x;
           let dy = particlesArray[a].y - particlesArray[b].y;
           let distance = dx * dx + dy * dy;
-          if (distance < distLimit) {
-            let opacityValue = 1 - (distance / 15000);
-            ctx.strokeStyle = isDarkTheme ? `rgba(255, 0, 124, ${opacityValue * 0.35})` : `rgba(0, 240, 255, ${opacityValue * 0.25})`;
+          if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+            opacityValue = 1 - (distance / 15000);
+            ctx.strokeStyle = isDarkTheme ? `rgba(255, 0, 124, ${opacityValue * 0.4})` : `rgba(0, 240, 255, ${opacityValue * 0.3})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particlesArray[a].x, particlesArray[a].y);

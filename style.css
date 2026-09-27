@@ -2734,6 +2734,13 @@ body.light-theme .ar7-click-pulse::after {
 /* ==========================================================================
    MOBILE & TOUCH DISABLEMENT
    ========================================================================== */
+/* Mobile Lightweight Hero Backgrounds (Zero JS, Pure GPU-Composited CSS) */
+.mobile-aurora-bg,
+.mobile-particle-grid,
+.mobile-light-hero-bg {
+  display: none !important;
+}
+
 @media (max-width: 768px), (pointer: coarse), (hover: none) {
   .ar7-cursor-system,
   .ar7-click-pulse {
@@ -2744,6 +2751,146 @@ body.light-theme .ar7-click-pulse::after {
   }
   a, button, .custom-option, .custom-select-trigger, [role="button"] {
     cursor: pointer !important;
+  }
+
+  /* Hide heavy desktop canvases & 3D iframes on mobile */
+  #aurora-canvas,
+  #hero-particles,
+  #aura-spline {
+    display: none !important;
+  }
+
+  /* Mobile Dark Mode Background 1: Lightweight Ambient CSS Aurora */
+  .mobile-aurora-bg {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle at 50% 25%, rgba(0, 240, 255, 0.14), transparent 55%),
+                radial-gradient(circle at 15% 65%, rgba(112, 0, 255, 0.18), transparent 60%),
+                radial-gradient(circle at 85% 60%, rgba(255, 0, 124, 0.14), transparent 55%),
+                #070707;
+  }
+
+  .mobile-aurora-bg::before,
+  .mobile-aurora-bg::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.65;
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  .mobile-aurora-bg::before {
+    top: 6%;
+    left: 8%;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(0, 240, 255, 0.38) 0%, rgba(112, 0, 255, 0.22) 60%, transparent 80%);
+    animation: mobileAuroraFlow1 12s ease-in-out infinite alternate;
+  }
+
+  .mobile-aurora-bg::after {
+    bottom: 10%;
+    right: 8%;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(255, 0, 124, 0.32) 0%, rgba(112, 0, 255, 0.2) 60%, transparent 80%);
+    animation: mobileAuroraFlow2 15s ease-in-out infinite alternate;
+  }
+
+  @keyframes mobileAuroraFlow1 {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(24px, -26px, 0) scale(1.1); }
+    100% { transform: translate3d(-18px, 16px, 0) scale(0.95); }
+  }
+
+  @keyframes mobileAuroraFlow2 {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-20px, 22px, 0) scale(1.08); }
+    100% { transform: translate3d(18px, -18px, 0) scale(0.94); }
+  }
+
+  /* Mobile Dark Mode Background 2: Lightweight Futuristic Particle Grid Mesh */
+  .mobile-particle-grid {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background-image: 
+      radial-gradient(rgba(0, 240, 255, 0.22) 1px, transparent 1px),
+      radial-gradient(rgba(255, 0, 124, 0.18) 1px, transparent 1px);
+    background-size: 36px 36px, 72px 72px;
+    background-position: 0 0, 18px 18px;
+    opacity: 0.6;
+    mask-image: radial-gradient(circle at center, black 35%, transparent 82%);
+    -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 82%);
+  }
+
+  /* Mobile Light Mode Background: Fresh, Premium Ambient Cyan/Violet/Pink Flow */
+  .mobile-light-hero-bg {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle at 20% 25%, rgba(0, 208, 221, 0.16), transparent 55%),
+                radial-gradient(circle at 80% 35%, rgba(90, 0, 204, 0.12), transparent 55%),
+                radial-gradient(circle at 50% 75%, rgba(230, 0, 110, 0.1), transparent 50%),
+                #f9fafb;
+  }
+
+  .mobile-light-hero-bg::before,
+  .mobile-light-hero-bg::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.75;
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  .mobile-light-hero-bg::before {
+    top: 8%;
+    left: 8%;
+    width: 270px;
+    height: 270px;
+    background: radial-gradient(circle, rgba(0, 208, 221, 0.32) 0%, rgba(90, 0, 204, 0.15) 60%, transparent 80%);
+    animation: mobileLightGlow1 13s ease-in-out infinite alternate;
+  }
+
+  .mobile-light-hero-bg::after {
+    bottom: 12%;
+    right: 8%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(230, 0, 110, 0.25) 0%, rgba(90, 0, 204, 0.14) 60%, transparent 80%);
+    animation: mobileLightGlow2 16s ease-in-out infinite alternate;
+  }
+
+  @keyframes mobileLightGlow1 {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(20px, -24px, 0) scale(1.1); }
+    100% { transform: translate3d(-16px, 18px, 0) scale(0.95); }
+  }
+
+  @keyframes mobileLightGlow2 {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-22px, 20px, 0) scale(1.08); }
+    100% { transform: translate3d(16px, -18px, 0) scale(0.94); }
   }
 
   /* Mobile Hero Rendering Performance Optimization */
