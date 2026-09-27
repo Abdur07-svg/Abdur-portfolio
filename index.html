@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 
-  <link rel="stylesheet" href="style.css?v=17">
+  <link rel="stylesheet" href="style.css?v=18">
 
   <!-- Favicons for Light Mode -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon1-32.png" media="(prefers-color-scheme: light)">
@@ -831,6 +831,9 @@
       const mesh = new THREE.Mesh(geometry, material);
       scene.add(mesh);
 
+      let animFrameId = null;
+      let isHeroVisible = false;
+
       function resize() {
           const width = canvas.parentElement.clientWidth || window.innerWidth;
           const height = canvas.parentElement.clientHeight || window.innerHeight;
@@ -838,18 +841,50 @@
           material.uniforms.iResolution.value.set(width, height);
       }
       
-      window.addEventListener('resize', resize);
+      window.addEventListener('resize', resize, { passive: true });
       resize();
 
       function animate() {
-          requestAnimationFrame(animate);
+          animFrameId = null;
+          if (!isHeroVisible) return;
+
           if (document.body.classList.contains('dark-theme')) {
               material.uniforms.iTime.value += 0.016;
               renderer.render(scene, camera);
           }
+          animFrameId = requestAnimationFrame(animate);
       }
 
-      animate();
+      function startAurora() {
+          if (!animFrameId && isHeroVisible) {
+              animFrameId = requestAnimationFrame(animate);
+          }
+      }
+
+      function stopAurora() {
+          if (animFrameId) {
+              cancelAnimationFrame(animFrameId);
+              animFrameId = null;
+          }
+      }
+
+      const heroSection = document.getElementById('hero');
+      if (heroSection && 'IntersectionObserver' in window) {
+          const heroObserver = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  isHeroVisible = entry.isIntersecting;
+                  if (isHeroVisible) {
+                      startAurora();
+                  } else {
+                      stopAurora();
+                  }
+              });
+          }, { threshold: 0.01 });
+          heroObserver.observe(heroSection);
+      } else {
+          isHeroVisible = true;
+          startAurora();
+      }
     })();
   </script>
 
@@ -858,7 +893,7 @@
   <!-- GSAP & ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="script.js?v=8"></script>
+  <script src="script.js?v=11"></script>
 </body>
 
 </html>
