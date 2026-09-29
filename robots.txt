@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://abdur07-svg.github.io/Abdur-portfolio/sitemap.xml

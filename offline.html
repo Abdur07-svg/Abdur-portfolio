@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline | Abdur Rajjak Portfolio</title>
+  <meta name="description" content="You are currently offline. Check your connection to access Abdur Rajjak's portfolio.">
+  <meta name="robots" content="noindex, follow">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Favicons for Light Mode -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon1-32.png" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon1-16.png" media="(prefers-color-scheme: light)">
+
+  <!-- Favicons for Dark Mode -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#070707">
+
+  <link rel="stylesheet" href="style.css?v=26">
+  <style>
+    .offline-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      background-color: var(--bg-alt, #070707);
+      color: var(--text-primary, #ffffff);
+      font-family: var(--font-main, 'Poppins', sans-serif);
+    }
+
+    .offline-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .offline-icon-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+      animation: offlinePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes offlinePulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+      }
+    }
+
+    .offline-svg-icon {
+      width: 44px;
+      height: 44px;
+      color: var(--accent-cyan, #00f0ff);
+    }
+
+    .offline-hud-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 50px;
+      color: #f87171;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .status-dot-offline {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: blinkOffline 1.5s infinite;
+    }
+
+    @keyframes blinkOffline {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .offline-title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    .offline-description {
+      color: var(--text-muted, #9ca3af);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+
+    .offline-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-retry {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--text-primary, #ffffff);
+      color: var(--bg-main, #121212);
+      border-radius: 50px;
+      font-family: var(--font-display, 'Poppins', sans-serif);
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-retry:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 240, 255, 0.4);
+      background: var(--accent-cyan, #00f0ff);
+      color: #070707;
+    }
+
+    .btn-retry.checking {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .offline-bg-glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, rgba(112, 0, 255, 0.05) 50%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: blur(50px);
+    }
+  </style>
+</head>
+
+<body class="dark-theme">
+  <div class="offline-page-wrapper">
+    <!-- Navbar -->
+    <nav class="navbar" style="opacity: 1; transform: translateX(-50%); animation: none;" aria-label="Main Navigation">
+      <div class="nav-brand">
+        <a href="index.html" class="brand-link" aria-label="Abdur Rajjak Portfolio Home">
+          <img src="images/ar-logo.svg" alt="AR Logo Light" class="nav-logo logo-light" style="height: 36px; width: auto;" width="36" height="36">
+          <img src="images/ar-logo1.svg" alt="AR Logo Dark" class="nav-logo logo-dark" style="height: 36px; width: auto;" width="36" height="36">
+        </a>
+      </div>
+
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">
+          <span class="nav-link-inner">
+            <span class="nav-link-front">Home</span>
+            <span class="nav-link-back">Home</span>
+          </span>
+        </a>
+        <a href="index.html#projects" class="nav-link">
+          <span class="nav-link-inner">
+            <span class="nav-link-front">Projects</span>
+            <span class="nav-link-back">Projects</span>
+          </span>
+        </a>
+        <a href="index.html#contact" class="nav-link">
+          <span class="nav-link-inner">
+            <span class="nav-link-front">Contact</span>
+            <span class="nav-link-back">Contact</span>
+          </span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Offline Content -->
+    <main class="offline-container">
+      <div class="offline-bg-glow" aria-hidden="true"></div>
+
+      <div class="offline-icon-wrapper" aria-hidden="true">
+        <svg class="offline-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 1l22 22"></path>
+          <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+          <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+          <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+          <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+          <line x1="12" y1="20" x2="12.01" y2="20"></line>
+        </svg>
+      </div>
+
+      <div class="offline-hud-badge">
+        <span class="status-dot-offline"></span>
+        Connection Severed
+      </div>
+
+      <h1 class="offline-title">You're Offline</h1>
+
+      <p class="offline-description">
+        Please check your internet connection and try again. Once you're back online, the full interactive AR7 portfolio will load automatically.
+      </p>
+
+      <div class="offline-actions">
+        <button type="button" id="btn-retry" class="btn-retry" onclick="retryConnection()">
+          <svg style="width: 18px; height: 18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span id="retry-btn-text">Try Again</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer style="padding: 24px 0; border-top: 1px solid var(--border-color, rgba(255,255,255,0.1)); text-align: center; color: var(--text-muted, #9ca3af); font-size: 0.85rem; position: relative; z-index: 10;">
+      <div class="container">
+        <p>&copy; 2026 Abdur Rajjak. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function retryConnection() {
+      const btn = document.getElementById('btn-retry');
+      const text = document.getElementById('retry-btn-text');
+      if (btn) btn.classList.add('checking');
+      if (text) text.textContent = 'Reconnecting...';
+
+      // Check network status
+      if (navigator.onLine) {
+        window.location.href = 'index.html';
+      } else {
+        setTimeout(() => {
+          if (btn) btn.classList.remove('checking');
+          if (text) text.textContent = 'Still Offline — Try Again';
+        }, 800);
+      }
+    }
+
+    // Auto-reload when internet connection is restored
+    window.addEventListener('online', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+
+</html>

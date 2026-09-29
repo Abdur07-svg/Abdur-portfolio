@@ -4,7 +4,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abdur Rajjak - Professional Portfolio</title>
+  <title>Abdur Rajjak | Data Science Student &amp; Developer</title>
+
+  <!-- SEO & Meta Description -->
+  <meta name="description" content="Official portfolio of Abdur Rajjak — B.Tech Data Science student, machine learning enthusiast, and developer building intelligent AI applications, predictive models, and web tools.">
+  <meta name="author" content="Abdur Rajjak">
+  <meta name="keywords" content="Abdur Rajjak, Data Science, Machine Learning, AI Developer, Python, Deep Learning, FileForge, AR7 Portfolio">
+  <link rel="canonical" href="https://abdur07-svg.github.io/Abdur-portfolio/">
+
+  <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://abdur07-svg.github.io/Abdur-portfolio/">
+  <meta property="og:title" content="Abdur Rajjak | Data Science Student &amp; Developer">
+  <meta property="og:description" content="Official portfolio of Abdur Rajjak — B.Tech Data Science student, machine learning enthusiast, and developer building intelligent AI applications, predictive models, and web tools.">
+  <meta property="og:image" content="https://abdur07-svg.github.io/Abdur-portfolio/images/og-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Abdur Rajjak AR7 Developer Portfolio Preview">
+  <meta property="og:site_name" content="Abdur Rajjak Portfolio">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://abdur07-svg.github.io/Abdur-portfolio/">
+  <meta name="twitter:title" content="Abdur Rajjak | Data Science Student &amp; Developer">
+  <meta name="twitter:description" content="Official portfolio of Abdur Rajjak — B.Tech Data Science student, machine learning enthusiast, and developer building intelligent AI applications, predictive models, and web tools.">
+  <meta name="twitter:image" content="https://abdur07-svg.github.io/Abdur-portfolio/images/og-preview.png">
+  <meta name="twitter:creator" content="@Abdur2007">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +42,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 
-  <link rel="stylesheet" href="style.css?v=21">
+  <link rel="stylesheet" href="style.css?v=26">
 
   <!-- Favicons for Light Mode -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon1-32.png" media="(prefers-color-scheme: light)">
@@ -26,6 +51,8 @@
   <!-- Favicons for Dark Mode -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+  <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#070707">
 </head>
 
@@ -43,12 +70,12 @@
   </div>
 
   <!-- Navigation -->
-  <nav id="navbar" class="navbar" style="overflow: visible;">
+  <nav id="navbar" class="navbar" style="overflow: visible;" aria-label="Main Navigation">
     <div class="nav-brand">
       <a href="#hero" class="brand-link" aria-label="Logo">
         <img src="images/ar-logo.svg" alt="AR Logo Light" class="nav-logo logo-light"
-          style="height: 36px; width: auto;">
-        <img src="images/ar-logo1.svg" alt="AR Logo Dark" class="nav-logo logo-dark" style="height: 36px; width: auto;">
+          style="height: 36px; width: auto;" width="36" height="36">
+        <img src="images/ar-logo1.svg" alt="AR Logo Dark" class="nav-logo logo-dark" style="height: 36px; width: auto;" width="36" height="36">
       </a>
     </div>
 
@@ -87,7 +114,7 @@
         <i data-lucide="moon" class="theme-icon-dark" style="width: 20px; height: 20px;"></i>
       </button>
 
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
         <i data-lucide="menu"></i>
       </button>
     </div>
@@ -95,17 +122,17 @@
 
   <!-- Interactive Spider-Man Hanging from Navbar -->
   <div id="spiderman-hanging-system" class="spiderman-hanging-system" aria-label="Interactive Spider-Man hanging from navbar">
-    <svg id="spiderman-web-svg" class="spiderman-web-svg" xmlns="http://www.w3.org/2000/svg">
+    <svg id="spiderman-web-svg" class="spiderman-web-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path id="spiderman-web-outline" class="spiderman-web-outline" d=""></path>
       <path id="spiderman-web-silk" class="spiderman-web-silk" d=""></path>
     </svg>
     <div id="spiderman-character" class="spiderman-character" tabindex="0" role="button" aria-label="Spider-Man interactive character. Drag and swing!">
-      <img src="images/spiderman-body.png" alt="Spider-Man Hanging" class="spiderman-sprite" draggable="false">
+      <img src="images/spiderman-body.png" alt="Spider-Man Hanging" class="spiderman-sprite" draggable="false" width="125" height="180">
     </div>
   </div>
 
   <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <div class="mobile-links">
       <a href="#hero" class="mobile-link">Home</a>
       <a href="#about" class="mobile-link">About</a>
@@ -126,7 +153,7 @@
     <!-- Light Mode Background -->
     <div class="hero-bg-light light-only-bg"
       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; transition: opacity 0.5s ease;">
-      <iframe src="https://my.spline.design/celestialflowabstractdigitalform-ObUlVgj70g2y4bbx5vBKSfxN/" frameborder="0" width="100%" height="100%" id="aura-spline" style="pointer-events: auto;"></iframe>
+      <iframe src="https://my.spline.design/celestialflowabstractdigitalform-ObUlVgj70g2y4bbx5vBKSfxN/" title="3D Digital Light Art" frameborder="0" width="100%" height="100%" id="aura-spline" style="pointer-events: auto;"></iframe>
       <div class="mobile-light-hero-bg" aria-hidden="true"></div>
     </div>
     <div class="container hero-container"
@@ -145,14 +172,16 @@
         <h1
           style="font-family: 'Inter', sans-serif; font-size: clamp(3rem, 8vw, 6.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.03em;">
           Hi, I'm <span class="text-gradient">Abdu</span><span style="position: relative; display: inline-block;">
-            <img src="images/naruto-sitting.png" alt="Naruto"
-              style="position: absolute; width: 0.7em; height: auto; bottom: 45%; left: 35%; transform: translateX(-50%); z-index: 10; pointer-events: none;">
+            <img src="images/naruto-sitting.png" alt="Naruto illustration"
+              style="position: absolute; width: 0.7em; height: auto; bottom: 45%; left: 35%; transform: translateX(-50%); z-index: 10; pointer-events: none;"
+              width="48" height="48">
             <span class="text-gradient">r</span>
           </span>
           <br />
           I b<span style="position: relative; display: inline-block;">
-            <img src="images/luffy-sitting.png" alt="Luffy"
-              style="position: absolute; width: 0.55em; height: auto; bottom: 45%; left: 80%; transform: translateX(-50%); z-index: 10; pointer-events: none;">
+            <img src="images/luffy-sitting.png" alt="Luffy illustration"
+              style="position: absolute; width: 0.55em; height: auto; bottom: 45%; left: 80%; transform: translateX(-50%); z-index: 10; pointer-events: none;"
+              width="48" height="48">
             u</span>ild digital <span
             style="font-family: 'Times New Roman', Times, serif; font-style: italic; font-weight: 400; color: var(--text-muted);">experiences.</span>
         </h1>
@@ -177,7 +206,7 @@
     </div>
 
     <div class="scroll-indicator" style="bottom: 48px;">
-      <a href="#about" class="group" aria-label="Scroll">
+      <a href="#about" class="group" aria-label="Scroll to About section">
         <svg class="w-8 h-8 scroll-arrow" style="color: rgba(255,255,255,0.6);" fill="none" stroke="currentColor"
           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -186,16 +215,14 @@
     </div>
 
     <!-- Hero Social Links (Bottom Left) -->
-    <div class="hero-social-links">
-      <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-          <rect width="4" height="12" x="2" y="9"></rect>
-          <circle cx="4" cy="4" r="2"></circle>
+    <div class="hero-social-links" aria-label="Social Profiles">
+      <a href="https://x.com/Abdur2007" target="_blank" rel="noopener noreferrer" aria-label="Twitter X Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18.2 2h3.4l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.4l7.9-9L1 2h7l4.8 6.4L18.2 2zm-1.2 18h1.9L7.1 4H5.1l11.9 16z"></path>
         </svg>
       </a>
-      <a href="https://github.com/Abdur07-svg" target="_blank" aria-label="GitHub">
+      <a href="https://github.com/Abdur07-svg" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
           <path
@@ -204,7 +231,7 @@
           <path d="M9 18c-4.51 2-5-2-7-2"></path>
         </svg>
       </a>
-      <a href="mailto:abdurrajjak07@example.com" aria-label="Email">
+      <a href="mailto:ar5230305@gmail.com" aria-label="Email Abdur Rajjak">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
           <rect width="20" height="16" x="2" y="4" rx="2"></rect>
@@ -224,9 +251,13 @@
       <div class="about-grid">
         <div class="about-image reveal-up" style="border-radius: 24px; overflow: hidden; max-width: 300px;">
           <div class="face-reveal-container" ontouchstart="">
-            <img src="images/Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Abdur Rajjak" class="face-reveal-img"
-              style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 4/5;"
-              onerror="this.src='images/logo.png'">
+            <picture>
+              <source srcset="images/Gemini_Generated_Image_yrz01syrz01syrz0.webp" type="image/webp">
+              <img src="images/Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Abdur Rajjak portrait" class="face-reveal-img"
+                style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 4/5;"
+                width="300" height="375" loading="lazy" decoding="async"
+                onerror="this.src='images/logo.png'">
+            </picture>
           </div>
         </div>
 
@@ -376,9 +407,13 @@
 
       <ul class="expanding-cards-container reveal-up" id="expanding-cards">
         <!-- Project 1 -->
-        <li class="expanding-card active" data-index="0" tabindex="0">
-          <img src="images/jarvis.png" alt="JARVIS AI Assistant" class="card-bg-img"
-            onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200'" />
+        <li class="expanding-card active" data-index="0" tabindex="0" role="region" aria-label="JARVIS AI Assistant Project Card">
+          <picture>
+            <source srcset="images/jarvis.webp" type="image/webp">
+            <img src="images/jarvis.png" alt="JARVIS AI voice-controlled assistant interface" class="card-bg-img"
+              width="600" height="400" loading="lazy" decoding="async"
+              onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200'" />
+          </picture>
           <div class="card-overlay"></div>
           <article class="card-content">
             <h3 class="card-title-vertical">JARVIS AI</h3>
@@ -390,14 +425,18 @@
               <span class="tech-pill">Python</span><span class="tech-pill">Gemini API</span><span
                 class="tech-pill">LiveKit</span>
             </div>
-            <a href="#" class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="https://github.com/Abdur07-svg" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="View JARVIS AI on GitHub"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 2 -->
-        <li class="expanding-card" data-index="1" tabindex="0">
-          <img src="images/FileForge.png" alt="Customer Segmentation Analytics" class="card-bg-img"
-            onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200'" />
+        <li class="expanding-card" data-index="1" tabindex="0" role="region" aria-label="FileForge Project Card">
+          <picture>
+            <source srcset="images/FileForge.webp" type="image/webp">
+            <img src="images/FileForge.png" alt="FileForge client-side file and image processing web application" class="card-bg-img"
+              width="600" height="400" loading="lazy" decoding="async"
+              onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200'" />
+          </picture>
           <div class="card-overlay"></div>
           <article class="card-content">
             <h3 class="card-title-vertical">File Processing</h3>
@@ -409,15 +448,16 @@
               <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span
                 class="tech-pill">JavaScript</span>
             </div>
-            <a href="https://abdur07-svg.github.io/FileForge/" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link"
+            <a href="https://abdur07-svg.github.io/FileForge/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Launch FileForge Web App"><i data-lucide="external-link"
                 style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 3 -->
-        <li class="expanding-card" data-index="2" tabindex="0">
+        <li class="expanding-card" data-index="2" tabindex="0" role="region" aria-label="Predictive Sales Model Project Card">
           <img src="https://images.unsplash.com/photo-1527474305487-b87b222841cc?auto=format&fit=crop&w=1200"
-            alt="Predictive Sales Model" class="card-bg-img"
+            alt="Predictive sales forecasting machine learning regression model" class="card-bg-img"
+            width="600" height="400" loading="lazy" decoding="async"
             onerror="this.src='https://images.unsplash.com/photo-1527474305487-b87b222841cc?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
@@ -430,15 +470,16 @@
               <span class="tech-pill">Python</span><span class="tech-pill">XGBoost</span><span
                 class="tech-pill">NumPy</span>
             </div>
-            <a href="#" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link"
+            <a href="https://github.com/Abdur07-svg" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="View Predictive Sales Model on GitHub"><i data-lucide="external-link"
                 style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 4 -->
-        <li class="expanding-card" data-index="3" tabindex="0">
+        <li class="expanding-card" data-index="3" tabindex="0" role="region" aria-label="Image Classification Project Card">
           <img src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=1200"
-            alt="Computer Vision App" class="card-bg-img"
+            alt="Computer vision Convolutional Neural Network image classifier" class="card-bg-img"
+            width="600" height="400" loading="lazy" decoding="async"
             onerror="this.src='https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
@@ -451,14 +492,16 @@
               <span class="tech-pill">TensorFlow</span><span class="tech-pill">OpenCV</span><span
                 class="tech-pill">Python</span>
             </div>
-            <a href="#" target="_blank" rel="noopener noreferrer" class="card-link"><i data-lucide="external-link"
+            <a href="https://github.com/Abdur07-svg" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="View Image Classification Project on GitHub"><i data-lucide="external-link"
                 style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 5 -->
-        <li class="expanding-card" data-index="4" tabindex="0">
-          <img src="" alt="Endless Runner Game" class="card-bg-img"
+        <li class="expanding-card" data-index="4" tabindex="0" role="region" aria-label="Endless Runner Game Project Card">
+          <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200"
+            alt="3D endless runner mobile video game development in Android Studio" class="card-bg-img"
+            width="600" height="400" loading="lazy" decoding="async"
             onerror="this.src='https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
@@ -470,14 +513,15 @@
             <div class="card-tech">
               <span class="tech-pill">Android Studio</span><span class="tech-pill">Java</span>
             </div>
-            <a href="#" class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="https://github.com/Abdur07-svg" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="View Endless Runner Game on GitHub"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
 
         <!-- Project 6 -->
-        <li class="expanding-card" data-index="5" tabindex="0">
+        <li class="expanding-card" data-index="5" tabindex="0" role="region" aria-label="Sentiment Analyzer Project Card">
           <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200"
-            alt="NLP Sentiment Analysis" class="card-bg-img"
+            alt="NLP Sentiment Analysis model with PyTorch text processing" class="card-bg-img"
+            width="600" height="400" loading="lazy" decoding="async"
             onerror="this.src='https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200'" />
           <div class="card-overlay"></div>
           <article class="card-content">
@@ -490,8 +534,7 @@
               <span class="tech-pill">NLTK</span><span class="tech-pill">PyTorch</span><span
                 class="tech-pill">Python</span>
             </div>
-            <a href="https://abdur07-svg.github.io/Nexus-Calculator/" target="_blank" rel="noopener noreferrer"
-              class="card-link"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
+            <a href="https://github.com/Abdur07-svg" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="View Sentiment Analyzer on GitHub"><i data-lucide="external-link" style="width: 20px; height: 20px;"></i></a>
           </article>
         </li>
       </ul>
@@ -525,9 +568,13 @@
 
         <div class="contact-left">
           <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-            <img src="images/Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Profile"
-              style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;"
-              onerror="this.src='images/logo.png'">
+            <picture>
+              <source srcset="images/Gemini_Generated_Image_yrz01syrz01syrz0.webp" type="image/webp">
+              <img src="images/Gemini_Generated_Image_yrz01syrz01syrz0.png" alt="Abdur Rajjak profile avatar"
+                style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;"
+                width="80" height="80" loading="lazy" decoding="async"
+                onerror="this.src='images/logo.png'">
+            </picture>
             <div>
               <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Abdur Rajjak</h3>
               <span
@@ -537,9 +584,9 @@
             </div>
           </div>
 
-          <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Useful Links:</h4>
+          <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px;">Direct Profiles:</h4>
           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
-            <a href="https://x.com/Abdur2007" target="_blank" class="pill pill-link" style="gap: 8px;">
+            <a href="https://x.com/Abdur2007" target="_blank" rel="noopener noreferrer" class="pill pill-link" style="gap: 8px;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
@@ -548,7 +595,7 @@
               </svg>
               Twitter
             </a>
-            <a href="https://github.com/Abdur07-svg" target="_blank" class="pill pill-link"
+            <a href="https://github.com/Abdur07-svg" target="_blank" rel="noopener noreferrer" class="pill pill-link"
               style="background: var(--text-primary); color: var(--bg-main); gap: 8px;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -561,52 +608,86 @@
             </a>
           </div>
 
-          <a href="mailto:abdurrajjak07@example.com" class="pill pill-link"
-            style="background: var(--bg-glass); border: 1px solid var(--border-color); gap: 8px;">
+          <a href="mailto:ar5230305@gmail.com" class="pill pill-link"
+            style="background: var(--bg-glass); border: 1px solid var(--border-color); gap: 8px;" aria-label="Email Abdur Rajjak">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="20" height="16" x="2" y="4" rx="2"></rect>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
             </svg>
-            abdurrajjak07@example.com
+            ar5230305@gmail.com
           </a>
         </div>
 
-        <div class="contact-right">
+        <div class="contact-right" id="contact-panel">
           <h3 style="font-size: 2rem; font-weight: 600; margin-bottom: 24px;">Send me a message</h3>
-          <form id="contact-form" action="https://formspree.io/f/xqewqknr" method="POST"
-            style="display: flex; flex-direction: column; gap: 12px;">
+          <form id="contact-form" action="https://formspree.io/f/xqewqknr" method="POST" novalidate
+            style="display: flex; flex-direction: column; gap: 14px;">
             <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <input type="text" name="name" placeholder="Name" required class="vgil-input">
-              <div class="custom-select-wrapper" style="position: relative; width: 100%;">
-                <input type="hidden" name="subject" required>
-                <div class="custom-select-trigger vgil-input"
-                  style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: var(--text-secondary); width: 100%;">
-                  <span class="custom-select-value">Subject</span>
-                  <i data-lucide="chevron-down" style="width: 16px; height: 16px; color: var(--text-muted);"></i>
+            <div class="form-row-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div class="form-field">
+                <input type="text" name="name" id="form-name" placeholder="Name" required class="vgil-input" autocomplete="name">
+                <div class="field-error-msg" id="name-error" aria-live="polite"></div>
+              </div>
+              <div class="form-field">
+                <div class="custom-select-wrapper" style="position: relative; width: 100%;">
+                  <input type="hidden" name="subject" id="form-subject" required>
+                  <div class="custom-select-trigger vgil-input" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="subject-options"
+                    style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: var(--text-secondary); width: 100%;">
+                    <span class="custom-select-value">Subject</span>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px; color: var(--text-muted);"></i>
+                  </div>
+                  <div class="custom-select-options" id="subject-options" role="listbox"
+                    style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; margin-top: 4px; z-index: 50; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);">
+                    <div class="custom-option" role="option" data-value="General Inquiry">General Inquiry</div>
+                    <div class="custom-option" role="option" data-value="Project Proposal">Project Proposal</div>
+                    <div class="custom-option" role="option" data-value="Feedback">Feedback</div>
+                    <div class="custom-option" role="option" data-value="Other">Other</div>
+                  </div>
                 </div>
-                <div class="custom-select-options"
-                  style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; margin-top: 4px; z-index: 50; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);">
-                  <div class="custom-option" data-value="General Inquiry">General Inquiry</div>
-                  <div class="custom-option" data-value="Project Proposal">Project Proposal</div>
-                  <div class="custom-option" data-value="Feedback">Feedback</div>
-                  <div class="custom-option" data-value="Other">Other</div>
-                </div>
+                <div class="field-error-msg" id="subject-error" aria-live="polite"></div>
               </div>
             </div>
-            <input type="email" name="email" placeholder="Email" required class="vgil-input">
-            <textarea name="message" placeholder="Message" rows="6" required class="vgil-input"
-              style="resize: none;"></textarea>
+            <div class="form-field">
+              <input type="email" name="email" id="form-email" placeholder="Email" required class="vgil-input" autocomplete="email">
+              <div class="field-error-msg" id="email-error" aria-live="polite"></div>
+            </div>
+            <div class="form-field">
+              <textarea name="message" id="form-message" placeholder="Message" rows="6" required class="vgil-input"
+                style="resize: none;"></textarea>
+              <div class="field-error-msg" id="message-error" aria-live="polite"></div>
+            </div>
 
-            <div style="margin-top: 12px;">
-              <button type="submit" class="btn"
+            <div style="margin-top: 6px;">
+              <button type="submit" id="form-submit-btn" class="btn"
                 style="background: var(--text-primary); color: var(--bg-main); font-weight: 600; padding: 12px 32px;">
                 Send <i data-lucide="send" style="width: 16px;"></i>
               </button>
             </div>
-            <div id="form-status" class="form-status"></div>
+            <div id="form-error-banner" class="form-error-banner" style="display: none;" role="alert">
+              <i data-lucide="alert-circle" style="width: 18px; height: 18px; flex-shrink: 0;"></i>
+              <span id="form-error-banner-text">Unable to send message. Please try again or email directly.</span>
+            </div>
           </form>
+
+          <!-- Thank-You / Success State Card -->
+          <div id="contact-success-state" class="contact-success-card" style="display: none;" role="region" aria-live="polite">
+            <div class="success-icon-badge">
+              <i data-lucide="check-circle-2" style="width: 44px; height: 44px; color: #10b981;"></i>
+            </div>
+            <h4 class="success-title">Message Sent Successfully</h4>
+            <p class="success-desc">
+              Thanks for reaching out. I'll get back to you soon.
+            </p>
+            <div class="success-actions">
+              <button type="button" id="btn-reset-form" class="btn" style="background: var(--text-primary); color: var(--bg-main); font-weight: 600; padding: 12px 28px;">
+                <i data-lucide="rotate-ccw" style="width: 16px;"></i> Send Another Message
+              </button>
+              <a href="#hero" class="btn btn-secondary" style="padding: 12px 28px;">
+                <i data-lucide="arrow-up" style="width: 16px;"></i> Back to Top
+              </a>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -643,16 +724,16 @@
           <div>
             <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 16px;">Contact & Socials</h3>
             <div style="display: flex; flex-direction: column; gap: 12px;">
-              <a href="mailto:abdurrajjak07@example.com"
+              <a href="mailto:ar5230305@gmail.com"
                 style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;"
-                class="hover-white"><i data-lucide="mail" style="width: 16px;"></i> abdurrajjak07@example.com</a>
+                class="hover-white" aria-label="Send email to Abdur"><i data-lucide="mail" style="width: 16px;"></i> ar5230305@gmail.com</a>
               <span
                 style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;"><i
                   data-lucide="map-pin" style="width: 16px;"></i> West Bengal, India</span>
             </div>
             <p style="color: var(--text-muted); font-size: 0.95rem; margin: 24px 0 12px 0;">Follow me:</p>
             <div style="display: flex; gap: 16px;">
-              <a href="https://x.com/Abdur2007" target="_blank"
+              <a href="https://x.com/Abdur2007" target="_blank" rel="noopener noreferrer" aria-label="Twitter X Profile"
                 style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;"
                 onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -662,7 +743,7 @@
                   </path>
                 </svg>
               </a>
-              <a href="https://github.com/Abdur07-svg" target="_blank"
+              <a href="https://github.com/Abdur07-svg" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile"
                 style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;"
                 onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -673,7 +754,7 @@
                   <path d="M9 18c-4.51 2-5-2-7-2"></path>
                 </svg>
               </a>
-              <a href="https://instagram.com/void_ms07" target="_blank"
+              <a href="https://instagram.com/void_ms07" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile"
                 style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;"
                 onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -683,7 +764,7 @@
                   <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
                 </svg>
               </a>
-              <a href="https://youtube.com/@ar7ffofficial" target="_blank"
+              <a href="https://youtube.com/@ar7ffofficial" target="_blank" rel="noopener noreferrer" aria-label="YouTube Channel"
                 style="color: var(--text-primary); opacity: 0.6; display: inline-block; transition: 0.2s;"
                 onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -734,7 +815,7 @@
       <div class="ar7-point-core"></div>
     </div>
   </div>
-  <div id="toast-container" class="toast-container"></div>
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
   <!-- Three.js and Aurora WebGL Shader for Dark Mode (Desktop Only) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -913,7 +994,17 @@
   <!-- GSAP & ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="script.js?v=14"></script>
+  <script src="script.js?v=26"></script>
+  <!-- Service Worker Registration for Offline Fallback -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('./sw.js').catch(function(err) {
+          console.warn('Service Worker registration skipped:', err);
+        });
+      });
+    }
+  </script>
 </body>
 
 </html>

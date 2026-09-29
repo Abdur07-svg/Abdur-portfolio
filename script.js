@@ -116,57 +116,189 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => revealObserver.observe(el));
   }
 
-// --- Form Handling ---
-const contactForm = document.getElementById('contact-form');
-const formStatus = document.getElementById('form-status');
+  // --- Enhanced Form Handling with Inline Validation & Success/Error States ---
+  const contactForm = document.getElementById('contact-form');
+  const successState = document.getElementById('contact-success-state');
+  const resetFormBtn = document.getElementById('btn-reset-form');
+  const formErrorBanner = document.getElementById('form-error-banner');
+  const formErrorBannerText = document.getElementById('form-error-banner-text');
 
-if (contactForm) {
-  contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  if (contactForm) {
+    const nameInput = document.getElementById('form-name');
+    const emailInput = document.getElementById('form-email');
+    const subjectInput = document.getElementById('form-subject');
+    const messageInput = document.getElementById('form-message');
+    const submitBtn = document.getElementById('form-submit-btn');
 
-    const btn = contactForm.querySelector('button[type="submit"]');
-    const originalText = btn.innerHTML;
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('email-error');
+    const subjectError = document.getElementById('subject-error');
+    const messageError = document.getElementById('message-error');
 
-    btn.disabled = true;
-    btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Sending...';
-    lucide.createIcons();
+    function setFieldError(inputEl, errorEl, message) {
+      if (inputEl) inputEl.classList.add('input-error');
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.add('visible');
+      }
+    }
 
-    try {
-      const response = await fetch(contactForm.action, {
-        method: 'POST',
-        body: new FormData(contactForm),
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
+    function clearFieldError(inputEl, errorEl) {
+      if (inputEl) inputEl.classList.remove('input-error');
+      if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.classList.remove('visible');
+      }
+    }
 
-      const data = await response.json();
+    function validateEmail(email) {
+      const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return re.test(String(email).toLowerCase());
+    }
 
-      if (response.ok) {
-        showToast('Message sent successfully! I will reply soon.', 'success');
-        contactForm.reset();
-      } else {
-        console.error('Formspree Error:', data);
+    if (nameInput) {
+      nameInput.addEventListener('input', () => clearFieldError(nameInput, nameError));
+    }
+    if (emailInput) {
+      emailInput.addEventListener('input', () => clearFieldError(emailInput, emailError));
+    }
+    if (messageInput) {
+      messageInput.addEventListener('input', () => clearFieldError(messageInput, messageError));
+    }
 
-        const errorMessage =
-          data?.errors?.map(error => error.message).join(', ') ||
-          data?.error ||
-          'Unable to send your message. Please try again.';
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-        showToast(errorMessage, 'error');
+      clearFieldError(nameInput, nameError);
+      clearFieldError(emailInput, emailError);
+      clearFieldError(subjectInput, subjectError);
+      const subjectTrigger = contactForm.querySelector('.custom-select-trigger');
+      if (subjectTrigger) subjectTrigger.classList.remove('input-error');
+      clearFieldError(messageInput, messageError);
+      if (formErrorBanner) formErrorBanner.style.display = 'none';
+
+      let isValid = true;
+
+      // Validate Name
+      const nameVal = nameInput ? nameInput.value.trim() : '';
+      if (!nameVal) {
+        setFieldError(nameInput, nameError, 'Please enter your name.');
+        isValid = false;
+      } else if (nameVal.length < 2) {
+        setFieldError(nameInput, nameError, 'Name must be at least 2 characters.');
+        isValid = false;
       }
 
-    } catch (error) {
-      console.error('Form submission error:', error);
-      showToast('Network error. Please check your internet connection.', 'error');
+      // Validate Subject
+      const subjectVal = subjectInput ? subjectInput.value.trim() : '';
+      if (!subjectVal) {
+        if (subjectTrigger) subjectTrigger.classList.add('input-error');
+        if (subjectError) {
+          subjectError.textContent = 'Please select a subject.';
+          subjectError.classList.add('visible');
+        }
+        isValid = false;
+      }
 
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = originalText;
-      lucide.createIcons();
+      // Validate Email
+      const emailVal = emailInput ? emailInput.value.trim() : '';
+      if (!emailVal) {
+        setFieldError(emailInput, emailError, 'Please enter your email address.');
+        isValid = false;
+      } else if (!validateEmail(emailVal)) {
+        setFieldError(emailInput, emailError, 'Please enter a valid email address.');
+        isValid = false;
+      }
+
+      // Validate Message
+      const messageVal = messageInput ? messageInput.value.trim() : '';
+      if (!messageVal) {
+        setFieldError(messageInput, messageError, 'Please enter your message.');
+        isValid = false;
+      } else if (messageVal.length < 10) {
+        setFieldError(messageInput, messageError, 'Message must be at least 10 characters.');
+        isValid = false;
+      }
+
+      if (!isValid) {
+        showToast('Please fix the highlighted errors before submitting.', 'error');
+        return;
+      }
+
+      const originalBtnHTML = submitBtn ? submitBtn.innerHTML : 'Send <i data-lucide="send"></i>';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i data-lucide="loader" class="spin"></i> Sending...';
+        lucide.createIcons();
+      }
+
+      try {
+        const formData = new FormData(contactForm);
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showToast('Message sent successfully! I will reply soon.', 'success');
+          contactForm.reset();
+          const selectDisplay = contactForm.querySelector('.custom-select-value');
+          if (selectDisplay) {
+            selectDisplay.textContent = 'Subject';
+            selectDisplay.style.color = '';
+          }
+          if (subjectInput) subjectInput.value = '';
+
+          contactForm.style.display = 'none';
+          if (successState) {
+            successState.style.display = 'flex';
+            lucide.createIcons();
+          }
+        } else {
+          console.error('Formspree API Error:', data);
+          const errorMsg = data?.errors?.map(err => err.message).join(', ') ||
+            data?.error ||
+            'Unable to deliver your message at this moment. Please try again or email directly.';
+
+          if (formErrorBanner && formErrorBannerText) {
+            formErrorBannerText.textContent = errorMsg;
+            formErrorBanner.style.display = 'flex';
+          }
+          showToast('Submission error. Please try again.', 'error');
+        }
+
+      } catch (error) {
+        console.error('Network error during form submission:', error);
+        if (formErrorBanner && formErrorBannerText) {
+          formErrorBannerText.textContent = 'Network error. Please check your internet connection and try again.';
+          formErrorBanner.style.display = 'flex';
+        }
+        showToast('Network error. Please check your connection.', 'error');
+
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHTML;
+          lucide.createIcons();
+        }
+      }
+    });
+
+    if (resetFormBtn) {
+      resetFormBtn.addEventListener('click', () => {
+        if (successState) successState.style.display = 'none';
+        contactForm.style.display = 'flex';
+        if (formErrorBanner) formErrorBanner.style.display = 'none';
+        if (nameInput) nameInput.focus();
+        lucide.createIcons();
+      });
     }
-  });
-}
+  }
 
   const sections = document.querySelectorAll('section');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -800,7 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
   }
 
-  // Custom Select Logic
+  // Custom Select Logic with Keyboard Accessibility & Error Clearing
   const selectWrappers = document.querySelectorAll('.custom-select-wrapper');
   selectWrappers.forEach(wrapper => {
     const trigger = wrapper.querySelector('.custom-select-trigger');
@@ -808,26 +940,90 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionElements = wrapper.querySelectorAll('.custom-option');
     const valueDisplay = wrapper.querySelector('.custom-select-value');
     const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+    const subjectError = document.getElementById('subject-error');
+
+    function openOptions() {
+      document.querySelectorAll('.custom-select-options').forEach(opt => {
+        opt.style.display = 'none';
+        opt.parentElement.querySelector('.custom-select-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+      options.style.display = 'block';
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeOptions() {
+      options.style.display = 'none';
+      trigger.setAttribute('aria-expanded', 'false');
+    }
 
     trigger.addEventListener('click', (e) => {
       e.stopPropagation();
       const isOpen = options.style.display === 'block';
-      document.querySelectorAll('.custom-select-options').forEach(opt => opt.style.display = 'none');
-      options.style.display = isOpen ? 'none' : 'block';
+      if (isOpen) {
+        closeOptions();
+      } else {
+        openOptions();
+      }
     });
 
-    optionElements.forEach(option => {
-      option.addEventListener('click', (e) => {
-        e.stopPropagation();
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const isOpen = options.style.display === 'block';
+        if (!isOpen) {
+          openOptions();
+          const firstOpt = optionElements[0];
+          if (firstOpt) firstOpt.focus();
+        } else {
+          closeOptions();
+        }
+      } else if (e.key === 'Escape') {
+        closeOptions();
+      }
+    });
+
+    optionElements.forEach((option, idx) => {
+      option.setAttribute('tabindex', '0');
+      
+      const selectOption = () => {
         valueDisplay.textContent = option.textContent;
         hiddenInput.value = option.dataset.value;
-        options.style.display = 'none';
+        closeOptions();
         valueDisplay.style.color = 'var(--text-primary)';
+        trigger.classList.remove('input-error');
+        if (subjectError) {
+          subjectError.textContent = '';
+          subjectError.classList.remove('visible');
+        }
+      };
+
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectOption();
+      });
+
+      option.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectOption();
+          trigger.focus();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = optionElements[idx + 1] || optionElements[0];
+          if (next) next.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = optionElements[idx - 1] || optionElements[optionElements.length - 1];
+          if (prev) prev.focus();
+        } else if (e.key === 'Escape') {
+          closeOptions();
+          trigger.focus();
+        }
       });
     });
 
     document.addEventListener('click', () => {
-      options.style.display = 'none';
+      closeOptions();
     });
   });
 

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found | Abdur Rajjak</title>
+  <meta name="description" content="The requested page could not be found. Return to Abdur Rajjak's portfolio.">
+  <meta name="robots" content="noindex, follow">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Favicons for Light Mode -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon1-32.png" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon1-16.png" media="(prefers-color-scheme: light)">
+
+  <!-- Favicons for Dark Mode -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#070707">
+
+  <link rel="stylesheet" href="style.css?v=26">
+  <style>
+    .error-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      background-color: var(--bg-alt);
+    }
+
+    .error-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 60px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .error-glitch-wrapper {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .error-code {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(6rem, 16vw, 12rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, var(--accent-cyan), #ffffff 40%, var(--accent-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 40px rgba(0, 240, 255, 0.35);
+      user-select: none;
+    }
+
+    .error-hud-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 50px;
+      color: #f87171;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .error-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .error-description {
+      color: var(--text-muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .error-bg-glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(112, 0, 255, 0.08) 50%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: blur(50px);
+    }
+  </style>
+</head>
+
+<body class="dark-theme">
+  <div class="error-page-wrapper">
+    <!-- Navbar -->
+    <nav class="navbar" style="opacity: 1; transform: translateX(-50%); animation: none;" aria-label="Navigation">
+      <div class="nav-brand">
+        <a href="https://abdur07-svg.github.io/Abdur-portfolio/" class="brand-link" aria-label="Abdur Rajjak Portfolio Home">
+          <img src="images/ar-logo.svg" alt="AR Logo Light" class="nav-logo logo-light" style="height: 36px; width: auto;" width="36" height="36">
+          <img src="images/ar-logo1.svg" alt="AR Logo Dark" class="nav-logo logo-dark" style="height: 36px; width: auto;" width="36" height="36">
+        </a>
+      </div>
+
+      <div class="nav-links">
+        <a href="https://abdur07-svg.github.io/Abdur-portfolio/" class="nav-link group">
+          <span class="nav-link-inner">
+            <span class="nav-link-front">Home</span>
+            <span class="nav-link-back">Home</span>
+          </span>
+        </a>
+        <a href="https://abdur07-svg.github.io/Abdur-portfolio/#projects" class="nav-link group">
+          <span class="nav-link-inner">
+            <span class="nav-link-front">Projects</span>
+            <span class="nav-link-back">Projects</span>
+          </span>
+        </a>
+        <a href="https://abdur07-svg.github.io/Abdur-portfolio/#contact" class="nav-link group">
+          <span class="nav-link-inner">
+            <span class="nav-link-front">Contact</span>
+            <span class="nav-link-back">Contact</span>
+          </span>
+        </a>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <button id="theme-toggle" class="btn-nav" aria-label="Toggle Theme" style="cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px;">
+          <i data-lucide="sun" class="theme-icon-light" style="display: none; width: 20px; height: 20px;"></i>
+          <i data-lucide="moon" class="theme-icon-dark" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Error Content -->
+    <main class="error-container">
+      <div class="error-bg-glow" aria-hidden="true"></div>
+      
+      <div class="error-hud-badge">
+        <span class="status-dot" style="background: #ef4444; width: 6px; height: 6px;"></span>
+        Sector Not Found
+      </div>
+
+      <div class="error-glitch-wrapper">
+        <h1 class="error-code">404</h1>
+      </div>
+
+      <h2 class="error-title">Page Not Found</h2>
+      
+      <p class="error-description">
+        The coordinates or page you are looking for do not exist or have moved to another sector. Return to home base to explore Abdur's projects and developer profile.
+      </p>
+
+      <div class="error-actions">
+        <a href="https://abdur07-svg.github.io/Abdur-portfolio/" class="btn-view-projects">
+          <i data-lucide="arrow-left" style="width: 18px;"></i> Return Home
+        </a>
+        <a href="https://abdur07-svg.github.io/Abdur-portfolio/#projects" class="btn-contact">
+          View Projects
+        </a>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="padding: 24px 0; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 0.85rem; position: relative; z-index: 10;">
+      <div class="container">
+        <p>&copy; 2026 Abdur Rajjak. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Theme toggle
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIconLight = document.querySelector('.theme-icon-light');
+    const themeIconDark = document.querySelector('.theme-icon-dark');
+
+    const savedTheme = localStorage.getItem('theme') || 'dark-theme';
+    document.body.className = savedTheme;
+    updateThemeIcon(savedTheme);
+
+    function updateThemeIcon(theme) {
+      if (!themeIconLight || !themeIconDark) return;
+      if (theme === 'light-theme') {
+        themeIconLight.style.display = 'none';
+        themeIconDark.style.display = 'block';
+      } else {
+        themeIconLight.style.display = 'block';
+        themeIconDark.style.display = 'none';
+      }
+    }
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        if (document.body.classList.contains('dark-theme')) {
+          document.body.className = 'light-theme';
+          localStorage.setItem('theme', 'light-theme');
+          updateThemeIcon('light-theme');
+        } else {
+          document.body.className = 'dark-theme';
+          localStorage.setItem('theme', 'dark-theme');
+          updateThemeIcon('dark-theme');
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
