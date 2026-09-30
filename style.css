@@ -75,7 +75,6 @@ html {
   scroll-padding-top: var(--nav-height);
 }
 
-/* Lenis Smooth Scroll Recommended Styles */
 html.lenis, html.lenis body {
   height: auto;
 }
@@ -2324,9 +2323,6 @@ textarea {
   cursor: pointer;
 }
 
-/* ==========================================================================
-   AR7 Futuristic HUD Custom Cursor System
-   ========================================================================== */
 body.ar7-cursor-ready,
 body.ar7-cursor-ready a,
 body.ar7-cursor-ready button,
@@ -2351,11 +2347,10 @@ body.ar7-cursor-ready [role="button"] {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 999999; /* Supreme stacking context above all canvases, hero, and navbar */
+  z-index: 999999; 
   overflow: visible;
 }
 
-/* 1. Primary Central Reticle & Crosshair Point */
 .ar7-cursor-point {
   position: fixed;
   top: 0;
@@ -2399,7 +2394,6 @@ body.ar7-cursor-ready [role="button"] {
   height: 14px;
 }
 
-/* 2. Inner Precision HUD Tracking Ring */
 .ar7-cursor-ring {
   position: fixed;
   top: 0;
@@ -2420,7 +2414,6 @@ body.ar7-cursor-ready [role="button"] {
   transition: width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, background-color 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* HUD Corner Brackets */
 .ar7-ring-bracket {
   position: absolute;
   width: 5px;
@@ -2454,7 +2447,6 @@ body.ar7-cursor-ready [role="button"] {
   border-width: 1.5px 1.5px 0 0;
 }
 
-/* 3. Secondary Outer HUD Tracer Orbit */
 .ar7-cursor-tracer {
   position: fixed;
   top: 0;
@@ -2471,7 +2463,6 @@ body.ar7-cursor-ready [role="button"] {
   transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, opacity 0.3s ease;
 }
 
-/* 4. Velocity Ghost Motion Trails */
 .ar7-cursor-trail {
   position: fixed;
   top: 0;
@@ -2498,7 +2489,6 @@ body.ar7-cursor-ready [role="button"] {
   background-color: transparent;
 }
 
-/* 5. Spider-Man Interactive HUD Reticle */
 .ar7-spider-hud {
   position: absolute;
   inset: 0;
@@ -2539,11 +2529,6 @@ body.ar7-cursor-ready [role="button"] {
   to { transform: rotate(360deg); }
 }
 
-/* ==========================================================================
-   INTERACTIVE STATES
-   ========================================================================== */
-
-/* Hover State on Links / Buttons / Cards */
 .ar7-cursor-system.is-hovering .ar7-cursor-ring {
   width: 48px;
   height: 48px;
@@ -2568,7 +2553,6 @@ body.ar7-cursor-ready [role="button"] {
   opacity: 0.4;
 }
 
-/* Spider-Man Hover State */
 .ar7-cursor-system.is-spider-hover .ar7-cursor-ring {
   width: 52px;
   height: 52px;
@@ -2597,7 +2581,6 @@ body.ar7-cursor-ready [role="button"] {
   border-color: #ff3344;
 }
 
-/* Spider-Man Grabbing / Dragging State */
 .ar7-cursor-system.is-spider-grabbing .ar7-cursor-ring {
   width: 36px;
   height: 36px;
@@ -2624,9 +2607,6 @@ body.ar7-cursor-ready [role="button"] {
   box-shadow: 0 0 14px #ffffff, 0 0 24px #ff2233;
 }
 
-/* ==========================================================================
-   LIGHT THEME ADAPTATION
-   ========================================================================== */
 body.light-theme .ar7-point-core {
   background-color: #0066ff;
   box-shadow: 0 0 8px rgba(0, 102, 255, 0.6);
@@ -2670,9 +2650,6 @@ body.light-theme .ar7-spider-tag {
   border-color: rgba(225, 29, 72, 0.4);
 }
 
-/* ==========================================================================
-   CLICK WEB-PULSE FEEDBACK
-   ========================================================================== */
 .ar7-click-pulse {
   position: fixed;
   top: 0;
@@ -2731,10 +2708,6 @@ body.light-theme .ar7-click-pulse::after {
   }
 }
 
-/* ==========================================================================
-   MOBILE & TOUCH DISABLEMENT
-   ========================================================================== */
-/* Mobile Lightweight Hero Backgrounds (Zero JS, Pure GPU-Composited CSS) */
 .mobile-aurora-bg,
 .mobile-particle-grid,
 .mobile-light-hero-bg {
@@ -2753,14 +2726,12 @@ body.light-theme .ar7-click-pulse::after {
     cursor: pointer !important;
   }
 
-  /* Hide heavy desktop canvases & 3D iframes on mobile */
   #aurora-canvas,
   #hero-particles,
   #aura-spline {
     display: none !important;
   }
 
-  /* Mobile Dark Mode Background 1: Lightweight Ambient CSS Aurora */
   .mobile-aurora-bg {
     display: block !important;
     position: absolute;
@@ -2817,7 +2788,6 @@ body.light-theme .ar7-click-pulse::after {
     100% { transform: translate3d(18px, -18px, 0) scale(0.94); }
   }
 
-  /* Mobile Dark Mode Background 2: Lightweight Futuristic Particle Grid Mesh */
   .mobile-particle-grid {
     display: block !important;
     position: absolute;
@@ -2836,7 +2806,6 @@ body.light-theme .ar7-click-pulse::after {
     -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 82%);
   }
 
-  /* Mobile Light Mode Background: Fresh, Premium Ambient Cyan/Violet/Pink Flow */
   .mobile-light-hero-bg {
     display: block !important;
     position: absolute;
@@ -2893,7 +2862,6 @@ body.light-theme .ar7-click-pulse::after {
     100% { transform: translate3d(16px, -18px, 0) scale(0.94); }
   }
 
-  /* Mobile Hero Rendering Performance Optimization */
   .hero-section {
     contain: layout style paint;
   }
@@ -3075,7 +3043,6 @@ body.dark-theme .light-only-bg {
   }
 }
 
-/* Styling for select dropdown options */
 select.vgil-input option {
   background-color: var(--bg-card);
   color: var(--text-primary);
@@ -3094,9 +3061,6 @@ select.vgil-input option {
   color: #ffffff;
 }
 
-/* ==========================================================================
-   Interactive Spider-Man Hanging Directly from Navbar System
-   ========================================================================== */
 .spiderman-hanging-system {
   position: fixed;
   top: 0;
@@ -3104,7 +3068,7 @@ select.vgil-input option {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 998; /* Directly below the fixed navbar (z-index: 1000) */
+  z-index: 998; 
   overflow: visible;
 }
 
@@ -3118,7 +3082,6 @@ select.vgil-input option {
   overflow: visible;
 }
 
-/* Single clean continuous web line with extreme clarity in light & dark modes */
 .spiderman-web-outline {
   fill: none;
   stroke: rgba(0, 0, 0, 0.45);
@@ -3181,7 +3144,6 @@ body.light-theme .spiderman-web-silk {
   -webkit-user-drag: none;
 }
 
-/* Responsive Scaling for Spider-Man Hanging from Navbar */
 @media (max-width: 1024px) {
   .spiderman-character {
     width: clamp(80px, 10vw, 105px);
@@ -3200,9 +3162,6 @@ body.light-theme .spiderman-web-silk {
   }
 }
 
-/* ==========================================================================
-   FORM VALIDATION, LOADING & THANK-YOU / SUCCESS STATES
-   ========================================================================== */
 .form-field {
   position: relative;
   width: 100%;
@@ -3280,7 +3239,6 @@ body.light-theme .spiderman-web-silk {
   animation: errorSlideDown 0.3s ease forwards;
 }
 
-/* Thank You / Success Card */
 .contact-success-card {
   background: var(--bg-card);
   border: 1px solid rgba(16, 185, 129, 0.4);
@@ -3349,10 +3307,6 @@ body.light-theme .spiderman-web-silk {
   margin-top: 12px;
 }
 
-/* ==========================================================================
-   ACCESSIBILITY & RESPONSIVE REFINEMENTS
-   ========================================================================== */
-/* Visible keyboard focus states */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -3362,7 +3316,6 @@ textarea:focus-visible,
   outline-offset: 3px !important;
 }
 
-/* Responsive Grid Adjustments */
 @media (max-width: 640px) {
   .form-row-2col {
     grid-template-columns: 1fr !important;

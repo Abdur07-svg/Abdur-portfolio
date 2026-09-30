@@ -1,4 +1,4 @@
-// Initialize Lenis for smooth scrolling (Desktop only, native touch on mobile/tablet)
+
 const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
 let lenis = null;
 
@@ -11,7 +11,6 @@ if (!isTouchDevice && typeof Lenis !== 'undefined') {
   });
 }
 
-// Integrate Lenis with GSAP ScrollTrigger
 if (typeof gsap !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
   if (lenis) {
@@ -20,7 +19,7 @@ if (typeof gsap !== 'undefined') {
       lenis.raf(time * 1000);
     });
   }
-  // Restore normal GSAP lag smoothing for frame drop recovery
+
   gsap.ticker.lagSmoothing(500, 33);
 }
 
@@ -39,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         navbar.classList.remove('scrolled');
       }
-      // Notify Spider-Man system of navbar state change
+
       if (window.__updateSpidermanAnchor) {
         window.__updateSpidermanAnchor();
       }
@@ -71,11 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-
-  // Premium Reveal Animations with GSAP
   if (typeof gsap !== 'undefined') {
     const revealElements = gsap.utils.toArray('.reveal-up, .reveal-left, .reveal-right');
-    
+
     revealElements.forEach((el) => {
       ScrollTrigger.create({
         trigger: el,
@@ -85,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Add Parallax to About Image
     const aboutImage = document.querySelector('.about-image');
     if (aboutImage) {
       gsap.fromTo(aboutImage, 
@@ -103,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     }
   } else {
-    // Fallback IntersectionObserver if GSAP fails to load
+
     const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
@@ -116,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => revealObserver.observe(el));
   }
 
-  // --- Enhanced Form Handling with Inline Validation & Success/Error States ---
   const contactForm = document.getElementById('contact-form');
   const successState = document.getElementById('contact-success-state');
   const resetFormBtn = document.getElementById('btn-reset-form');
@@ -179,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let isValid = true;
 
-      // Validate Name
       const nameVal = nameInput ? nameInput.value.trim() : '';
       if (!nameVal) {
         setFieldError(nameInput, nameError, 'Please enter your name.');
@@ -189,7 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         isValid = false;
       }
 
-      // Validate Subject
       const subjectVal = subjectInput ? subjectInput.value.trim() : '';
       if (!subjectVal) {
         if (subjectTrigger) subjectTrigger.classList.add('input-error');
@@ -200,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
         isValid = false;
       }
 
-      // Validate Email
       const emailVal = emailInput ? emailInput.value.trim() : '';
       if (!emailVal) {
         setFieldError(emailInput, emailError, 'Please enter your email address.');
@@ -210,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         isValid = false;
       }
 
-      // Validate Message
       const messageVal = messageInput ? messageInput.value.trim() : '';
       if (!messageVal) {
         setFieldError(messageInput, messageError, 'Please enter your message.');
@@ -359,11 +350,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateThemeIcon(theme) {
     if (theme === 'light-theme') {
-      themeIconLight.style.display = 'none'; // hide sun
-      themeIconDark.style.display = 'block'; // show moon
+      themeIconLight.style.display = 'none'; 
+      themeIconDark.style.display = 'block'; 
     } else {
-      themeIconLight.style.display = 'block'; // show sun
-      themeIconDark.style.display = 'none'; // hide moon
+      themeIconLight.style.display = 'block'; 
+      themeIconDark.style.display = 'none'; 
     }
   }
 
@@ -535,7 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
   window.showToast = function (message, type = 'success') {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -561,13 +551,10 @@ document.addEventListener('DOMContentLoaded', () => {
       toast.classList.remove('show');
       setTimeout(() => {
         toast.remove();
-      }, 400); // Wait for transition
+      }, 400); 
     }, 3000);
   };
 
-  // ==========================================================================
-  // AR7 Futuristic HUD Custom Cursor System
-  // ==========================================================================
   const cursorSystem = document.getElementById('ar7-cursor-system');
   const cursorPoint = cursorSystem ? cursorSystem.querySelector('.ar7-cursor-point') : null;
   const cursorRing = cursorSystem ? cursorSystem.querySelector('.ar7-cursor-ring') : null;
@@ -578,7 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
 
   if (cursorSystem && cursorPoint && cursorRing && !isTouchDevice && window.innerWidth > 768) {
-    // Reveal cursor and hide native cursor
+
     document.body.classList.add('ar7-cursor-ready');
 
     let mouseX = -100;
@@ -598,7 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let isVisible = false;
     let isSpiderDragging = false;
 
-    // Instant position tracking for primary reticle
     window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
@@ -637,15 +623,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cursorTracer) cursorTracer.style.opacity = '1';
     });
 
-    // High-performance RAF lerp animation loop
     function renderAR7Cursor() {
       if (isVisible) {
-        // Velocity calculation for dynamic motion ghost trails
+
         const dist = Math.hypot(mouseX - prevMouseX, mouseY - prevMouseY);
         prevMouseX = mouseX;
         prevMouseY = mouseY;
 
-        // Smooth follower lerping
         ringX += (mouseX - ringX) * 0.22;
         ringY += (mouseY - ringY) * 0.22;
         cursorRing.style.transform = `translate3d(${ringX.toFixed(2)}px, ${ringY.toFixed(2)}px, 0) translate(-50%, -50%)`;
@@ -676,7 +660,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     requestAnimationFrame(renderAR7Cursor);
 
-    // Dynamic Hover Delegation for Links, Buttons & Cards
     document.addEventListener('mouseover', (e) => {
       const spidermanTarget = e.target.closest('#spiderman-character');
       if (spidermanTarget) {
@@ -702,14 +685,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Subtle Magnetic Interaction on Buttons & Links
     const magneticElements = document.querySelectorAll('.btn, .brand-link, .nav-link, .btn-view-projects, .btn-contact, #theme-toggle, .pill');
     magneticElements.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();
         const relX = e.clientX - (rect.left + rect.width / 2);
         const relY = e.clientY - (rect.top + rect.height / 2);
-        // Subtle magnetic displacement (max 3-5px)
+
         el.style.transform = `translate3d(${(relX * 0.16).toFixed(1)}px, ${(relY * 0.16).toFixed(1)}px, 0)`;
       });
 
@@ -722,7 +704,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Spider-Man Dragging & Grab Interaction
     const spidermanChar = document.getElementById('spiderman-character');
     if (spidermanChar) {
       spidermanChar.addEventListener('pointerdown', () => {
@@ -738,7 +719,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Click Web-Pulse Feedback
     window.addEventListener('pointerdown', (e) => {
       if (e.button !== undefined && e.button !== 0) return;
       if (e.target.closest('#spiderman-character')) return;
@@ -758,13 +738,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-
   const canvas = document.getElementById('hero-particles');
   const isTouchDeviceCheck = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
   const isMobileForParticles = isTouchDeviceCheck || (window.innerWidth <= 768);
 
-  // Desktop Only: Heavy 2D Canvas Particles
   if (canvas && !isMobileForParticles) {
     const ctx = canvas.getContext('2d');
     let particlesArray = [];
@@ -841,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const parentW = canvas.parentElement ? canvas.parentElement.offsetWidth : window.innerWidth;
       const parentH = canvas.parentElement ? canvas.parentElement.offsetHeight : window.innerHeight;
       if (parentW <= 0 || parentH <= 0) return;
-      
+
       canvas.width = parentW;
       canvas.height = parentH;
 
@@ -932,7 +909,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
   }
 
-  // Custom Select Logic with Keyboard Accessibility & Error Clearing
   const selectWrappers = document.querySelectorAll('.custom-select-wrapper');
   selectWrappers.forEach(wrapper => {
     const trigger = wrapper.querySelector('.custom-select-trigger');
@@ -984,7 +960,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     optionElements.forEach((option, idx) => {
       option.setAttribute('tabindex', '0');
-      
+
       const selectOption = () => {
         valueDisplay.textContent = option.textContent;
         hiddenInput.value = option.dataset.value;
@@ -1027,15 +1003,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Initialize Interactive Physics Spider-Man & Web
   initSpidermanPhysics();
 });
 
-/* ==========================================================================
-   Interactive Spider-Man Hanging Directly from Navbar (AR Logo Area)
-   Verlet Integration Multi-Segment Single-Web Physics Simulation
-   High Performance Sleep/Wake Engine with Cached Navbar Anchor
-   ========================================================================== */
 function initSpidermanPhysics() {
   const container = document.getElementById('spiderman-hanging-system');
   const webOutline = document.getElementById('spiderman-web-outline');
@@ -1052,7 +1022,6 @@ function initSpidermanPhysics() {
   let cachedAnchorX = 0;
   let cachedAnchorY = 0;
 
-  // Interaction and velocity tracking
   let isDragging = false;
   let dragOffsetX = 0;
   let dragOffsetY = 0;
@@ -1065,20 +1034,17 @@ function initSpidermanPhysics() {
   let characterAngularVelocity = 0;
   let idleTime = 0;
 
-  // Sleep / Wake state management
   let isSleeping = false;
   let isSystemVisible = false;
   let physicsAnimId = null;
   let idleFrameCount = 0;
 
-  // Physics constants
   const GRAVITY = 0.42;
   const DAMPING = 0.985;
   const CONSTRAINT_ITERATIONS = 8;
   const ANGULAR_SPRING = 0.09;
   const ANGULAR_DAMPING = 0.86;
 
-  // 1. Navbar Anchor Caching (zero layout thrashing during physics / scrolling)
   function updateNavbarAnchor() {
     const brandEl = navbar.querySelector('.nav-brand') || navbar.querySelector('.brand-link');
     const navRect = navbar.getBoundingClientRect();
@@ -1092,7 +1058,6 @@ function initSpidermanPhysics() {
     }
   }
 
-  // Expose for navbar state changes
   window.__updateSpidermanAnchor = function() {
     updateNavbarAnchor();
     if (points.length > 0) {
@@ -1137,7 +1102,6 @@ function initSpidermanPhysics() {
       points[0].y = cachedAnchorY;
     }
 
-    // Position character underneath the AR logo
     const endPoint = points[points.length - 1];
     character.style.transform = `translate3d(${endPoint.x}px, ${endPoint.y}px, 0) translate(-50%, 0) rotate(0deg)`;
     character.style.opacity = '1';
@@ -1153,7 +1117,6 @@ function initSpidermanPhysics() {
   window.addEventListener('resize', updateDimensions, { passive: true });
   window.addEventListener('orientationchange', updateDimensions, { passive: true });
 
-  // Generate single continuous smooth spline path
   function generateWebPath(pts) {
     if (pts.length < 2) return '';
     let pathD = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
@@ -1167,7 +1130,6 @@ function initSpidermanPhysics() {
     return pathD;
   }
 
-  // 2. Wake Physics Engine (Active across entire page)
   function wakePhysics() {
     idleFrameCount = 0;
     isSleeping = false;
@@ -1178,11 +1140,9 @@ function initSpidermanPhysics() {
     }
   }
 
-  // 3. Pointer drag handling (Functions on any page section)
   function onPointerDown(e) {
     if (e.button !== undefined && e.button !== 0) return;
-    
-    // Prevent accidental mobile page scroll during character drag
+
     if (e.cancelable) e.preventDefault();
 
     wakePhysics();
@@ -1262,18 +1222,15 @@ function initSpidermanPhysics() {
   window.addEventListener('pointerup', onPointerUp);
   window.addEventListener('pointercancel', onPointerUp);
 
-  // 4. Physics Simulation Step & Sleep Detector
   function physicsStep() {
     physicsAnimId = null;
     if (!isSystemVisible && !isDragging) return;
 
     idleTime += 0.022;
 
-    // Fixed anchor from cache
     points[0].x = cachedAnchorX;
     points[0].y = cachedAnchorY;
 
-    // 1. Verlet Integration
     let maxDisplacement = 0;
 
     for (let i = 1; i < NUM_POINTS; i++) {
@@ -1284,7 +1241,6 @@ function initSpidermanPhysics() {
       let vx = (p.x - p.oldX) * DAMPING;
       let vy = (p.y - p.oldY) * DAMPING;
 
-      // Subtle ambient sway only while awake and not dragging
       if (!isDragging && idleFrameCount < 15) {
         const ambientSway = Math.sin(idleTime * 1.4 + i * 0.25) * 0.04 * (i / NUM_POINTS);
         vx += ambientSway;
@@ -1299,7 +1255,6 @@ function initSpidermanPhysics() {
       if (disp > maxDisplacement) maxDisplacement = disp;
     }
 
-    // 2. Constraint Relaxation
     for (let iter = 0; iter < CONSTRAINT_ITERATIONS; iter++) {
       for (let i = 0; i < NUM_POINTS - 1; i++) {
         const p1 = points[i];
@@ -1327,12 +1282,10 @@ function initSpidermanPhysics() {
       }
     }
 
-    // 3. Render single continuous web line
     const pathD = generateWebPath(points);
     webOutline.setAttribute('d', pathD);
     webSilk.setAttribute('d', pathD);
 
-    // 4. Update Spider-Man Transform & Orientation
     const endPoint = points[NUM_POINTS - 1];
     const prevPoint = points[NUM_POINTS - 2];
     const p3 = points[NUM_POINTS - 3] || prevPoint;
@@ -1348,13 +1301,12 @@ function initSpidermanPhysics() {
 
     character.style.transform = `translate3d(${endPoint.x}px, ${endPoint.y}px, 0) translate(-50%, 0) rotate(${characterAngle.toFixed(2)}deg)`;
 
-    // 5. Sleep evaluation (sleeps when quiet, wakes on any interaction)
     if (!isDragging && maxDisplacement < 0.06 && Math.abs(characterAngularVelocity) < 0.03) {
       idleFrameCount++;
       if (idleFrameCount > 30) {
         isSleeping = true;
         physicsAnimId = null;
-        return; // Enter sleep state, stopping RAF loop cleanly
+        return; 
       }
     } else {
       idleFrameCount = 0;
@@ -1363,7 +1315,6 @@ function initSpidermanPhysics() {
     physicsAnimId = requestAnimationFrame(physicsStep);
   }
 
-  // 5. Spider-Man Viewport Visibility Observer (Container/Character specific, independent of Hero)
   const spidermanObserverTarget = document.getElementById('spiderman-hanging-system') || character;
   if (spidermanObserverTarget && 'IntersectionObserver' in window) {
     const spidermanObserver = new IntersectionObserver((entries) => {
