@@ -437,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isDesktop = window.innerWidth >= 768;
 
       const gridTemplate = Array.from({ length: expandingCards.length }).map((_, i) => {
-        return i === activeIndex ? '5fr' : '1fr';
+        return i === activeIndex ? '8fr' : '1fr';
       }).join(' ');
 
       if (isDesktop) {
