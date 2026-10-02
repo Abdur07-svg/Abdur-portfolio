@@ -463,6 +463,144 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', updateGrid);
 
+    const previewModal = document.getElementById('project-preview-modal');
+    const modalCard = previewModal ? previewModal.querySelector('.modal-card') : null;
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const modalSource = document.getElementById('modal-source');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-project-title');
+    const modalBadge = document.getElementById('modal-project-badge');
+    const modalDesc = document.getElementById('modal-project-desc');
+    const modalVisitBtn = document.getElementById('modal-visit-btn');
+
+    let activeModalTrigger = null;
+
+    function openProjectModal(card) {
+      if (!previewModal || !card || window.innerWidth < 768) return;
+
+      activeModalTrigger = card;
+
+      const sourceEl = card.querySelector('picture source');
+      const imgEl = card.querySelector('img.card-bg-img') || card.querySelector('img');
+      const titleEl = card.querySelector('.card-title-expanded') || card.querySelector('.card-title-vertical');
+      const badgeEl = card.querySelector('.card-title-vertical');
+      const descEl = card.querySelector('.card-desc');
+      const linkEl = card.querySelector('.card-link');
+
+      const imgSrc = imgEl ? (imgEl.currentSrc || imgEl.getAttribute('src') || '') : '';
+      const imgAlt = imgEl ? (imgEl.getAttribute('alt') || 'Project Cover Image') : 'Project Cover Image';
+      const sourceSrcset = sourceEl ? sourceEl.getAttribute('srcset') : '';
+
+      if (modalSource) {
+        if (sourceSrcset) {
+          modalSource.setAttribute('srcset', sourceSrcset);
+          modalSource.setAttribute('type', sourceEl.getAttribute('type') || 'image/webp');
+        } else {
+          modalSource.removeAttribute('srcset');
+        }
+      }
+
+      if (modalImg) {
+        modalImg.setAttribute('src', imgSrc);
+        modalImg.setAttribute('alt', imgAlt);
+      }
+
+      if (modalTitle && titleEl) {
+        modalTitle.textContent = titleEl.textContent.trim();
+      }
+
+      if (modalBadge && badgeEl) {
+        modalBadge.textContent = badgeEl.textContent.trim();
+      }
+
+      if (modalDesc && descEl) {
+        modalDesc.textContent = descEl.textContent.trim();
+      }
+
+      const href = linkEl ? linkEl.getAttribute('href') : '';
+      const hasValidUrl = Boolean(href && href !== '#' && href.trim() !== '');
+
+      if (modalCard) {
+        if (hasValidUrl) {
+          modalCard.classList.remove('is-coming-soon');
+        } else {
+          modalCard.classList.add('is-coming-soon');
+        }
+      }
+
+      if (modalVisitBtn) {
+        if (hasValidUrl) {
+          modalVisitBtn.setAttribute('href', href);
+          modalVisitBtn.setAttribute('target', '_blank');
+          modalVisitBtn.setAttribute('rel', 'noopener noreferrer');
+          modalVisitBtn.classList.remove('is-disabled');
+          modalVisitBtn.removeAttribute('aria-disabled');
+          modalVisitBtn.innerHTML = '<span>View Project &rarr;</span>';
+        } else {
+          modalVisitBtn.removeAttribute('href');
+          modalVisitBtn.removeAttribute('target');
+          modalVisitBtn.removeAttribute('rel');
+          modalVisitBtn.classList.add('is-disabled');
+          modalVisitBtn.setAttribute('aria-disabled', 'true');
+          modalVisitBtn.innerHTML = '<i data-lucide="clock" style="width: 16px; height: 16px;"></i><span>Coming Soon</span>';
+          lucide.createIcons();
+        }
+      }
+
+      previewModal.classList.add('active');
+      previewModal.setAttribute('aria-hidden', 'false');
+
+      document.body.style.overflow = 'hidden';
+      if (typeof lenis !== 'undefined' && lenis && typeof lenis.stop === 'function') {
+        lenis.stop();
+      }
+
+      if (modalCloseBtn) {
+        modalCloseBtn.focus();
+      }
+    }
+
+    function closeProjectModal() {
+      if (!previewModal) return;
+
+      previewModal.classList.remove('active');
+      previewModal.setAttribute('aria-hidden', 'true');
+
+      document.body.style.overflow = '';
+      if (typeof lenis !== 'undefined' && lenis && typeof lenis.start === 'function') {
+        lenis.start();
+      }
+
+      if (activeModalTrigger) {
+        activeModalTrigger.focus();
+        activeModalTrigger = null;
+      }
+    }
+
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener('click', closeProjectModal);
+    }
+
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', closeProjectModal);
+    }
+
+    if (modalVisitBtn) {
+      modalVisitBtn.addEventListener('click', (e) => {
+        if (modalVisitBtn.classList.contains('is-disabled') || !modalVisitBtn.hasAttribute('href')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && previewModal && previewModal.classList.contains('active')) {
+        closeProjectModal();
+      }
+    });
+
     expandingCards.forEach((card, index) => {
       const handleInteract = () => {
         if (activeIndex !== index) {
@@ -474,7 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const showProcessing = (link) => {
         if (!link) return;
         const originalContent = link.innerHTML;
-        link.innerHTML = '<span style="font-size: 0.75rem; font-weight: 600; padding: 0 4px; white-space: nowrap;">Upcoming...</span>';
+        link.innerHTML = '<span style="font-size: 0.75rem; font-weight: 600; padding: 0 4px; white-space: nowrap;">Coming Soon...</span>';
         link.style.borderRadius = '12px';
         setTimeout(() => {
           link.innerHTML = originalContent;
@@ -483,46 +621,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
       };
 
-      const handleClick = (e) => {
-        const linkBtn = e.target.closest('.card-link');
-        if (linkBtn) {
-          e.preventDefault();
-          const href = linkBtn.getAttribute('href');
-          if (!href || href === '#') {
-            showProcessing(linkBtn);
-          } else {
-            if (linkBtn.getAttribute('target') === '_blank') {
-              window.open(href, '_blank');
+      const cardLink = card.querySelector('.card-link');
+      if (cardLink) {
+        cardLink.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const href = cardLink.getAttribute('href');
+          const hasValidUrl = Boolean(href && href !== '#' && href.trim() !== '');
+
+          if (!hasValidUrl) {
+            e.preventDefault();
+            if (window.innerWidth >= 768) {
+              if (activeIndex !== index) {
+                activeIndex = index;
+                updateGrid();
+              }
+              openProjectModal(card);
             } else {
-              window.location.href = href;
+              showProcessing(cardLink);
             }
           }
+        });
+      }
+
+      const handleClick = (e) => {
+        if (e.target.closest('.card-link')) {
           return;
         }
 
-        const isDesktop = window.innerWidth >= 768;
-        if (isDesktop) {
-          const link = card.querySelector('.card-link');
-          if (link) {
-            const href = link.getAttribute('href');
-            if (href && href !== '#') {
-              if (link.getAttribute('target') === '_blank') {
-                window.open(href, '_blank');
-              } else {
-                window.location.href = href;
-              }
-            } else {
-              showProcessing(link);
-            }
-          }
-        } else {
-          handleInteract();
+        if (activeIndex !== index) {
+          activeIndex = index;
+          updateGrid();
+        }
+
+        if (window.innerWidth >= 768) {
+          openProjectModal(card);
         }
       };
 
       card.addEventListener('mouseenter', handleInteract);
       card.addEventListener('focus', handleInteract);
       card.addEventListener('click', handleClick);
+      card.addEventListener('keydown', (e) => {
+        if (e.target.closest('.card-link')) {
+          return;
+        }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick(e);
+        }
+      });
     });
   }
 

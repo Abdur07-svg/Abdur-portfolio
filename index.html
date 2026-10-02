@@ -787,6 +787,41 @@
   </div>
   <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
+  <div id="project-preview-modal" class="project-preview-modal" role="dialog" aria-modal="true" aria-labelledby="modal-project-title" aria-hidden="true" tabindex="-1">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-project-badge" id="modal-project-badge">Project</span>
+          <h3 class="modal-project-title" id="modal-project-title">Project Title</h3>
+        </div>
+        <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Close project preview">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-image-wrapper">
+        <picture id="modal-picture">
+          <source id="modal-source" srcset="" type="image/webp">
+          <img id="modal-img" src="" alt="Project Cover Preview" class="modal-cover-img" />
+        </picture>
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-info-col">
+          <p class="modal-project-desc" id="modal-project-desc"></p>
+          <div class="modal-coming-soon-notice" id="modal-coming-soon-notice">
+            <span class="coming-soon-badge">Coming Soon</span>
+            <span class="coming-soon-text">Project link will be available soon.</span>
+          </div>
+        </div>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="modal-visit-btn" id="modal-visit-btn">
+          <span>View Project &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
     (function() {
