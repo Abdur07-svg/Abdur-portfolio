@@ -1497,7 +1497,7 @@ body.light-theme .logo-dark {
   align-items: center;
   padding: 8px 16px;
   background: var(--white-alpha-03);
-  border: 1px solid var(--white-alpha-10);
+  border: 2px solid var(--white-alpha-10);
   border-radius: 50px;
   font-size: 0.9rem;
   color: var(--text-primary);
