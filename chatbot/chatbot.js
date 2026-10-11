@@ -30,6 +30,7 @@
       this.lastJokeIndex = -1;
       this.rpsScores = { player: 0, bot: 0, ties: 0 };
       this.activeNumberGame = null;
+      this.isSending = false;
 
       this.init();
     }
@@ -271,28 +272,30 @@
         clearTimeout(this.typingTimer);
         this.typingTimer = null;
       }
+      this.isSending = false;
       this.setTyping(false);
 
       this.messagesContainer.innerHTML = '';
 
-      const welcomeCard = document.createElement('div');
-      welcomeCard.className = 'portfolio-chatbot-msg portfolio-chatbot-msg-bot portfolio-chatbot-welcome-wrap';
-      welcomeCard.innerHTML = `
-        <div class="portfolio-chatbot-welcome-card">
-          <div class="portfolio-chatbot-welcome-title">Explore Abdur's portfolio.</div>
-          <div class="portfolio-chatbot-welcome-subtitle">Have a question? Type it below.</div>
-          <div class="portfolio-chatbot-welcome-example" aria-hidden="true">
-            <span class="portfolio-chatbot-example-label">Example:</span>
-            <span class="portfolio-chatbot-example-text">“Which project should I explore first?”</span>
-          </div>
+      const welcomeWrap = document.createElement('div');
+      welcomeWrap.className = 'portfolio-chatbot-welcome-wrap';
+      welcomeWrap.id = 'portfolio-chatbot-welcome';
+      welcomeWrap.innerHTML = `
+        <div class="portfolio-chatbot-welcome-icon" aria-hidden="true">
+          <picture class="portfolio-chatbot-welcome-pic">
+            <source srcset="images/chatbot-ghost.webp" type="image/webp" />
+            <img src="images/chatbot-ghost.png" alt="" class="portfolio-chatbot-welcome-img" />
+          </picture>
         </div>
+        <h3 class="portfolio-chatbot-welcome-greeting">Hey there! 👋</h3>
+        <p class="portfolio-chatbot-welcome-desc">Ask me anything about Abdur's portfolio.</p>
       `;
-      this.messagesContainer.appendChild(welcomeCard);
+      this.messagesContainer.appendChild(welcomeWrap);
       this.scrollToBottom();
     }
 
     handleSubmit() {
-      if (this.isTyping) return;
+      if (this.isTyping || this.isSending) return;
       const text = this.input.value.trim();
       if (!text) return;
 
@@ -302,12 +305,43 @@
     }
 
     sendQuery(text) {
-      if (!text || this.isTyping) return;
+      if (!text || this.isTyping || this.isSending) return;
+      this.isSending = true;
 
       if (this.typingTimer) {
         clearTimeout(this.typingTimer);
         this.typingTimer = null;
       }
+
+      const welcomeEl = this.messagesContainer.querySelector('.portfolio-chatbot-welcome-wrap');
+      if (welcomeEl) {
+        welcomeEl.classList.add('portfolio-chatbot-welcome-exit');
+        let done = false;
+        const proceed = () => {
+          if (done) return;
+          done = true;
+          if (welcomeEl.parentNode) {
+            welcomeEl.remove();
+          }
+          this.executeUserQuery(text);
+        };
+
+        const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) {
+          proceed();
+        } else {
+          welcomeEl.addEventListener('animationend', proceed, { once: true });
+          setTimeout(proceed, 180);
+        }
+      } else {
+        this.executeUserQuery(text);
+      }
+    }
+
+    executeUserQuery(text) {
+      this.isSending = false;
+      const leftovers = this.messagesContainer.querySelectorAll('.portfolio-chatbot-welcome-wrap');
+      leftovers.forEach(el => el.remove());
 
       this.appendUserMsg(text);
 
@@ -668,7 +702,7 @@
 
     appendUserMsg(text) {
       const msg = document.createElement('div');
-      msg.className = 'portfolio-chatbot-msg portfolio-chatbot-msg-user';
+      msg.className = 'portfolio-chatbot-msg portfolio-chatbot-msg-user portfolio-chatbot-msg-anim';
       const bubble = document.createElement('div');
       bubble.className = 'portfolio-chatbot-bubble';
       bubble.textContent = text;
