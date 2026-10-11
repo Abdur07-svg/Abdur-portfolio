@@ -1,9 +1,15 @@
-const CACHE_NAME = 'ar7-portfolio-offline-v1';
+const CACHE_NAME = 'ar7-portfolio-offline-v14';
 
 const OFFLINE_FALLBACK_URL = 'offline.html';
 const PRECACHE_ASSETS = [
   'offline.html',
   'style.css',
+  'chatbot/chatbot.css',
+  'chatbot/portfolio-data.js',
+  'chatbot/chatbot.js',
+  'images/chatbot-ghost.webp',
+  'images/chatbot-ghost.png',
+  'images/chatbot.jpg',
   'images/ar-logo.svg',
   'images/ar-logo1.svg',
   'images/favicon-32.png',
