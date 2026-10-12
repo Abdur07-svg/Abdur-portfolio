@@ -27,6 +27,7 @@
       this.data = window.PORTFOLIO_DATA || {};
       this.intents = window.PORTFOLIO_INTENTS || [];
       this.jokes = window.PORTFOLIO_JOKES || [];
+      this.riddles = window.PORTFOLIO_RIDDLES || [];
       this.lastJokeIndex = -1;
       this.rpsScores = { player: 0, bot: 0, ties: 0 };
       this.activeNumberGame = null;
@@ -488,7 +489,11 @@
     }
 
     calculateResponseDelay(intentId, responseText) {
-      const companionIntents = ['calculator_card', 'number_game_card', 'rps_card', 'math_calc', 'joke', 'number_guess', 'game_clarification'];
+      const companionIntents = [
+        'calculator_card', 'number_game_card', 'rps_card', 'math_calc', 'joke',
+        'number_guess', 'game_clarification', 'fun_and_games', 'fun_joke_prompt',
+        'fun_game_prompt', 'brain_teaser_card'
+      ];
       if (companionIntents.includes(intentId)) {
         return 500 + Math.floor(Math.random() * 260);
       }
@@ -530,6 +535,31 @@
         .trim();
     }
 
+    detectFunAndGameIntent(rawText, norm) {
+      const isPortfolioGameQuery =
+        /(game\s*project|games?\s*(you|abdur|built|build|made|make|created|create|developed|develop|worked\s*on)|(built|build|made|make|created|create|developed|develop)\s*(\w+\s*)?games?|android\s*game|endless\s*runner|video\s*game\s*project|mobile\s*game|temple\s*run)/i.test(rawText) ||
+        /what\s*games?\s*(have\s*you|did\s*abdur|has\s*abdur)\s*(built|build|made|make|created|create|developed|develop)/i.test(rawText) ||
+        /tell\s*me\s*about\s*(your\s*)?games?/i.test(rawText) ||
+        /any\s*games?\s*(you|abdur)\s*(built|build|made|make|created|create|developed|develop)/i.test(rawText);
+      if (isPortfolioGameQuery) {
+        return { isJoke: false, isGame: false };
+      }
+
+      if (/\b(projects?|skills?|education|experience|contact|email|socials?|who\s*is\s*abdur|about\s*abdur|resume|cv)\b/i.test(rawText) && !/\b(bored|play|game|joke|fun)\b/i.test(rawText)) {
+        return { isJoke: false, isGame: false };
+      }
+
+      const englishJokeRegex = /\b(jokes?|funny|fun|humou?r|comedy|make\s*me\s*laugh|something\s*funny|fun\s*mood|mood\s*fresh|bored|boring|i'?m\s*bored|i\s*am\s*bored|hasao)\b/i;
+      const bengaliJokeRegex = /(হাসির\s*কিছু|মজার\s*কিছু|মজা|জোক|জোকস|হাসাও)/;
+      const isJoke = englishJokeRegex.test(rawText) || englishJokeRegex.test(norm) || bengaliJokeRegex.test(rawText);
+
+      const englishGameRegex = /\b(games?|let'?s\s*play|play\s*something|mini\s*games?|gaming|play\s*a\s*game|wanna\s*play|want\s*to\s*play|khelbo|khela|khelte\s*chai)\b|^play$/i;
+      const bengaliGameRegex = /(খেলতে\s*চাই|গেম\s*খেলি|গেম|খেলা)/;
+      const isGame = englishGameRegex.test(rawText) || englishGameRegex.test(norm) || bengaliGameRegex.test(rawText);
+
+      return { isJoke, isGame };
+    }
+
     matchResponse(rawText) {
       const norm = this.normalize(rawText);
       if (!norm) {
@@ -541,7 +571,12 @@
         };
       }
 
-      if (/(game\s*project|android\s*game|endless\s*runner|mobile\s*game|temple\s*run)/i.test(rawText)) {
+      const isPortfolioGameQuery =
+        /(game\s*project|games?\s*(you|abdur|built|build|made|make|created|create|developed|develop|worked\s*on)|(built|build|made|make|created|create|developed|develop)\s*(\w+\s*)?games?|android\s*game|endless\s*runner|video\s*game\s*project|mobile\s*game|temple\s*run)/i.test(rawText) ||
+        /what\s*games?\s*(have\s*you|did\s*abdur|has\s*abdur)\s*(built|build|made|make|created|create|developed|develop)/i.test(rawText) ||
+        /tell\s*me\s*about\s*(your\s*)?games?/i.test(rawText) ||
+        /any\s*games?\s*(you|abdur)\s*(built|build|made|make|created|create|developed|develop)/i.test(rawText);
+      if (isPortfolioGameQuery) {
         const gameProj = this.intents.find(i => i.id === 'project_game');
         if (gameProj) {
           return { intentId: 'project_game', response: gameProj.response };
@@ -566,40 +601,42 @@
             this.activeNumberGame.isWon = true;
             return {
               intentId: 'number_guess',
-              response: { text: `🎉 Correct! The number was ${this.activeNumberGame.secret}. You won in ${this.activeNumberGame.attempts} ${this.activeNumberGame.attempts === 1 ? 'attempt' : 'attempts'}! Type 'number game' to play again.` }
+              response: { text: `🎉 Correct! The number was ${this.activeNumberGame.secret}. You won in ${this.activeNumberGame.attempts} ${this.activeNumberGame.attempts === 1 ? 'attempt' : 'attempts'}!` }
             };
           }
         }
       }
 
-      if (/(play\s*)?(rock\s*paper\s*scissors|stone\s*paper\s*scissors|rock,\s*paper,\s*scissors|^rps$|play\s*rps|পাথর\s*কাগজ\s*কাঁচি)/i.test(rawText)) {
-        return {
-          intentId: 'rps_card',
-          response: { type: 'rps_card' }
-        };
-      }
-
-      if (/(play\s*)?(number\s*(game|guessing|khela|kheli)|guessing\s*game|guess\s*the\s*number|নাম্বার\s*খেলা)|let'?s\s*play(\s*a)?\s*game|game\s*khelbo|khela\s*kori/i.test(rawText)) {
+      if (/(guess\s*the\s*number|number\s*(guessing\s*)?game|play\s*number\s*game|নাম্বার\s*খেলা)/i.test(rawText)) {
         return {
           intentId: 'number_game_card',
           response: { type: 'number_game_card' }
         };
       }
 
-      if (/^(game|play|khela|play\s*a\s*game|khelbo|let'?s\s*play|lets\s*play|wanna\s*play|khelte\s*chai)$/i.test(rawText.trim()) || /^(game|play|khela|khelbo|lets?\s*play)$/i.test(norm)) {
-        return {
-          intentId: 'game_clarification',
-          response: {
-            text: "🎮 Looking for something to play? You can try:\n• Number Guessing Game (1–20) — type 'number game'\n• Rock Paper Scissors — type 'rock paper scissors'\n• Or explore Abdur's 3D Android Endless Runner Game — type 'game project'!"
-          }
-        };
-      }
+      const funIntent = this.detectFunAndGameIntent(rawText, norm);
+      if (funIntent.isJoke || funIntent.isGame) {
+        const contextualActions = [];
+        if (funIntent.isJoke) {
+          contextualActions.push({ type: 'tell_joke', label: '😂 Tell Me a Joke' });
+        }
+        if (funIntent.isGame) {
+          contextualActions.push({ type: 'play_game', label: '🎮 Play a Game' });
+          contextualActions.push({ type: 'brain_teaser', label: '🧠 Brain Teaser' });
+        }
 
-      if (/\b(jokes?|জোক|জোকস|মজার\s*কথা|হাসাও)\b|make\s*me\s*laugh|funny\s*(story|one|tech)/i.test(rawText)) {
+        let replyText = "Ready to play? Choose an activity below to get started! 🎮";
+        if (funIntent.isJoke && funIntent.isGame) {
+          replyText = "Boredom banished! Pick a game or enjoy a joke below: 🌟";
+        } else if (funIntent.isJoke) {
+          replyText = "Looking for some fun or a good laugh? Click below whenever you're ready! 😄";
+        }
+
         return {
-          intentId: 'joke',
+          intentId: funIntent.isJoke && funIntent.isGame ? 'fun_and_games' : (funIntent.isJoke ? 'fun_joke_prompt' : 'fun_game_prompt'),
           response: {
-            text: this.getRandomJoke()
+            text: replyText,
+            contextualActions: contextualActions
           }
         };
       }
@@ -958,6 +995,7 @@
         <div class="portfolio-chatbot-rps-result" style="display: none;"></div>
         <div class="portfolio-chatbot-rps-footer">
           <button type="button" class="portfolio-chatbot-link-action portfolio-chatbot-rps-reset">Reset Score</button>
+          <button type="button" class="portfolio-chatbot-link-action portfolio-chatbot-rps-exit" style="margin-left: 8px;">Exit Game ✖</button>
         </div>
       `;
 
@@ -965,6 +1003,7 @@
       const statusEl = card.querySelector('.portfolio-chatbot-rps-status');
       const resultEl = card.querySelector('.portfolio-chatbot-rps-result');
       const resetBtn = card.querySelector('.portfolio-chatbot-rps-reset');
+      const exitBtn = card.querySelector('.portfolio-chatbot-rps-exit');
 
       const icons = { Rock: '🪨', Paper: '📄', Scissors: '✂️' };
       const choices = ['Rock', 'Paper', 'Scissors'];
@@ -1004,7 +1043,126 @@
         resultEl.style.display = 'none';
       });
 
+      if (exitBtn) {
+        exitBtn.addEventListener('click', () => {
+          this.appendBotMsg({
+            text: "Game exited! What would you like to explore next in Abdur's portfolio?"
+          });
+        });
+      }
+
       return card;
+    }
+
+    renderBrainTeaserCard() {
+      const card = document.createElement('div');
+      card.className = 'portfolio-chatbot-companion-card portfolio-chatbot-teaser-card';
+
+      const riddles = this.riddles && this.riddles.length > 0 ? this.riddles : [
+        {
+          riddle: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
+          answer: "An Echo",
+          keywords: ["echo"]
+        }
+      ];
+
+      let currentIdx = Math.floor(Math.random() * riddles.length);
+      let currentRiddle = riddles[currentIdx];
+
+      card.innerHTML = `
+        <div class="portfolio-chatbot-card-header">
+          <span class="portfolio-chatbot-card-title">🧠 Brain Teaser Riddle</span>
+          <button type="button" class="portfolio-chatbot-link-action portfolio-chatbot-teaser-exit">Exit ✖</button>
+        </div>
+        <div class="portfolio-chatbot-teaser-riddle">${currentRiddle.riddle}</div>
+        <form class="portfolio-chatbot-teaser-form">
+          <input type="text" placeholder="Type your guess..." class="portfolio-chatbot-teaser-input" aria-label="Guess the riddle answer" />
+          <button type="submit" class="portfolio-chatbot-teaser-submit">Check</button>
+        </form>
+        <div class="portfolio-chatbot-teaser-feedback" style="display: none;"></div>
+        <div class="portfolio-chatbot-card-actions">
+          <button type="button" class="portfolio-chatbot-link-action portfolio-chatbot-teaser-reveal">Reveal Answer 💡</button>
+          <div class="portfolio-chatbot-card-actions-right">
+            <button type="button" class="portfolio-chatbot-companion-btn portfolio-chatbot-teaser-next">Next Riddle 🔄</button>
+          </div>
+        </div>
+      `;
+
+      const form = card.querySelector('.portfolio-chatbot-teaser-form');
+      const input = card.querySelector('.portfolio-chatbot-teaser-input');
+      const feedback = card.querySelector('.portfolio-chatbot-teaser-feedback');
+      const revealBtn = card.querySelector('.portfolio-chatbot-teaser-reveal');
+      const nextBtn = card.querySelector('.portfolio-chatbot-teaser-next');
+      const exitBtn = card.querySelector('.portfolio-chatbot-teaser-exit');
+      const riddleEl = card.querySelector('.portfolio-chatbot-teaser-riddle');
+
+      const updateRiddleView = () => {
+        currentRiddle = riddles[currentIdx];
+        riddleEl.textContent = currentRiddle.riddle;
+        input.value = '';
+        feedback.className = 'portfolio-chatbot-teaser-feedback';
+        feedback.style.display = 'none';
+        feedback.textContent = '';
+        input.focus();
+      };
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = input.value.trim().toLowerCase();
+        if (!val) return;
+
+        const isMatch = currentRiddle.keywords.some(kw => val.includes(kw.toLowerCase()));
+        if (isMatch) {
+          feedback.textContent = `🎉 Correct! The answer is: ${currentRiddle.answer}`;
+          feedback.className = 'portfolio-chatbot-teaser-feedback feedback-correct';
+          feedback.style.display = 'block';
+        } else {
+          feedback.textContent = `🤔 Not quite! Try again, or click "Reveal Answer" for help.`;
+          feedback.className = 'portfolio-chatbot-teaser-feedback feedback-wrong';
+          feedback.style.display = 'block';
+        }
+      });
+
+      revealBtn.addEventListener('click', () => {
+        feedback.textContent = `💡 Answer: ${currentRiddle.answer}`;
+        feedback.className = 'portfolio-chatbot-teaser-feedback feedback-revealed';
+        feedback.style.display = 'block';
+      });
+
+      nextBtn.addEventListener('click', () => {
+        currentIdx = (currentIdx + 1 + Math.floor(Math.random() * (riddles.length - 1))) % riddles.length;
+        updateRiddleView();
+      });
+
+      if (exitBtn) {
+        exitBtn.addEventListener('click', () => {
+          this.appendBotMsg({
+            text: "Hope you enjoyed the riddle! Feel free to ask about Abdur's projects, skills, or anything else."
+          });
+        });
+      }
+
+      return card;
+    }
+
+    handleContextAction(actionType) {
+      if (actionType === 'tell_joke') {
+        const joke = this.getRandomJoke();
+        this.appendBotMsg({
+          text: joke,
+          contextualActions: [
+            { type: 'tell_joke', label: '😂 Another Joke 🔄' }
+          ]
+        });
+      } else if (actionType === 'play_game') {
+        this.appendBotMsg({
+          type: 'rps_card'
+        });
+      } else if (actionType === 'brain_teaser') {
+        this.appendBotMsg({
+          type: 'brain_teaser_card'
+        });
+      }
     }
 
     appendBotMsg(res) {
@@ -1031,8 +1189,36 @@
         msg.classList.add('portfolio-chatbot-msg-card');
         bubble.classList.add('portfolio-chatbot-bubble-card');
         bubble.appendChild(this.renderRpsCard());
+      } else if (res.type === 'brain_teaser_card') {
+        msg.classList.add('portfolio-chatbot-msg-card');
+        bubble.classList.add('portfolio-chatbot-bubble-card');
+        bubble.appendChild(this.renderBrainTeaserCard());
       } else {
         bubble.textContent = res.text;
+
+        if (res.contextualActions && Array.isArray(res.contextualActions) && res.contextualActions.length > 0) {
+          const actionsWrap = document.createElement('div');
+          actionsWrap.className = 'portfolio-chatbot-context-actions';
+          actionsWrap.setAttribute('role', 'group');
+          actionsWrap.setAttribute('aria-label', 'Contextual Fun Actions');
+
+          res.contextualActions.forEach(action => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'portfolio-chatbot-action-btn';
+            btn.setAttribute('data-action', action.type);
+            btn.textContent = action.label;
+
+            btn.addEventListener('click', () => {
+              btn.disabled = true;
+              this.handleContextAction(action.type);
+            });
+
+            actionsWrap.appendChild(btn);
+          });
+
+          bubble.appendChild(actionsWrap);
+        }
 
         if (res.links && Array.isArray(res.links) && res.links.length > 0) {
           const linksWrap = document.createElement('div');

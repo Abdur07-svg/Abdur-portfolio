@@ -830,3 +830,56 @@ window.PORTFOLIO_JOKES = [
   "What's a programmer's favorite workout?\nGit push and Git pull! 💪",
   "How many programmers does it take to change a lightbulb?\nNone, that's a hardware problem! 💡"
 ];
+
+window.PORTFOLIO_RIDDLES = [
+  {
+    riddle: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
+    answer: "An Echo",
+    keywords: ["echo", "an echo", "sound"]
+  },
+  {
+    riddle: "The more you code me, the more I exist. Programmers hate seeing me, but love finding me. What am I?",
+    answer: "A Bug",
+    keywords: ["bug", "a bug", "error", "glitch", "bugs"]
+  },
+  {
+    riddle: "I have keys, but no locks. I have space, but no room. You can enter, but you can't go outside. What am I?",
+    answer: "A Keyboard",
+    keywords: ["keyboard", "a keyboard", "key board", "computer keyboard"]
+  },
+  {
+    riddle: "I am taken from a mine and shut up in a wooden case, from which I am never released, yet I am used by almost everyone. What am I?",
+    answer: "Pencil Lead (Graphite)",
+    keywords: ["pencil lead", "lead", "graphite", "pencil", "pencil graphite"]
+  },
+  {
+    riddle: "I have branches, but no fruit, trunk, or leaves. What am I?",
+    answer: "A Bank (or Git Branch!)",
+    keywords: ["bank", "a bank", "git", "git branch", "branch"]
+  },
+  {
+    riddle: "What runs all day without legs, and has a bank but no money?",
+    answer: "A River",
+    keywords: ["river", "a river", "stream"]
+  },
+  {
+    riddle: "What has many teeth, but cannot bite?",
+    answer: "A Comb",
+    keywords: ["comb", "a comb"]
+  },
+  {
+    riddle: "I can be cracked, made, told, and played. What am I?",
+    answer: "A Joke",
+    keywords: ["joke", "a joke"]
+  },
+  {
+    riddle: "What goes up and never comes down?",
+    answer: "Your Age",
+    keywords: ["age", "your age", "my age", "years"]
+  },
+  {
+    riddle: "What begins with T, finishes with T, and has T inside it?",
+    answer: "A Teapot",
+    keywords: ["teapot", "a teapot", "tea pot"]
+  }
+];
