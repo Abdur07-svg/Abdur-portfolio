@@ -528,7 +528,7 @@
         return 1250 + Math.floor(Math.random() * 450);
       }
 
-      const shortIntents = ['greeting', 'thanks', 'how_are_you', 'empty', 'bye', 'time_greeting', 'time_greeting_correction'];
+      const shortIntents = ['greeting', 'thanks', 'how_are_you', 'empty', 'bye', 'time_greeting', 'time_greeting_correction', 'theme_dark', 'theme_light', 'theme_conflict'];
       if (shortIntents.includes(intentId) || textLen < 80) {
         return 560 + Math.floor(Math.random() * 280);
       }
@@ -570,7 +570,8 @@
         /\b(shuvo|subho|shokal|sokal|dupur|sondha|shondha|ratri|raat)\b/i,
         /\b(dhonnobad|dhonno|thik\s*ache|bujhlam|acha|accha|ha|na)\b/i,
         /\b(dekhte\s*chai|jante\s*chai|bolte\s*paro|parba|parbe)\b/i,
-        /\b(shuru|shesh|notun|puraton)\b/i
+        /\b(shuru|shesh|notun|puraton)\b/i,
+        /\b(koro|korun|chalu|bondho|hoyeche|naki|ar|ebong|kori|korchi)\b/i
       ];
 
       let banglishMatches = 0;
@@ -584,7 +585,8 @@
 
       const englishPatterns = [
         /\b(tell|me|about|your|what|are|is|how|can|i|contact|who|built|build|show|which|please|hello|hi|hey|thanks|thank\s*you|good\s*morning|good\s*afternoon|good\s*evening|good\s*night|morning|afternoon|evening|night|bye|goodbye)\b/i,
-        /\b(projects?|skills?|experience|education|resume|cv|portfolio|socials?|work|code|github|email)\b/i
+        /\b(projects?|skills?|experience|education|resume|cv|portfolio|socials?|work|code|github|email)\b/i,
+        /\b(dark|light|mode|theme|turn|enable|disable|switch|on|off)\b/i
       ];
       let englishMatches = 0;
       for (const pat of englishPatterns) {
@@ -617,6 +619,196 @@
         localized.actions = i18nEntry.actions;
       }
       return localized;
+    }
+
+    setTheme(targetTheme) {
+      const theme = (targetTheme === 'light' || targetTheme === 'light-theme') ? 'light-theme' : 'dark-theme';
+      if (typeof window.setPortfolioTheme === 'function') {
+        window.setPortfolioTheme(theme);
+      } else {
+        document.body.className = theme;
+        try {
+          localStorage.setItem('theme', theme);
+        } catch (e) {}
+        const themeIconLight = document.querySelector('.theme-icon-light');
+        const themeIconDark = document.querySelector('.theme-icon-dark');
+        if (themeIconLight && themeIconDark) {
+          if (theme === 'light-theme') {
+            themeIconLight.style.display = 'none';
+            themeIconDark.style.display = 'block';
+          } else {
+            themeIconLight.style.display = 'block';
+            themeIconDark.style.display = 'none';
+          }
+        }
+      }
+      return theme;
+    }
+
+    getCurrentTheme() {
+      if (typeof window.getPortfolioTheme === 'function') {
+        return window.getPortfolioTheme() === 'light-theme' ? 'light' : 'dark';
+      }
+      return document.body.classList.contains('light-theme') ? 'light' : 'dark';
+    }
+
+    detectThemeCommand(rawText) {
+      if (!rawText || typeof rawText !== 'string') return { type: 'none' };
+      const clean = rawText.trim();
+
+      const isQuestionPattern =
+        /\b(how\s+does|how\s+to\s+build|how\s+do\s+you|what\s+is|what's|why|explain|tell\s+me\s+about|does\s+(it|this)|is\s+there)\b/i.test(clean) ||
+        /\b(kivabe\s+kaj|keno|ki\s+vabe\s+kaj|ki\s+kaj)\b/i.test(clean) ||
+        /(কিভাবে\s*কাজ|কীভাবে\s*কাজ|কেন|কি\s*কাজ|কী\s*কাজ)/i.test(clean) ||
+        (/\b(how|what|why)\b/i.test(clean) && /\b(work|meaning|function|built)\b/i.test(clean));
+
+      const hasExplicitCommandAction =
+        /\b(turn\s+on|turn\s+off|enable|disable|activate|switch|change|set|koro|korun|chalu|bondho|চালু|বন্ধ)\b/i.test(clean);
+
+      if (isQuestionPattern && !hasExplicitCommandAction) {
+        return { type: 'question' };
+      }
+
+      const hasExplicitDarkOn =
+        /\b(?:turn\s*on\s*dark|turn\s*dark\s*(?:mode|theme)?\s*on|enable\s*dark|activate\s*dark|switch\s*(?:to\s*)?dark|set\s*dark)\b/i.test(clean) ||
+        /\bdark\s*(?:mode|theme)?\s*(?:on|chalu|enable)\b/i.test(clean) ||
+        /(?:ডার্ক\s*(?:মোড|থিম)?\s*(?:চালু|অন))/i.test(clean);
+
+      const hasExplicitDarkOff =
+        /\b(?:turn\s*off\s*dark|turn\s*dark\s*(?:mode|theme)?\s*off|disable\s*dark)\b/i.test(clean) ||
+        /\bdark\s*(?:mode|theme)?\s*(?:off|bondho|disable)\b/i.test(clean) ||
+        /(?:ডার্ক\s*(?:মোড|থিম)?\s*(?:বন্ধ|অফ))/i.test(clean);
+
+      const hasExplicitLightOn =
+        /\b(?:turn\s*on\s*light|turn\s*light\s*(?:mode|theme)?\s*on|enable\s*light|activate\s*light|switch\s*(?:to\s*)?light|set\s*light)\b/i.test(clean) ||
+        /\blight\s*(?:mode|theme)?\s*(?:on|chalu|enable)\b/i.test(clean) ||
+        /(?:লাইট\s*(?:মোড|থিম)?\s*(?:চালু|অন))/i.test(clean);
+
+      const hasExplicitLightOff =
+        /\b(?:turn\s*off\s*light|turn\s*light\s*(?:mode|theme)?\s*off|disable\s*light)\b/i.test(clean) ||
+        /\blight\s*(?:mode|theme)?\s*(?:off|bondho|disable)\b/i.test(clean) ||
+        /(?:লাইট\s*(?:মোড|থিম)?\s*(?:বন্ধ|অফ))/i.test(clean);
+
+      const darkOff = hasExplicitDarkOff;
+      const lightOff = hasExplicitLightOff;
+
+      const darkOn = (hasExplicitDarkOn && (!hasExplicitDarkOff || hasExplicitDarkOn)) ||
+        (!hasExplicitDarkOff && (
+          /\bdark\s*(?:mode|theme)?\s*(?:koro|korun)\b/i.test(clean) ||
+          /(?:ডার্ক\s*(?:মোড|থিম)?\s*(?:করো|করুন))/i.test(clean) ||
+          /^(?:please\s+)?(?:set\s+)?dark\s*(?:mode|theme)?(?:\s+please)?$/i.test(clean) ||
+          /^(?:ডার্ক\s*(?:মোড|থিম)?)$/i.test(clean)
+        ));
+
+      const lightOn = (hasExplicitLightOn && (!hasExplicitLightOff || hasExplicitLightOn)) ||
+        (!hasExplicitLightOff && (
+          /\blight\s*(?:mode|theme)?\s*(?:koro|korun)\b/i.test(clean) ||
+          /(?:লাইট\s*(?:মোড|থিম)?\s*(?:করো|করুন))/i.test(clean) ||
+          /^(?:please\s+)?(?:set\s+)?light\s*(?:mode|theme)?(?:\s+please)?$/i.test(clean) ||
+          /^(?:লাইট\s*(?:মোড|থিম)?)$/i.test(clean)
+        ));
+
+      if (/\b(?:dark\s*(?:mode|theme)?|ডার্ক\s*(?:মোড|থিম)?)\b/i.test(clean) &&
+          /\b(?:light\s*(?:mode|theme)?|লাইট\s*(?:মোড|থিম)?)\b/i.test(clean)) {
+        const darkAgreement = (hasExplicitDarkOn || darkOn) && (hasExplicitLightOff || lightOff) && !hasExplicitDarkOff && !hasExplicitLightOn;
+        const lightAgreement = (hasExplicitLightOn || lightOn) && (hasExplicitDarkOff || darkOff) && !hasExplicitLightOff && !hasExplicitDarkOn;
+        if (darkAgreement) return { type: 'dark' };
+        if (lightAgreement) return { type: 'light' };
+        return { type: 'conflict' };
+      }
+
+      const wantsDark = darkOn || lightOff;
+      const wantsLight = lightOn || darkOff;
+
+      const isDirectConflict =
+        (darkOn && darkOff) ||
+        (lightOn && lightOff) ||
+        (darkOn && lightOn) ||
+        (darkOff && lightOff);
+
+      if (isDirectConflict || (wantsDark && wantsLight)) {
+        return { type: 'conflict' };
+      }
+      if (wantsDark) {
+        return { type: 'dark' };
+      }
+      if (wantsLight) {
+        return { type: 'light' };
+      }
+      return { type: 'none' };
+    }
+
+    handleThemeCommand(rawText, norm) {
+      const parsed = this.detectThemeCommand(rawText);
+      if (!parsed || parsed.type === 'none' || parsed.type === 'question') {
+        return null;
+      }
+
+      const lang = this.detectLanguage(rawText);
+      this.currentLanguage = lang;
+
+      if (parsed.type === 'conflict') {
+        const conflictMsgs = {
+          en: "Which theme would you prefer: Dark mode 🌙 or Light mode ☀️?",
+          bn: "আপনি কোন থিমটি চান: ডার্ক মোড 🌙 নাকি লাইট মোড ☀️?",
+          banglish: "Tumi kon theme-ta preference dao: Dark mode 🌙 naki Light mode ☀️?"
+        };
+
+        const conflictActions = {
+          en: [
+            { label: "Dark Mode 🌙", query: "Dark mode on" },
+            { label: "Light Mode ☀️", query: "Light mode on" }
+          ],
+          bn: [
+            { label: "ডার্ক মোড 🌙", query: "ডার্ক মোড চালু করো" },
+            { label: "লাইট মোড ☀️", query: "লাইট মোড চালু করো" }
+          ],
+          banglish: [
+            { label: "Dark Mode 🌙", query: "Dark mode on koro" },
+            { label: "Light Mode ☀️", query: "Light mode on koro" }
+          ]
+        };
+
+        return {
+          intentId: 'theme_conflict',
+          response: {
+            text: conflictMsgs[lang] || conflictMsgs.en,
+            actions: conflictActions[lang] || conflictActions.en
+          }
+        };
+      }
+
+      if (parsed.type === 'dark') {
+        this.setTheme('dark');
+        const confirmMsgs = {
+          en: "Dark mode is now on. 🌙",
+          bn: "ডার্ক মোড চালু করা হয়েছে। 🌙",
+          banglish: "Dark mode chalu hoyeche. 🌙"
+        };
+        return {
+          intentId: 'theme_dark',
+          response: {
+            text: confirmMsgs[lang] || confirmMsgs.en
+          }
+        };
+      }
+
+      if (parsed.type === 'light') {
+        this.setTheme('light');
+        const confirmMsgs = {
+          en: "Light mode is now on. ☀️",
+          bn: "লাইট মোড চালু করা হয়েছে। ☀️",
+          banglish: "Light mode chalu hoyeche. ☀️"
+        };
+        return {
+          intentId: 'theme_light',
+          response: {
+            text: confirmMsgs[lang] || confirmMsgs.en
+          }
+        };
+      }
+
+      return null;
     }
 
     detectFunAndGameIntent(rawText, norm) {
@@ -862,6 +1054,12 @@
             text: emptyTexts[this.currentLanguage] || emptyTexts.en
           }
         };
+      }
+
+      // Theme Control Command (High-priority website control action)
+      const themeAction = this.handleThemeCommand(rawText, norm);
+      if (themeAction) {
+        return themeAction;
       }
 
       if (!options || !options.skipGreeting) {
