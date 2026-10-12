@@ -883,3 +883,137 @@ window.PORTFOLIO_RIDDLES = [
     keywords: ["teapot", "a teapot", "tea pot"]
   }
 ];
+
+window.PORTFOLIO_TIME_GREETINGS = {
+  en: {
+    match: {
+      morning: [
+        "Good morning! ☀️ How can I help you today?",
+        "Good morning! ☀️ Hope your day is off to a great start! What would you like to explore in Abdur's portfolio?",
+        "Good morning! ☀️ Ready to assist you—feel free to ask about Abdur's projects, skills, or experience!"
+      ],
+      afternoon: [
+        "Good afternoon! 😊 How can I help you today?",
+        "Good afternoon! ☀️ Hope your day is going well! What would you like to know about Abdur Rajjak?",
+        "Good afternoon! 😊 How may I assist you with Abdur's portfolio today?"
+      ],
+      evening: [
+        "Good evening! 🌆 What can I help you with today?",
+        "Good evening! 🌆 Hope you had a productive day! What would you like to explore tonight?",
+        "Good evening! 🌆 Glad to connect—feel free to ask about Abdur's projects, skills, or experience."
+      ],
+      night: [
+        "Good night! 🌙 Hope you have a peaceful night!",
+        "Good night! 🌙 Wishing you a relaxing evening and a restful sleep ahead!",
+        "Good night! 🌙 Exploring late? Feel free to browse Abdur's projects or reach out anytime!"
+      ]
+    },
+    correction: {
+      toMorning: [
+        "It's actually morning right now! ☀️ Good morning! How can I help you?",
+        "It's morning here according to your local time! ☀️ Good morning! What can I help you with today?",
+        "Good morning! ☀️ (It's still morning right now in your local time.) How can I assist you?"
+      ],
+      toAfternoon: [
+        "It's afternoon here according to your local time! 😊 Good afternoon! What can I help you with?",
+        "It's actually afternoon right now! 😊 Good afternoon! What would you like to explore?",
+        "Good afternoon! 😊 (It's afternoon right now in your local time.) How may I help you today?"
+      ],
+      toEvening: [
+        "It's evening right now! 🌆 Good evening! How can I help you?",
+        "It's evening here according to your local time! 🌆 Good evening! What can I help you with tonight?",
+        "Good evening! 🌆 (It's evening right now in your local time.) What would you like to know?"
+      ],
+      toNight: [
+        "It's nighttime right now! 🌙 Good night! Hope you're having a relaxing evening.",
+        "It's actually nighttime right now! 🌙 Good night! What can I help you with tonight?",
+        "Good night! 🌙 (It's nighttime right now in your local time.) How can I assist you?"
+      ],
+      eveningLateAtNight: [
+        "Good evening! 🌙 It's getting late into the night—hope you're having a relaxing time! How can I help you tonight?",
+        "Good evening! 🌙 It's pretty late into the night now! Feel free to ask anything about Abdur's portfolio.",
+        "Good evening! 🌙 Late hours! Hope you have a peaceful night ahead. What would you like to know?"
+      ],
+      nightInDaytime: {
+        morning: [
+          "Heading to sleep early? It's actually morning right now! ☀️ Good morning! How can I help you today?",
+          "Turning in early? It's morning right now! ☀️ Have a restful sleep if you're resting, or ask me anything!"
+        ],
+        afternoon: [
+          "Heading to sleep early? It's actually afternoon right now! 😊 Good afternoon! What can I help you with?",
+          "Taking an afternoon rest? It's afternoon right now! 😊 Have a wonderful rest, or ask about Abdur's work!"
+        ],
+        evening: [
+          "It's still evening right now! 🌆 Good evening! Are you heading to bed early, or can I help you explore Abdur's work?",
+          "Heading to bed early? It's evening right now! 🌆 Have a peaceful night if you're sleeping, or feel free to explore!"
+        ]
+      },
+      farewellNight: [
+        "Good night! 🌙 Sleep well and have wonderful dreams! Feel free to return anytime.",
+        "Good night! 🌙 Hope you have a peaceful and restful sleep. Take care!",
+        "Good night and take care! 🌙 Rest well—Abdur's portfolio will be right here whenever you return!"
+      ]
+    }
+  },
+  bn: {
+    match: {
+      morning: [
+        "সুপ্রভাত! ☀️ আশা করি আপনার দিনটি দারুণ কাটবে! আপনাকে কীভাবে সাহায্য করতে পারি?",
+        "শুভ সকাল! ☀️ কেমন আছেন? আব্দুর রাজ্জাকের পোর্টফোলিও সম্পর্কে কী জানতে চান?"
+      ],
+      afternoon: [
+        "শুভ অপরাহ্ন! 😊 আশা করি ভালো আছেন! আব্দুর রাজ্জাকের পোর্টফোলিও সম্পর্কে কী জানতে চান?",
+        "শুভ দুপুর! ☀️ আশা করি দিনটি চমৎকার যাচ্ছে! আপনাকে কীভাবে সাহায্য করতে পারি?"
+      ],
+      evening: [
+        "শুভ সন্ধ্যা! 🌆 আশা করি আপনার দিনটি সুন্দর কেটেছে! আপনাকে কীভাবে সাহায্য করতে পারি?",
+        "শুভ সন্ধ্যা! 🌆 কেমন আছেন? আব্দুর রাজ্জাকের প্রজেক্ট বা স্কিল সম্পর্কে কী জানতে চান?"
+      ],
+      night: [
+        "শুভ রাত্রি! 🌙 আশা করি আপনার রাতটি শান্তিময় ও সুন্দর কাটবে!",
+        "শুভ রাত্রি! 🌙 ভালো ঘুম হোক ও শুভ স্বপ্ন দেখুন! কোনো প্রশ্ন থাকলে করতে পারেন।"
+      ]
+    },
+    correction: {
+      toMorning: [
+        "আপনার স্থানীয় সময় অনুযায়ী এখন কিন্তু সকাল! ☀️ সুপ্রভাত! আপনাকে কীভাবে সাহায্য করতে পারি?",
+        "এখন কিন্তু সকাল বেলা! ☀️ শুভ সকাল! আব্দুর রাজ্জাকের পোর্টফোলিও সম্পর্কে কী জানতে চান?"
+      ],
+      toAfternoon: [
+        "আপনার স্থানীয় সময় অনুযায়ী এখন কিন্তু দুপুর! ☀️ শুভ দুপুর! আপনাকে কীভাবে সাহায্য করতে পারি?",
+        "এখন অপরাহ্ন! 😊 শুভ অপরাহ্ন! কী জানতে চান আব্দুর রাজ্জাক সম্পর্কে?"
+      ],
+      toEvening: [
+        "আপনার স্থানীয় সময় অনুযায়ী এখন কিন্তু সন্ধ্যা! 🌆 শুভ সন্ধ্যা! আপনাকে কীভাবে সাহায্য করতে পারি?",
+        "এখন সন্ধ্যা হয়ে গেছে! 🌆 শুভ সন্ধ্যা! কী সাহায্য করতে পারি?"
+      ],
+      toNight: [
+        "আপনার স্থানীয় সময় অনুযায়ী এখন কিন্তু রাত! 🌙 শুভ রাত্রি! আশা করি ভালো আছেন।",
+        "এখন রাত হয়ে গেছে! 🌙 শুভ রাত্রি! আপনাকে কীভাবে সাহায্য করতে পারি?"
+      ],
+      eveningLateAtNight: [
+        "শুভ সন্ধ্যা! 🌙 তবে এখন বেশ রাত হয়ে গেছে—আশা করি ভালো আছেন! রাতে কীভাবে সাহায্য করতে পারি?",
+        "শুভ সন্ধ্যা! 🌙 রাতের এই সময়ে স্বাগতম! কী জানতে চান?"
+      ],
+      nightInDaytime: {
+        morning: [
+          "তাড়াতাড়ি ঘুমাতে যাচ্ছেন? এখন কিন্তু সকাল! ☀️ সুপ্রভাত! কীভাবে সাহায্য করতে পারি?",
+          "এখন কিন্তু সকালের সময়! ☀️ শুভ সকাল! যদি ঘুমাতে যান তবে শুভ বিশ্রাম!"
+        ],
+        afternoon: [
+          "দুপুরে বিশ্রাম নিচ্ছেন? এখন কিন্তু দুপুর! 😊 শুভ দুপুর! কীভাবে সাহায্য করতে পারি?",
+          "এখন কিন্তু দুপুর বেলা! 😊 শুভ অপরাহ্ন! কোনো প্রশ্ন থাকলে করতে পারেন।"
+        ],
+        evening: [
+          "এখন সবে সন্ধ্যা! 🌆 শুভ সন্ধ্যা! তাড়াতাড়ি ঘুমাচ্ছেন নাকি পোর্টফোলিও দেখতে চান?",
+          "এখন তো সন্ধ্যা বেলা! 🌆 শুভ সন্ধ্যা! কীভাবে সাহায্য করতে পারি?"
+        ]
+      },
+      farewellNight: [
+        "শুভ রাত্রি! 🌙 ভালো ঘুম হোক ও শান্তিময় বিশ্রাম কাটুক! আবার আসবেন।",
+        "শুভ রাত্রি! 🌙 যত্ন নেবেন, ভালো থাকবেন!"
+      ]
+    }
+  }
+};
+

@@ -31,6 +31,7 @@
       this.lastJokeIndex = -1;
       this.rpsScores = { player: 0, bot: 0, ties: 0 };
       this.activeNumberGame = null;
+      this.timeGreetings = window.PORTFOLIO_TIME_GREETINGS || null;
       this.isSending = false;
 
       this.init();
@@ -518,7 +519,7 @@
         return 1250 + Math.floor(Math.random() * 450);
       }
 
-      const shortIntents = ['greeting', 'thanks', 'how_are_you', 'empty', 'bye'];
+      const shortIntents = ['greeting', 'thanks', 'how_are_you', 'empty', 'bye', 'time_greeting', 'time_greeting_correction'];
       if (shortIntents.includes(intentId) || textLen < 80) {
         return 560 + Math.floor(Math.random() * 280);
       }
@@ -560,7 +561,193 @@
       return { isJoke, isGame };
     }
 
-    matchResponse(rawText) {
+    getVisitorTimePeriod(date = new Date()) {
+      const hour = date.getHours();
+      if (hour >= 5 && hour < 12) return 'morning';
+      if (hour >= 12 && hour < 17) return 'afternoon';
+      if (hour >= 17 && hour < 21) return 'evening';
+      return 'night';
+    }
+
+    getRandomGreetingItem(list) {
+      if (!list || !Array.isArray(list) || list.length === 0) return '';
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    detectGreetingIntent(rawText, norm) {
+      if (!rawText) return null;
+      const clean = rawText.trim();
+
+      // Check if message is a non-greeting time query (e.g. "What did you build this morning?")
+      const startsWithGreetingPrefix = /^(?:(?:hi|hii|hello|hey|hola|yo|assalamu\s*alaikum|salam|namaste)[\s,!.-]+)?(good\s*(?:morning|afternoon|evening|night)|gud\s*(?:morning|afternoon|evening|night)|sweet\s*dreams|সুপ্রভাত|শুভ\s*(?:সকাল|অপরাহ্ন|দুপুর|সন্ধ্যা|রাত্রি|রাত)|shuvo\s*(?:shokal|sokal|dupur|sondha|shondha|ratri|raat)|subho\s*(?:shokal|sokal|dupur|sondha|shondha|ratri|raat)|(?:shokal|sokal|dupur|sondha|shondha|ratri)\b|gm|ga|ge|gn)(?:\s*(?:bolo|bolchi))?[\s,!.-]*/i;
+
+      const nonGreetingTimeQuery =
+        /\b(this|yesterday|tomorrow|every|last|in\s+the|at|during|for\s+the)\s+(morning|afternoon|evening|night)\b/i.test(clean) ||
+        /\b(morning|afternoon|evening|night)\s+(shift|routine|runner|mode|theme|time|walk|run)\b/i.test(clean) ||
+        /\b(built|build|made|did\s+you|what\s+did|who\s+did|how\s+did|which\s+project|projects?|skills?)\b.*\b(morning|afternoon|evening|night)\b/i.test(clean);
+
+      if (nonGreetingTimeQuery && !startsWithGreetingPrefix.test(clean)) {
+        return null;
+      }
+
+      // Check generic greetings (e.g., "Hi", "Hello", "Hey", "Assalamu Alaikum", "Salam", "Hola", "Sup", "What's up", "হ্যালো", "নমস্কার")
+      const genericGreetingOnly = /^(?:hi|hii|hello|hey|hola|yo|sup|what'?s\s*up|assalamu\s*alaikum|salam|namaste|হ্যালো|নমস্কার|সালাম)[\s!.,?-]*$/i;
+      if (genericGreetingOnly.test(clean)) {
+        const isIslamic = /(assalamu\s*alaikum|salam|সালাম)/i.test(clean);
+        const isBengali = /[\u0980-\u09FF]/.test(clean);
+        return {
+          isGreeting: true,
+          timeType: 'generic',
+          isIslamic,
+          isBengali,
+          remainderText: '',
+          hasSubstantiveQuery: false
+        };
+      }
+
+      const match = clean.match(startsWithGreetingPrefix);
+      if (!match) return null;
+
+      const matchedPhrase = match[0];
+      const remainder = clean.slice(matchedPhrase.length).trim();
+
+      // Check language
+      const isBengali = /[\u0980-\u09FF]/.test(clean) ||
+        /\b(shuvo|subho|shokal|sokal|dupur|sondha|shondha|ratri|raat|bolo|bolchi|kemon|acho|asen|aso|tumi|apni|bhalo)\b/i.test(clean);
+
+      // Determine greeting period from matched phrase
+      let timeType = null;
+      if (/\b(morning|gm)\b/i.test(matchedPhrase) || /(সুপ্রভাত|শুভ\s*সকাল|shokal|sokal)/i.test(matchedPhrase)) {
+        timeType = 'morning';
+      } else if (/\b(afternoon|ga)\b/i.test(matchedPhrase) || /(শুভ\s*অপরাহ্ন|শুভ\s*দুপুর|dupur)/i.test(matchedPhrase)) {
+        timeType = 'afternoon';
+      } else if (/\b(evening|ge)\b/i.test(matchedPhrase) || /(শুভ\s*সন্ধ্যা|sondha|shondha)/i.test(matchedPhrase)) {
+        timeType = 'evening';
+      } else if (/\b(night|gn|sweet\s*dreams)\b/i.test(matchedPhrase) || /(শুভ\s*রাত্রি|শুভ\s*রাত|ratri|raat)/i.test(matchedPhrase)) {
+        timeType = 'night';
+      }
+
+      if (!timeType) return null;
+
+      // Check if farewell context
+      const isFarewell = /\b(bye|goodbye|see\s*you|sleep|sleeping|going\s*to\s*sleep|turning\s*in|bed|bedtime|take\s*care|biday|বিদায়)\b/i.test(clean);
+
+      // Check if remainder is substantive query or just pleasantry
+      const isPleasantryOnly = !remainder ||
+        /^(?:how\s*are\s*you(?:\s*doing)?|kemon\s*(?:acho|asen|aso|achen)|ki\s*(?:khobor|obostha)|কেমন\s*(?:আছো|আছেন)|bye|goodbye|take\s*care|see\s*you)[\s!.,?-]*$/i.test(remainder) ||
+        /^[\s!.,?-]+$/.test(remainder);
+
+      return {
+        isGreeting: true,
+        timeType,
+        isFarewell,
+        isBengali,
+        remainderText: isPleasantryOnly ? '' : remainder,
+        hasSubstantiveQuery: !isPleasantryOnly
+      };
+    }
+
+    handleTimeAwareGreeting(rawText, norm, customDate = null) {
+      const parsed = this.detectGreetingIntent(rawText, norm);
+      if (!parsed || !parsed.isGreeting) return null;
+
+      const greetingsData = this.timeGreetings || window.PORTFOLIO_TIME_GREETINGS;
+      const lang = parsed.isBengali ? 'bn' : 'en';
+      const langDict = greetingsData && greetingsData[lang] ? greetingsData[lang] : (greetingsData ? greetingsData.en : null);
+
+      const now = customDate || this.mockDate || new Date();
+      const currentPeriod = this.getVisitorTimePeriod(now);
+
+      const defaultActions = [
+        { label: "About Abdur", query: "Who is Abdur?" },
+        { label: "Abdur's Projects", query: "Tell me about Abdur's projects" },
+        { label: "Technical Skills", query: "What are Abdur's technical skills?" },
+        { label: "Contact Abdur", query: "How can I contact Abdur?" }
+      ];
+
+      // Handle generic greeting without time mismatch correction
+      if (parsed.timeType === 'generic') {
+        let greetingMsg = "Hello! 👋 I'm your Portfolio Assistant. I'm here to help you explore Abdur Rajjak's projects, technical skills, education, and contact details. What would you like to know?";
+        if (parsed.isIslamic) {
+          greetingMsg = lang === 'bn'
+            ? "ওয়ালাইকুম আসসালাম! 👋 স্বাগতম! আব্দুর রাজ্জাকের পোর্টফোলিও সম্পর্কে কী জানতে চান?"
+            : "Walaikum Assalam! 👋 Welcome to Abdur Rajjak's portfolio assistant. What would you like to explore today?";
+        } else if (parsed.isBengali) {
+          greetingMsg = "হ্যালো! 👋 আমি আব্দুর রাজ্জাকের পোর্টফোলিও অ্যাসিস্ট্যান্ট। আব্দুর রাজ্জাকের প্রজেক্ট, স্কিল বা শিক্ষা সম্পর্কে কী জানতে চান?";
+        }
+        return {
+          intentId: 'greeting',
+          response: {
+            text: greetingMsg,
+            actions: defaultActions
+          }
+        };
+      }
+
+      // Generate greeting / correction text
+      let greetingText = '';
+      let isCorrection = false;
+
+      if (parsed.timeType === 'night' && parsed.isFarewell) {
+        // Farewell context: good night
+        greetingText = this.getRandomGreetingItem(langDict && langDict.correction ? langDict.correction.farewellNight : null) ||
+          (lang === 'bn' ? "শুভ রাত্রি! 🌙 ভালো ঘুম হোক ও শান্তিময় বিশ্রাম কাটুক!" : "Good night! 🌙 Sleep well and have wonderful dreams! Feel free to return anytime.");
+      } else if (parsed.timeType === currentPeriod) {
+        // Correct time greeting match
+        greetingText = this.getRandomGreetingItem(langDict && langDict.match ? langDict.match[currentPeriod] : null) ||
+          `Good ${currentPeriod}! How can I help you today?`;
+      } else if (parsed.timeType === 'evening' && currentPeriod === 'night') {
+        // Special case: "Good evening" late at night -> friendly nighttime response
+        greetingText = this.getRandomGreetingItem(langDict && langDict.correction ? langDict.correction.eveningLateAtNight : null) ||
+          (lang === 'bn' ? "শুভ সন্ধ্যা! 🌙 তবে এখন কিন্তু রাত হয়ে গেছে—কীভাবে সাহায্য করতে পারি?" : "Good evening! 🌙 It's getting late into the night—hope you're having a relaxing time! How can I help you tonight?");
+      } else if (parsed.timeType === 'night' && currentPeriod !== 'night') {
+        // "Good night" during daytime -> gentle daytime note
+        isCorrection = true;
+        const daytimeOptions = langDict && langDict.correction && langDict.correction.nightInDaytime ? langDict.correction.nightInDaytime[currentPeriod] : null;
+        greetingText = this.getRandomGreetingItem(daytimeOptions) ||
+          `It's actually ${currentPeriod} right now! Good ${currentPeriod}!`;
+      } else {
+        // Genuine mismatch -> polite correction to currentPeriod
+        isCorrection = true;
+        let targetList = null;
+        if (langDict && langDict.correction) {
+          if (currentPeriod === 'morning') targetList = langDict.correction.toMorning;
+          else if (currentPeriod === 'afternoon') targetList = langDict.correction.toAfternoon;
+          else if (currentPeriod === 'evening') targetList = langDict.correction.toEvening;
+          else if (currentPeriod === 'night') targetList = langDict.correction.toNight;
+        }
+        greetingText = this.getRandomGreetingItem(targetList) ||
+          `It's actually ${currentPeriod} right now according to your local time! Good ${currentPeriod}! How can I help you?`;
+      }
+
+      // If user had a substantive query attached (e.g. "Good morning! Tell me about your projects"):
+      if (parsed.hasSubstantiveQuery && parsed.remainderText) {
+        const subMatched = this.matchResponse(parsed.remainderText, { skipGreeting: true });
+        if (subMatched && subMatched.response) {
+          const resp = { ...subMatched.response };
+          if (resp.text) {
+            resp.text = `${greetingText}\n\n${resp.text}`;
+          } else {
+            resp.greetingText = greetingText;
+          }
+          return {
+            intentId: isCorrection ? 'time_greeting_correction' : 'time_greeting',
+            response: resp
+          };
+        }
+      }
+
+      // Pure greeting without question
+      return {
+        intentId: isCorrection ? 'time_greeting_correction' : 'time_greeting',
+        response: {
+          text: greetingText,
+          actions: defaultActions
+        }
+      };
+    }
+
+    matchResponse(rawText, options = {}) {
       const norm = this.normalize(rawText);
       if (!norm) {
         return {
@@ -569,6 +756,13 @@
             text: "I didn't catch that. Please type any question about Abdur's projects, skills, education, or contact details below!"
           }
         };
+      }
+
+      if (!options || !options.skipGreeting) {
+        const greetingRes = this.handleTimeAwareGreeting(rawText, norm);
+        if (greetingRes) {
+          return greetingRes;
+        }
       }
 
       const isPortfolioGameQuery =
@@ -1172,6 +1366,14 @@
 
       const bubble = document.createElement('div');
       bubble.className = 'portfolio-chatbot-bubble';
+
+      if (res.greetingText && (res.contactCard || res.type)) {
+        const intro = document.createElement('div');
+        intro.className = 'portfolio-chatbot-card-intro';
+        intro.style.cssText = 'padding: 6px 12px 6px; font-size: 13.5px; opacity: 0.92; line-height: 1.45;';
+        intro.textContent = res.greetingText;
+        bubble.appendChild(intro);
+      }
 
       if (res.contactCard) {
         msg.classList.add('portfolio-chatbot-msg-card');
