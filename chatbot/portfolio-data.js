@@ -245,8 +245,8 @@ window.PORTFOLIO_INTENTS = [
       /^(tumi|apni)\s*ki[\s!?.]*$/i,
       /^(tomar|apnar)\s*(porichoy|kotha)[\s!?.]*$/i,
       /^(who\s*is\s*this\s*(bot|chatbot|assistant))[\s!?.]*$/i,
-      /\b(who\s*(are|r)\s*(you|u))\b/i,
-      /(তোমার\s*নাম\s*কি|তুমি\s*কে|আপনি\s*কে|তোমার\s*পরিচয়)/i
+      /(তোমার\s*(নাম\s*কি|কে|পরিচয়|সম্পর্কে\s*বলো)|তুমি\s*কে|আপনি\s*কে|নিজের\s*সম্পর্কে\s*বলো)/i,
+      /(tomar|apnar|nijer)\s*(somporke\s*bolo|porichoy\s*dao)/i
     ],
     response: {
       text: "I'm your Portfolio Assistant! 🤖 I am a lightweight, rule-based assistant created to help you explore Abdur's projects, technical skills, education, and portfolio. What would you like to explore?",
@@ -361,8 +361,9 @@ window.PORTFOLIO_INTENTS = [
       /(which|what)\s*(languages|tools|technologies)\s*(do\s*you|does\s*abdur)\s*know/i,
       /^(technical\s*skills|skills|technologies|tech\s*stack|languages)[\s!?.]*$/i,
       /(skills|tech)\s*(ki|kya)/i,
+      /(tomar|apnar)\s*skills?(\s*(ki|ki\s*ki|gulo))?/i,
       /(ki\s*ki\s*(jano|paro|sekha))/i,
-      /(স্কিল|প্রোগ্রামিং\s*ভাষা|দক্ষতা)/i
+      /(স্কিল|প্রোগ্রামিং\s*ভাষা|দক্ষতা|তোমার\s*স্কিল)/i
     ],
     response: {
       text: "🛠️ Abdur's Technical Skills & Technologies:\n\n• Core Languages: Python, JavaScript, C++, Java, SQL, HTML5, CSS3\n• Data Science & AI: Pandas, NumPy, TensorFlow, PyTorch, OpenCV, NLTK, Jupyter Notebook\n• Tools & Development: GitHub, Git, VS Code, Android Studio, LiveKit, Google Gemini API",
@@ -581,8 +582,8 @@ window.PORTFOLIO_INTENTS = [
       /what\s*(have\s*you|did\s*abdur|has\s*abdur)\s*(built|made|created)/i,
       /^(projects|work|portfolio(\s*projects)?|apps|abdur'?s\s*projects)[\s!?.]*$/i,
       /(tomar|apnar|abdur\s*er)\s*project/i,
-      /(ki\s*ki\s*project|project\s*gulo)/i,
-      /(প্রজেক্ট|কাজ|তৈরি\s*করেছ)/i
+      /(tomar\s*project\s*gulo\s*somporke\s*bolo|project\s*gulo\s*somporke|ki\s*ki\s*project|project\s*gulo)/i,
+      /(তোমার\s*প্রজেক্টগুলো\s*সম্পর্কে\s*বলো|প্রজেক্ট|কাজ|তৈরি\s*করেছ)/i
     ],
     response: {
       text: "🚀 Abdur has built 6+ verified projects across Data Science, AI, and Web Development:\n\n1. FileForge — 100% Client-side privacy file & image processor (Live Demo)\n2. Polyglot — Smart responsive web translator (Live Demo)\n3. JARVIS AI Assistant — Voice-controlled assistant with LiveKit & Gemini API\n4. Image Classification CNN — Computer vision object classifier with TensorFlow & OpenCV\n5. Endless Runner Game — 3D Android action game in Java\n6. Sentiment Analyzer — NLP sentiment classifier with PyTorch & NLTK\n\nWhich project would you like to explore?",
@@ -1014,6 +1015,812 @@ window.PORTFOLIO_TIME_GREETINGS = {
         "শুভ রাত্রি! 🌙 যত্ন নেবেন, ভালো থাকবেন!"
       ]
     }
+  },
+  banglish: {
+    match: {
+      morning: [
+        "Good morning! ☀️ Din-ti shundor katuk! Abdur-er portfolio niye ki jante chao?",
+        "Good morning! ☀️ Kemon acho? Abdur Rajjak-er portfolio-te swagotom!"
+      ],
+      afternoon: [
+        "Good afternoon! 😊 Asha kori bhalo acho! Abdur-er portfolio niye ki jante chao?",
+        "Good afternoon! ☀️ Din-ti kemon jacche? Ki bhabe help korte pari?"
+      ],
+      evening: [
+        "Good evening! 🌆 Asha kori din-ti bhalo keteche! Ki bhabe help korte pari?",
+        "Good evening! 🌆 Kemon acho? Abdur-er projects ba skills niye jante chaile bolo."
+      ],
+      night: [
+        "Good night! 🌙 Asha kori tomar raat-ti shantimoy ar shundor katbe!",
+        "Good night! 🌙 Bhalo ghum hok! Kono question thakle bolte paro."
+      ]
+    },
+    correction: {
+      toMorning: [
+        "Tomar local time onujayi ekhon shokal! ☀️ Good morning! Ki help korte pari?",
+        "Ekhon shokal bela! ☀️ Good morning! Ki jante chao?"
+      ],
+      toAfternoon: [
+        "Tomar local time onujayi ekhon dupur! 😊 Good afternoon! Ki help korte pari?",
+        "Ekhon dupur! 😊 Good afternoon! Abdur Rajjak somporke ki jante chao?"
+      ],
+      toEvening: [
+        "Tomar local time onujayi ekhon shondha! 🌆 Good evening! Ki bhabe help korbo?",
+        "Ekhon shondha hoye geche! 🌆 Good evening! Ki jante chao?"
+      ],
+      toNight: [
+        "Tomar local time onujayi ekhon raat! 🌙 Good night! Asha kori bhalo acho.",
+        "Ekhon raat hoye geche! 🌙 Good night! Ki help korte pari?"
+      ],
+      eveningLateAtNight: [
+        "Good evening! 🌙 Tobe ekhon onek raat hoye geche—asha kori bhalo acho! Ki help korte pari?",
+        "Good evening! 🌙 Raater ei shomoy swagotom! Ki jante chao?"
+      ],
+      nightInDaytime: {
+        morning: [
+          "Tarateri ghumate jaccho? Ekhon to shokal! ☀️ Good morning! Ki help korte pari?",
+          "Ekhon shokaler shomoy! ☀️ Good morning! Ghumate gele rest nao!"
+        ],
+        afternoon: [
+          "Dupure rest niccho? Ekhon kintu dupur! 😊 Good afternoon! Ki help korte pari?",
+          "Ekhon dupur bela! 😊 Good afternoon! Kono question thakle bolte paro!"
+        ],
+        evening: [
+          "Ekhon to shondha! 🌆 Good evening! Tarateri ghumaccho naki portfolio dekhbe?",
+          "Ekhon shondha bela! 🌆 Good evening! Ki bhabe help korbo?"
+        ]
+      },
+      farewellNight: [
+        "Good night! 🌙 Bhalo ghum hok ar shundor shopno dekho! Abar esho.",
+        "Good night! 🌙 Take care, bhalo theko!"
+      ]
+    }
   }
 };
 
+
+
+window.PORTFOLIO_I18N = {
+  "greeting": {
+    "bn": {
+      "text": "হ্যালো! 👋 আমি আব্দুর রাজ্জাকের পোর্টফোলিও অ্যাসিস্ট্যান্ট। আমি ওনার প্রজেক্ট, টেকনিক্যাল স্কিল, পড়াশোনা ও যোগাযোগের তথ্য জানাতে প্রস্তুত। আপনি কী জানতে চান?",
+      "actions": [
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর কে?"
+        },
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "টেকনিক্যাল স্কিল",
+          "query": "তোমার স্কিলগুলো কি কি?"
+        },
+        {
+          "label": "যোগাযোগ করুন",
+          "query": "কিভাবে যোগাযোগ করব?"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "Hello! 👋 Ami Abdur Rajjak-er Portfolio Assistant. Ami tar projects, technical skills, education ar contact details niye help korte pari. Tumi ki jante chao?",
+      "actions": [
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur ke?"
+        },
+        {
+          "label": "Abdur-er Projects",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Technical Skills",
+          "query": "Tomar skills ki ki?"
+        },
+        {
+          "label": "Contact Abdur",
+          "query": "Kivabe jogajog korbo?"
+        }
+      ]
+    }
+  },
+  "how_are_you": {
+    "bn": {
+      "text": "আমি একদম ঠিকঠাক কাজ করছি এবং আপনাকে সাহায্য করতে প্রস্তুত! 😊 আব্দুর রাজ্জাকের প্রজেক্ট, স্কিল বা বিটেক সিএসই (ডাটা সায়েন্স) নিয়ে যেকোনো প্রশ্ন করতে পারেন।",
+      "actions": [
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর সম্পর্কে বলো"
+        },
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "Ami ekdom bhalo bhabe cholchi ar help korte ready! 😊 Abdur-er projects, skills ba CSE (Data Science) journey niye jekono question korte paro.",
+      "actions": [
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur somporke bolo"
+        },
+        {
+          "label": "Abdur-er Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "who_made_you": {
+    "bn": {
+      "text": "আমাকে আব্দুর রাজ্জাক এই পোর্টফোলিও ওয়েবসাইটের জন্য একটি ১০০% ক্লায়েন্ট-সাইড সহকারী হিসেবে তৈরি করেছেন! আমি কোনো পেইড এপিআই বা ব্যাকএন্ড সার্ভার ছাড়াই সরাসরি আপনার ব্রাউজারে রান করি।",
+      "actions": [
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর কে?"
+        },
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "Amake Abdur Rajjak ei portfolio website-er jonno 100% client-side assistant hisebe build koreche! Kono paid API ba server charai ami browser-e run kori.",
+      "actions": [
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur ke?"
+        },
+        {
+          "label": "Abdur-er Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "bot_identity": {
+    "bn": {
+      "text": "আমি এই পোর্টফোলিওর AI সহকারী। তুমি চাইলে পোর্টফোলিওর মালিকের পরিচয়, পড়াশোনা, দক্ষতা ও প্রজেক্ট সম্পর্কে জানতে পারো।",
+      "actions": [
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "দক্ষতা",
+          "query": "তোমার স্কিলগুলো কি কি?"
+        },
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর সম্পর্কে বলো"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "Ami ei portfolio-r AI assistant! Tumi chaile portfolio-r malik Abdur Rajjak-er porichoy, porashona, skills ar projects somporke jante paro.",
+      "actions": [
+        {
+          "label": "Projects",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Skills",
+          "query": "Tomar skills ki ki?"
+        },
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur somporke bolo"
+        }
+      ]
+    }
+  },
+  "about_abdur": {
+    "bn": {
+      "text": "আব্দুর রাজ্জাক ভারতের পশ্চিমবঙ্গ থেকে একজন ১ম বর্ষের বিটেক সিএসই (ডাটা সায়েন্স) শিক্ষার্থী। তিনি একজন উদীয়মান ডাটা সায়েন্টিস্ট এবং ফুল-স্ট্যাক ডেভেলপার যিনি মেশিন লার্নিং, কৃত্রিম বুদ্ধিমত্তা এবং বুদ্ধিমান ডিজিটাল টুল তৈরিতে দারুণ আগ্রহী। তিনি পাইথন, ডাটা মডেলিং এবং ওয়েব টেকনোলজি নিয়ে কাজ করতে ভালোবাসেন।",
+      "actions": [
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "টেকনিক্যাল স্কিল",
+          "query": "তোমার স্কিলগুলো কি কি?"
+        },
+        {
+          "label": "পড়াশোনা",
+          "query": "কোথায় পড়াশোনা করে?"
+        },
+        {
+          "label": "যোগাযোগ",
+          "query": "কিভাবে যোগাযোগ করব?"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "Abdur Rajjak holo West Bengal, India theke ekjon 1st-year B.Tech CSE (Data Science) student. She ekjon aspiring Data Scientist ar developer, jar machine learning, AI ar intelligent digital tools banate onek passion ache. She Python, data modeling ar web technologies niye kaj korte bhalobashe.",
+      "actions": [
+        {
+          "label": "Projects",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Skills",
+          "query": "Tomar skills ki ki?"
+        },
+        {
+          "label": "Education",
+          "query": "Abdur kothay pore?"
+        },
+        {
+          "label": "Contact",
+          "query": "Kivabe jogajog korbo?"
+        }
+      ]
+    }
+  },
+  "education": {
+    "bn": {
+      "text": "🎓 আব্দুর রাজ্জাকের শিক্ষাগত বিবরণ:\n• ডিগ্রি: বি.টেক ইন কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং (ডাটা সায়েন্স স্পেশালাইজেশন)\n• বর্তমান অবস্থা: ১ম বর্ষের ছাত্র (২০২৪ – ২০২৮)\n• অবস্থান: পশ্চিমবঙ্গ, ভারত\n• প্রধান বিষয়: মেশিন লার্নিং, ডাটা অ্যানালিটিক্স, পাইথন প্রোগ্রামিং ও ডিপ লার্নিং গবেষণা।",
+      "actions": [
+        {
+          "label": "টেকনিক্যাল স্কিল",
+          "query": "তোমার স্কিলগুলো কি কি?"
+        },
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর সম্পর্কে বলো"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "🎓 Abdur-er Academic Profile:\n• Degree: B.Tech in Computer Science & Engineering (Data Science)\n• Current Status: 1st Year Student (2024 – 2028)\n• Location: West Bengal, India\n• Focus Areas: Machine Learning, Data Analytics, Python programming ar Deep Learning research.",
+      "actions": [
+        {
+          "label": "Technical Skills",
+          "query": "Tomar skills ki ki?"
+        },
+        {
+          "label": "Abdur-er Projects",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur somporke bolo"
+        }
+      ]
+    }
+  },
+  "inspiration": {
+    "bn": {
+      "text": "⚽ আব্দুর রাজ্জাকের প্রধান অনুপ্রেরণা ক্রিশ্চিয়ানো রোনালদো। তিনি রোনালদোর শৃঙ্খলা, কঠোর পরিশ্রম, ধারাবাহিকতা ও হার না মানার মানসিকতাকে গভীরভাবে অনুসরণ করেন। তাঁর প্রিয় উক্তি:\n\n\"In my mind, I'm always the best.\"",
+      "actions": [
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর সম্পর্কে বলো"
+        },
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "⚽ Abdur tar idol Cristiano Ronaldo theke boro inspiration pay. She Ronaldo-r discipline, hard work, consistency ar never-give-up attitude follow kore. Tar guiding quote:\n\n\"In my mind, I'm always the best.\"",
+      "actions": [
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur somporke bolo"
+        },
+        {
+          "label": "Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "skills": {
+    "bn": {
+      "text": "🛠️ আব্দুর রাজ্জাকের টেকনিক্যাল স্কিলসমূহ:\n\nআমার কাছে পোর্টফোলিওতে দেওয়া সব স্কিলের তথ্য আছে। আপনি চাইলে নির্দিষ্ট কোনো স্কিল বা প্রোগ্রামিং ল্যাঙ্গুয়েজ নিয়ে জিজ্ঞাসা করতে পারেন।\n\n• প্রোগ্রামিং ভাষা: Python, Java, JavaScript, C, SQL, HTML5, CSS3\n• ডাটা সায়েন্স ও এআই: Pandas, NumPy, TensorFlow, PyTorch, OpenCV, NLTK, Jupyter Notebook\n• টুলস ও প্ল্যাটফর্ম: Git, GitHub, VS Code, Android Studio, LiveKit",
+      "actions": [
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "পড়াশোনা",
+          "query": "কোথায় পড়াশোনা করে?"
+        },
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর সম্পর্কে বলো"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "🛠️ Abdur-er Technical Skills:\n\nAmar kache portfolio-te deowa skills-er information ache. Tumi chaile specific kono skill ba programming language niye jiggesh korte paro.\n\n• Languages: Python, Java, JavaScript, C, SQL, HTML5, CSS3\n• Data Science & AI: Pandas, NumPy, TensorFlow, PyTorch, OpenCV, NLTK\n• Tools: Git, GitHub, VS Code, Android Studio",
+      "actions": [
+        {
+          "label": "Projects",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Education",
+          "query": "Abdur kothay pore?"
+        },
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur somporke bolo"
+        }
+      ]
+    }
+  },
+  "project_recommendation": {
+    "bn": {
+      "text": "শুরু করার জন্য দারুণ একটি প্রজেক্ট হলো JARVIS AI Assistant — পাইথন ও গুগল জেমিনাই এপিআই দিয়ে তৈরি ভয়েস চালিত সহকারী। আর সরাসরি কোনো ওয়েব টুল ট্রাই করতে চাইলে FileForge দেখতে পারেন, যা ব্রাউজারেই ১০০% প্রাইভেসিসহ ফাইল ও পিডিএফ প্রসেস করে!",
+      "links": [
+        {
+          "label": "JARVIS AI দেখুন",
+          "href": "#projects"
+        },
+        {
+          "label": "FileForge ট্রাই করুন ↗",
+          "href": "https://abdur07-svg.github.io/FileForge/",
+          "external": true
+        }
+      ]
+    },
+    "banglish": {
+      "text": "Shuru korar jonno JARVIS AI Assistant ekta bhalo project — Python ar Gemini API diye banano voice assistant. Aar interactive web tool try korte chaile FileForge dekhte paro, jeta 100% client-side file & PDF converter!",
+      "links": [
+        {
+          "label": "Explore JARVIS AI",
+          "href": "#projects"
+        },
+        {
+          "label": "Try FileForge ↗",
+          "href": "https://abdur07-svg.github.io/FileForge/",
+          "external": true
+        }
+      ]
+    }
+  },
+  "project_fileforge": {
+    "bn": {
+      "text": "📁 FILEFORGE — ক্লায়েন্ট-সাইড ফাইল ও ইমেজ টুলকিট\n\n• বিবরণ: প্রাইভেসি-সুরক্ষিত একটি ১০০% ক্লায়েন্ট-সাইড ওয়েব অ্যাপ, যা সার্ভারে ডাটা আপলোড না করে সরাসরি ব্রাউজারে ছবি ও পিডিএফ কনভার্ট, কম্প্রেস এবং এডিট করে।\n• টেকনোলজি: HTML5, CSS3, Vanilla JavaScript\n• স্ট্যাটাস: লাইভ এবং সবার জন্য উন্মুক্ত!",
+      "actions": [
+        {
+          "label": "Polyglot অনুবাদক",
+          "query": "Polyglot সম্পর্কে বলো"
+        },
+        {
+          "label": "JARVIS AI Assistant",
+          "query": "JARVIS AI সম্পর্কে বলো"
+        },
+        {
+          "label": "সব প্রজেক্ট",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "📁 FILEFORGE — Client-Side File & Image Toolkit\n\n• Overview: Server-e kono data upload charai browser-e 100% privacy-focused image ar PDF convert, compress ar edit korar web tool.\n• Tech: HTML5, CSS3, JavaScript\n• Status: Live ar deploy kora ache!",
+      "actions": [
+        {
+          "label": "Polyglot Translator",
+          "query": "Tell me about Polyglot"
+        },
+        {
+          "label": "JARVIS AI",
+          "query": "Tell me about JARVIS AI"
+        },
+        {
+          "label": "Shob Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "project_polyglot": {
+    "bn": {
+      "text": "🌐 POLYGLOT — স্মার্ট ওয়েব ট্রান্সলেটর\n\n• বিবরণ: একটি দ্রুত এবং রেসপন্সিভ বহুভাষিক ওয়েব অনুবাদক, যা মোবাইল ও ডেস্কটপ সব ডিভাইসে দ্রুত যেকোনো ভাষা অনুবাদ করতে পারে।\n• টেকনোলজি: HTML5, CSS3, JavaScript, Translation API\n• স্ট্যাটাস: গিটহাব পেজেসে লাইভ ডিপ্লয় করা!",
+      "actions": [
+        {
+          "label": "FileForge টুলকিট",
+          "query": "FileForge সম্পর্কে বলো"
+        },
+        {
+          "label": "JARVIS AI",
+          "query": "JARVIS AI সম্পর্কে বলো"
+        },
+        {
+          "label": "সব প্রজেক্ট",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "🌐 POLYGLOT — Smart Web Translator\n\n• Overview: Responsive web translator jeta multi-language text translation-ke fast ar simple kore dey.\n• Tech: HTML5, CSS3, JavaScript, Translation API\n• Status: Live GitHub Pages-e deploy kora!",
+      "actions": [
+        {
+          "label": "FileForge Toolkit",
+          "query": "Tell me about FileForge"
+        },
+        {
+          "label": "JARVIS AI",
+          "query": "Tell me about JARVIS AI"
+        },
+        {
+          "label": "Shob Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "project_jarvis": {
+    "bn": {
+      "text": "🎙️ JARVIS AI — ভয়েস-নিয়ন্ত্রিত এআই সহকারী\n\n• বিবরণ: ওয়েক-ওয়ার্ড ডিটেকশন ও বাস্তব সময়ের ভয়েস ইন্টার‍্যাকশন সম্পন্ন একটি বুদ্ধিমান পার্সোনাল ভয়েস সহকারী।\n• টেকনোলজি: Python, LiveKit, Google Gemini API\n• সুবিধা: হ্যান্ডস-ফ্রি ওয়েক-ওয়ার্ড লিসেনিং ও বুদ্ধিমান টাস্ক অটোমেশন।",
+      "actions": [
+        {
+          "label": "FileForge দেখুন",
+          "query": "FileForge সম্পর্কে বলো"
+        },
+        {
+          "label": "Polyglot দেখুন",
+          "query": "Polyglot সম্পর্কে বলো"
+        },
+        {
+          "label": "সব প্রজেক্ট",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "🎙️ JARVIS AI — Voice-Controlled AI Assistant\n\n• Overview: Voice-activated AI assistant jate wake-word detection ar real-time voice streaming ache.\n• Tech: Python, LiveKit, Google Gemini API\n• Features: Hands-free wake word listening ar intelligent task response.",
+      "actions": [
+        {
+          "label": "FileForge Dekho",
+          "query": "Tell me about FileForge"
+        },
+        {
+          "label": "Polyglot Dekho",
+          "query": "Tell me about Polyglot"
+        },
+        {
+          "label": "Shob Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "project_cnn": {
+    "bn": {
+      "text": "👁️ Image Classification CNN\n\n• বিবরণ: কনভোল্যুশনাল নিউরাল নেটওয়ার্ক (CNN) ব্যবহার করে ডিজিটাল ছবির অবজেক্ট নিখুঁতভাবে শনাক্ত ও ক্লাসিফাই করার ডিপ লার্নিং মডেল।\n• টেকনোলজি: Python, TensorFlow, OpenCV",
+      "actions": [
+        {
+          "label": "Sentiment Analyzer",
+          "query": "Sentiment Analyzer সম্পর্কে বলো"
+        },
+        {
+          "label": "সব প্রজেক্ট",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "👁️ Image Classification CNN\n\n• Overview: Convolutional Neural Network (CNN) diye digital image-er object accurately classify korar Deep Learning computer vision model.\n• Tech: Python, TensorFlow, OpenCV",
+      "actions": [
+        {
+          "label": "Sentiment Analyzer",
+          "query": "Tell me about Sentiment Analyzer"
+        },
+        {
+          "label": "Shob Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "project_game": {
+    "bn": {
+      "text": "🎮 Endless Runner Game\n\n• বিবরণ: টেম্পল রান ঘরানার একটি থ্রিডি এন্ডলেস রানার মোবাইল গেম, যা নেটিভভাবে অ্যান্ড্রয়েডের জন্য তৈরি।\n• টেকনোলজি: Java, Android Studio\n• সুবিধা: স্মুথ সোয়াইপ কন্ট্রোল, ডায়নামিক বাধা ও রিয়েল-টাইম হাই-স্কোর ট্র্যাকিং।",
+      "actions": [
+        {
+          "label": "FileForge অ্যাপ",
+          "query": "FileForge সম্পর্কে বলো"
+        },
+        {
+          "label": "সব প্রজেক্ট",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "🎮 Endless Runner Game\n\n• Overview: 3D Temple Run-style endless runner video game jeta Android Studio ar Java diye natively banano hoyeche.\n• Tech: Java, Android Studio\n• Features: Mobile swipe controls, dynamic procedural obstacles ar high score tracking.",
+      "actions": [
+        {
+          "label": "FileForge App",
+          "query": "Tell me about FileForge"
+        },
+        {
+          "label": "Shob Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "project_sentiment": {
+    "bn": {
+      "text": "💬 Sentiment Analyzer (NLP)\n\n• বিবরণ: টেক্সট বিশ্লেষণ করে মনোভাবের অনুভূতি (ইতিবাচক, নিরপেক্ষ বা নেতিবাচক) নির্ণয় করার ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং মডেল।\n• টেকনোলজি: Python, PyTorch, NLTK",
+      "actions": [
+        {
+          "label": "Image Classification",
+          "query": "Image Classification সম্পর্কে বলো"
+        },
+        {
+          "label": "JARVIS AI",
+          "query": "JARVIS AI সম্পর্কে বলো"
+        },
+        {
+          "label": "সব প্রজেক্ট",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "💬 Sentiment Analyzer (NLP)\n\n• Overview: Text data analyze kore emotional polarity (Positive, Neutral, Negative) predict korar Natural Language Processing model.\n• Tech: Python, PyTorch, NLTK",
+      "actions": [
+        {
+          "label": "Image Classification",
+          "query": "Tell me about Image Classification"
+        },
+        {
+          "label": "JARVIS AI",
+          "query": "Tell me about JARVIS AI"
+        },
+        {
+          "label": "Shob Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "projects_overview": {
+    "bn": {
+      "text": "🚀 আপনি এই পোর্টফোলিওতে থাকা প্রজেক্টগুলো ঘুরে দেখতে পারেন। যেকোনো নির্দিষ্ট প্রজেক্ট সম্পর্কে বিস্তারিত জানতে আমাকে জিজ্ঞাসা করুন:\n\n1. FileForge — ব্রাউজারে ফাইল ও ছবি প্রসেসর (লাইভ)\n2. Polyglot — স্মার্ট ওয়েব অনুবাদক (লাইভ)\n3. JARVIS AI Assistant — ভয়েস চালিত এআই সহকারী\n4. Image Classification CNN — কম্পিউটার ভিশন মডেল\n5. Endless Runner Game — থ্রিডি অ্যান্ড্রয়েড গেম\n6. Sentiment Analyzer — এনএলপি সেন্টিমেন্ট ক্লাসিফায়ার",
+      "actions": [
+        {
+          "label": "FileForge বিবরণ",
+          "query": "FileForge সম্পর্কে বলো"
+        },
+        {
+          "label": "Polyglot বিবরণ",
+          "query": "Polyglot সম্পর্কে বলো"
+        },
+        {
+          "label": "JARVIS AI বিবরণ",
+          "query": "JARVIS AI সম্পর্কে বলো"
+        },
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর সম্পর্কে বলো"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "🚀 You can explore the projects featured in this portfolio. Ask me about a specific project to learn more:\n\n1. FileForge — Client-side file & image processor (Live Demo)\n2. Polyglot — Smart responsive web translator (Live Demo)\n3. JARVIS AI Assistant — Voice AI with LiveKit & Gemini\n4. Image Classification CNN — Deep Learning Computer Vision\n5. Endless Runner Game — 3D Android Game in Java\n6. Sentiment Analyzer — NLP sentiment classification model",
+      "actions": [
+        {
+          "label": "FileForge Details",
+          "query": "Tell me about FileForge"
+        },
+        {
+          "label": "Polyglot Details",
+          "query": "Tell me about Polyglot"
+        },
+        {
+          "label": "JARVIS AI Details",
+          "query": "Tell me about JARVIS AI"
+        },
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur somporke bolo"
+        }
+      ]
+    }
+  },
+  "github": {
+    "bn": {
+      "text": "💻 আপনি আব্দুর রাজ্জাকের সব কোড ও ওপেন-সোর্স প্রজেক্ট সরাসরি ওনার গিটহাব প্রোফাইলে দেখতে পারেন:\n\nGitHub: https://github.com/Abdur07-svg",
+      "actions": [
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "টেকনিক্যাল স্কিল",
+          "query": "তোমার স্কিলগুলো কি কি?"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "💻 Abdur-er shob code ar open-source projects tar GitHub profile-e dekhte paro:\n\nGitHub: https://github.com/Abdur07-svg",
+      "actions": [
+        {
+          "label": "Projects",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Skills",
+          "query": "Tomar skills ki ki?"
+        }
+      ]
+    }
+  },
+  "contact": {
+    "bn": {
+      "text": "আব্দুর রাজ্জাকের সাথে যোগাযোগ করুন — আপনার পছন্দের মাধ্যম বেছে নিন:\n• ইমেইল: abdur.rajjak52786@gmail.com\n• ফর্ম: #contact"
+    },
+    "banglish": {
+      "text": "Abdur-er sathe jogajog koro — tomar pochondo moto way choose koro:\n• Email: abdur.rajjak52786@gmail.com\n• Form: #contact"
+    }
+  },
+  "email": {
+    "bn": {
+      "text": "আপনি সরাসরি আব্দুর রাজ্জাককে ইমেইল করতে পারেন: abdur.rajjak52786@gmail.com"
+    },
+    "banglish": {
+      "text": "Tumi direct Abdur-ke email korte paro: abdur.rajjak52786@gmail.com"
+    }
+  },
+  "socials": {
+    "bn": {
+      "text": "আপনি আব্দুর রাজ্জাকের অফিসিয়াল সোশ্যাল প্রোফাইলগুলোতে যুক্ত হতে পারেন:"
+    },
+    "banglish": {
+      "text": "Tumi Abdur-er official social profiles-e follow ar connect korte paro:"
+    }
+  },
+  "location": {
+    "bn": {
+      "text": "আব্দুর রাজ্জাকের বাড়ি ভারতের পশ্চিমবঙ্গে 📍"
+    },
+    "banglish": {
+      "text": "Abdur West Bengal, India-te thake 📍"
+    }
+  },
+  "resume": {
+    "bn": {
+      "text": "📄 আব্দুর রাজ্জাক বর্তমানে ১ম বর্ষের বিটেক সিএসই (ডাটা সায়েন্স) শিক্ষার্থী। নতুন প্রজেক্ট, কাজ বা আপডেটেড রেজুমির জন্য ওনাকে সরাসরি মেসেজ পাঠাতে পারেন!",
+      "actions": [
+        {
+          "label": "দক্ষতা দেখুন",
+          "query": "তোমার স্কিলগুলো কি কি?"
+        },
+        {
+          "label": "প্রজেক্ট দেখুন",
+          "query": "প্রজেক্টগুলো দেখাও"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "📄 Abdur ekhon 1st-year B.Tech CSE (Data Science) undergraduate. Collaboration ba updated resume-r jonno direct message korte paro!",
+      "actions": [
+        {
+          "label": "Check Skills",
+          "query": "Tomar skills ki ki?"
+        },
+        {
+          "label": "Check Projects",
+          "query": "Tomar project gulo somporke bolo"
+        }
+      ]
+    }
+  },
+  "navigation": {
+    "bn": {
+      "text": "🎨 পোর্টফোলিও নেভিগেশন নির্দেশিকা:\n\n• থিম: নেভবারে থাকা সূর্য/চাঁদ বাটনে ক্লিক করে ডার্ক ও লাইট থিম পরিবর্তন করুন।\n• নেভিগেশন: হোম, অ্যাবাউট, প্রজেক্ট বা কন্টাক্ট সেকশনে সরাসরি স্ক্রল করতে লিংক ব্যবহার করুন।\n• ইন্টারেক্টিভ স্পাইডার-ম্যান: ওপরের ঝুলন্ত স্পাইডার-ম্যানে ক্লিক বা ড্র্যাগ করে দেখুন!\n• লাইভ প্রজেক্ট: প্রজেক্ট কার্ডে ক্লিক করে লাইভ ডেমো চালু করুন।",
+      "actions": [
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "যোগাযোগ",
+          "query": "কিভাবে যোগাযোগ করব?"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "🎨 Portfolio Navigation Guide:\n\n• Theme: Navbar-e Sun/Moon button diye Dark & Light theme toggle koro.\n• Navigation: Home, About, Projects ba Contact link click kore jao.\n• Interactive Spider-Man: Top bar-e jhule thaka Spider-Man-ke click ba drag kore dekho!\n• Live Demos: Project cards click kore live web app open koro.",
+      "actions": [
+        {
+          "label": "Projects",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Contact",
+          "query": "Kivabe jogajog korbo?"
+        }
+      ]
+    }
+  },
+  "thanks": {
+    "bn": {
+      "text": "আপনাকে অনেক ধন্যবাদ ও স্বাগতম! 😊 আব্দুর রাজ্জাকের কাজ সম্পর্কে আর কিছু জানতে চাইলে জিজ্ঞাসা করতে পারেন।",
+      "actions": [
+        {
+          "label": "প্রজেক্ট দেখুন",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "যোগাযোগ করুন",
+          "query": "কিভাবে যোগাযোগ করব?"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "Welcome! 😊 Abdur-er work niye aaro kichu jante chaile jekono shomoy bolte paro.",
+      "actions": [
+        {
+          "label": "Projects Dekho",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Contact Abdur",
+          "query": "Kivabe jogajog korbo?"
+        }
+      ]
+    }
+  },
+  "help": {
+    "bn": {
+      "text": "💡 আমি যেভাবে সাহায্য করতে পারি:\n\n• আব্দুর রাজ্জাক সম্পর্কে জানা\n• ওনার ৬+ প্রজেক্ট (FileForge, Polyglot, JARVIS, CNN ইত্যাদি) ঘুরে দেখা\n• টেকনিক্যাল স্কিল জানা (Python, TensorFlow, PyTorch, JS, SQL)\n• পড়াশোনার বিবরণ (বিটেক সিএসই ডাটা সায়েন্স, ১ম বর্ষ)\n• ইমেইল ও সোশ্যাল মাধ্যমে যোগাযোগ করা\n• ইংরেজি, বাংলা এবং বাংলিশ তিন ভাষাতেই কথা বলতে পারেন!",
+      "actions": [
+        {
+          "label": "আব্দুর সম্পর্কে",
+          "query": "আব্দুর সম্পর্কে বলো"
+        },
+        {
+          "label": "প্রজেক্টসমূহ",
+          "query": "প্রজেক্টগুলো দেখাও"
+        },
+        {
+          "label": "দক্ষতা",
+          "query": "তোমার স্কিলগুলো কি কি?"
+        },
+        {
+          "label": "যোগাযোগ",
+          "query": "কিভাবে যোগাযোগ করব?"
+        }
+      ]
+    },
+    "banglish": {
+      "text": "💡 Ami jeshob bhabe help korte pari:\n\n• Abdur Rajjak somporke jante\n• Tar 6+ projects (FileForge, Polyglot, JARVIS, CNN) dekhte\n• Technical skills check korte (Python, TensorFlow, PyTorch, JS, SQL)\n• Porashonar details (B.Tech CSE Data Science, 1st year)\n• Email ba social links-e jogajog korte\n• English, Bengali ar Banglish - 3 bhabei kotha bolte paro!",
+      "actions": [
+        {
+          "label": "Abdur Somporke",
+          "query": "Abdur somporke bolo"
+        },
+        {
+          "label": "Featured Projects",
+          "query": "Tomar project gulo somporke bolo"
+        },
+        {
+          "label": "Skills",
+          "query": "Tomar skills ki ki?"
+        },
+        {
+          "label": "Contact",
+          "query": "Kivabe jogajog korbo?"
+        }
+      ]
+    }
+  }
+};

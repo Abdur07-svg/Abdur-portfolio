@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ar7-portfolio-offline-v17';
+const CACHE_NAME = 'ar7-portfolio-offline-v18';
 
 const OFFLINE_FALLBACK_URL = 'offline.html';
 const PRECACHE_ASSETS = [

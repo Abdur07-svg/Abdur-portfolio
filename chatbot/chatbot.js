@@ -32,6 +32,8 @@
       this.rpsScores = { player: 0, bot: 0, ties: 0 };
       this.activeNumberGame = null;
       this.timeGreetings = window.PORTFOLIO_TIME_GREETINGS || null;
+      this.i18n = window.PORTFOLIO_I18N || {};
+      this.currentLanguage = 'en';
       this.isSending = false;
 
       this.init();
@@ -275,6 +277,7 @@
         this.typingTimer = null;
       }
       this.isSending = false;
+      this.currentLanguage = 'en';
       this.setTyping(false);
 
       this.messagesContainer.innerHTML = '';
@@ -486,6 +489,12 @@
         idx = (idx + 1) % this.jokes.length;
       }
       this.lastJokeIndex = idx;
+      const lang = this.currentLanguage || 'en';
+      if (lang === 'bn') {
+        return `😄 আপনার জন্য একটি মজার জোক:\n\n${this.jokes[idx]}\n\n(আরেকটি জোক দেখতে চাইলে বলুন 'আরেকটি জোক'!)`;
+      } else if (lang === 'banglish') {
+        return `😄 Tomar jonno ekta tech joke:\n\n${this.jokes[idx]}\n\n(Arekta joke dekhte chaile bolo 'arekta joke'!)`;
+      }
       return `😄 Here's a tech joke for you:\n\n${this.jokes[idx]}\n\n(Ask for 'another joke' if you'd like another!)`;
     }
 
@@ -536,6 +545,80 @@
         .trim();
     }
 
+    detectLanguage(rawText) {
+      if (!rawText || typeof rawText !== 'string') return this.currentLanguage || 'en';
+      const clean = rawText.trim();
+      if (!clean) return this.currentLanguage || 'en';
+
+      const bengaliChars = (clean.match(/[\u0980-\u09FF]/g) || []).length;
+      const latinChars = (clean.match(/[a-zA-Z]/g) || []).length;
+
+      if (bengaliChars > 0 && bengaliChars >= latinChars * 0.25) {
+        return 'bn';
+      }
+
+      const banglishPatterns = [
+        /\b(tomar|apnar|amader|amar|tumi|apni|tui)\b/i,
+        /\b(kemon|acho|asen|aso|achen)\b/i,
+        /\b(somporke|bishoye|bepar|bepare)\b/i,
+        /\b(project\s*gulo|projects?\s*gulo|skill\s*gulo|skills?\s*gulo)\b/i,
+        /\b(bolo|bolun|bhalo|valo|val)\b/i,
+        /\b(ki\s*ki|ki\s*ache|ki\s*koro|ki\s*korcho|ki\s*bolbo)\b/i,
+        /\b(kivabe|keno|kothay|kokhon|kon)\b/i,
+        /\b(ekta|akta|koyekta|kichu)\b/i,
+        /\b(hasao|hasir|mojar|moja|khela|kheli|khelbo|khelte)\b/i,
+        /\b(shuvo|subho|shokal|sokal|dupur|sondha|shondha|ratri|raat)\b/i,
+        /\b(dhonnobad|dhonno|thik\s*ache|bujhlam|acha|accha|ha|na)\b/i,
+        /\b(dekhte\s*chai|jante\s*chai|bolte\s*paro|parba|parbe)\b/i,
+        /\b(shuru|shesh|notun|puraton)\b/i
+      ];
+
+      let banglishMatches = 0;
+      for (const pat of banglishPatterns) {
+        if (pat.test(clean)) banglishMatches++;
+      }
+
+      if (banglishMatches >= 1) {
+        return 'banglish';
+      }
+
+      const englishPatterns = [
+        /\b(tell|me|about|your|what|are|is|how|can|i|contact|who|built|build|show|which|please|hello|hi|hey|thanks|thank\s*you|good\s*morning|good\s*afternoon|good\s*evening|good\s*night|morning|afternoon|evening|night|bye|goodbye)\b/i,
+        /\b(projects?|skills?|experience|education|resume|cv|portfolio|socials?|work|code|github|email)\b/i
+      ];
+      let englishMatches = 0;
+      for (const pat of englishPatterns) {
+        if (pat.test(clean)) englishMatches++;
+      }
+
+      if (englishMatches > 0 && banglishMatches === 0) {
+        return 'en';
+      }
+
+      if (clean.split(/\s+/).length <= 2 && banglishMatches === 0 && bengaliChars === 0) {
+        return this.currentLanguage || 'en';
+      }
+
+      return this.currentLanguage || 'en';
+    }
+
+    getLocalizedResponse(intentId, defaultResponse, lang) {
+      if (!defaultResponse) return defaultResponse;
+      if (!lang || lang === 'en') return defaultResponse;
+
+      const i18nEntry = this.i18n && this.i18n[intentId] ? this.i18n[intentId][lang] : null;
+      if (!i18nEntry) return defaultResponse;
+
+      const localized = { ...defaultResponse };
+      if (i18nEntry.text) {
+        localized.text = i18nEntry.text;
+      }
+      if (i18nEntry.actions) {
+        localized.actions = i18nEntry.actions;
+      }
+      return localized;
+    }
+
     detectFunAndGameIntent(rawText, norm) {
       const isPortfolioGameQuery =
         /(game\s*project|games?\s*(you|abdur|built|build|made|make|created|create|developed|develop|worked\s*on)|(built|build|made|make|created|create|developed|develop)\s*(\w+\s*)?games?|android\s*game|endless\s*runner|video\s*game\s*project|mobile\s*game|temple\s*run)/i.test(rawText) ||
@@ -551,12 +634,14 @@
       }
 
       const englishJokeRegex = /\b(jokes?|funny|fun|humou?r|comedy|make\s*me\s*laugh|something\s*funny|fun\s*mood|mood\s*fresh|bored|boring|i'?m\s*bored|i\s*am\s*bored|hasao)\b/i;
-      const bengaliJokeRegex = /(হাসির\s*কিছু|মজার\s*কিছু|মজা|জোক|জোকস|হাসাও)/;
-      const isJoke = englishJokeRegex.test(rawText) || englishJokeRegex.test(norm) || bengaliJokeRegex.test(rawText);
+      const bengaliJokeRegex = /(হাসির\s*কিছু|মজার\s*কিছু|মজা|জোক|জোকস|হাসাও|একটা\s*জোক|কৌতুক)/i;
+      const banglishJokeRegex = /\b(ekta\s*joke|joke\s*bolo|jokes\s*bolo|hasir\s*kichu|hasao|hasir\s*kotha|koutuk)\b/i;
+      const isJoke = englishJokeRegex.test(rawText) || englishJokeRegex.test(norm) || bengaliJokeRegex.test(rawText) || banglishJokeRegex.test(rawText);
 
       const englishGameRegex = /\b(games?|let'?s\s*play|play\s*something|mini\s*games?|gaming|play\s*a\s*game|wanna\s*play|want\s*to\s*play|khelbo|khela|khelte\s*chai)\b|^play$/i;
-      const bengaliGameRegex = /(খেলতে\s*চাই|গেম\s*খেলি|গেম|খেলা)/;
-      const isGame = englishGameRegex.test(rawText) || englishGameRegex.test(norm) || bengaliGameRegex.test(rawText);
+      const bengaliGameRegex = /(খেলতে\s*চাই|গেম\s*খেলি|গেম|খেলা|একটা\s*গেম\s*খেলি|খেলব)/i;
+      const banglishGameRegex = /\b(game\s*kheli|ekta\s*game\s*kheli|khelte\s*chai|khelbo|khela\s*kheli)\b/i;
+      const isGame = englishGameRegex.test(rawText) || englishGameRegex.test(norm) || bengaliGameRegex.test(rawText) || banglishGameRegex.test(rawText);
 
       return { isJoke, isGame };
     }
@@ -579,7 +664,7 @@
       const clean = rawText.trim();
 
       // Check if message is a non-greeting time query (e.g. "What did you build this morning?")
-      const startsWithGreetingPrefix = /^(?:(?:hi|hii|hello|hey|hola|yo|assalamu\s*alaikum|salam|namaste)[\s,!.-]+)?(good\s*(?:morning|afternoon|evening|night)|gud\s*(?:morning|afternoon|evening|night)|sweet\s*dreams|সুপ্রভাত|শুভ\s*(?:সকাল|অপরাহ্ন|দুপুর|সন্ধ্যা|রাত্রি|রাত)|shuvo\s*(?:shokal|sokal|dupur|sondha|shondha|ratri|raat)|subho\s*(?:shokal|sokal|dupur|sondha|shondha|ratri|raat)|(?:shokal|sokal|dupur|sondha|shondha|ratri)\b|gm|ga|ge|gn)(?:\s*(?:bolo|bolchi))?[\s,!.-]*/i;
+      const startsWithGreetingPrefix = /^(?:(?:hi|hii|hello|hey|hola|yo|assalamu\s*alaikum|salam|namaste)[\s,!.-]+)?(good\s*(?:morning|afternoon|evening|night)|gud\s*(?:morning|afternoon|evening|night)|sweet\s*dreams|সুপ্রভাত|শুভ\s*(?:সকাল|অপরাহ্ন|দুপুর|সন্ধ্যা|রাত্রি|রাত)|shuvo\s*(?:shokal|sokal|dupur|sondha|shondha|ratri|raat)|subho\s*(?:shokal|sokal|dupur|sondha|shondha|ratri|raat)|(?:shokal|sokal|dupur|sondha|shondha|ratri)\b|\b(?:gm|ga|ge|gn)\b)(?:\s*(?:bolo|bolchi))?[\s,!.-]*/i;
 
       const nonGreetingTimeQuery =
         /\b(this|yesterday|tomorrow|every|last|in\s+the|at|during|for\s+the)\s+(morning|afternoon|evening|night)\b/i.test(clean) ||
@@ -652,28 +737,38 @@
       if (!parsed || !parsed.isGreeting) return null;
 
       const greetingsData = this.timeGreetings || window.PORTFOLIO_TIME_GREETINGS;
-      const lang = parsed.isBengali ? 'bn' : 'en';
+      const lang = this.detectLanguage(rawText);
       const langDict = greetingsData && greetingsData[lang] ? greetingsData[lang] : (greetingsData ? greetingsData.en : null);
 
       const now = customDate || this.mockDate || new Date();
       const currentPeriod = this.getVisitorTimePeriod(now);
 
-      const defaultActions = [
+      let defaultActions = [
         { label: "About Abdur", query: "Who is Abdur?" },
         { label: "Abdur's Projects", query: "Tell me about Abdur's projects" },
         { label: "Technical Skills", query: "What are Abdur's technical skills?" },
         { label: "Contact Abdur", query: "How can I contact Abdur?" }
       ];
 
+      if (this.i18n && this.i18n.greeting && this.i18n.greeting[lang] && this.i18n.greeting[lang].actions) {
+        defaultActions = this.i18n.greeting[lang].actions;
+      }
+
       // Handle generic greeting without time mismatch correction
       if (parsed.timeType === 'generic') {
         let greetingMsg = "Hello! 👋 I'm your Portfolio Assistant. I'm here to help you explore Abdur Rajjak's projects, technical skills, education, and contact details. What would you like to know?";
         if (parsed.isIslamic) {
-          greetingMsg = lang === 'bn'
-            ? "ওয়ালাইকুম আসসালাম! 👋 স্বাগতম! আব্দুর রাজ্জাকের পোর্টফোলিও সম্পর্কে কী জানতে চান?"
-            : "Walaikum Assalam! 👋 Welcome to Abdur Rajjak's portfolio assistant. What would you like to explore today?";
-        } else if (parsed.isBengali) {
+          if (lang === 'bn') {
+            greetingMsg = "ওয়ালাইকুম আসসালাম! 👋 স্বাগতম! আব্দুর রাজ্জাকের পোর্টফোলিও সম্পর্কে কী জানতে চান?";
+          } else if (lang === 'banglish') {
+            greetingMsg = "Walaikum Assalam! 👋 Swagotom! Abdur Rajjak-er portfolio somporke ki jante chao?";
+          } else {
+            greetingMsg = "Walaikum Assalam! 👋 Welcome to Abdur Rajjak's portfolio assistant. What would you like to explore today?";
+          }
+        } else if (lang === 'bn') {
           greetingMsg = "হ্যালো! 👋 আমি আব্দুর রাজ্জাকের পোর্টফোলিও অ্যাসিস্ট্যান্ট। আব্দুর রাজ্জাকের প্রজেক্ট, স্কিল বা শিক্ষা সম্পর্কে কী জানতে চান?";
+        } else if (lang === 'banglish') {
+          greetingMsg = "Hello! 👋 Ami Abdur Rajjak-er Portfolio Assistant. Abdur Rajjak-er projects, skills ba education somporke ki jante chao?";
         }
         return {
           intentId: 'greeting',
@@ -684,30 +779,32 @@
         };
       }
 
-      // Generate greeting / correction text
       let greetingText = '';
       let isCorrection = false;
 
       if (parsed.timeType === 'night' && parsed.isFarewell) {
-        // Farewell context: good night
         greetingText = this.getRandomGreetingItem(langDict && langDict.correction ? langDict.correction.farewellNight : null) ||
-          (lang === 'bn' ? "শুভ রাত্রি! 🌙 ভালো ঘুম হোক ও শান্তিময় বিশ্রাম কাটুক!" : "Good night! 🌙 Sleep well and have wonderful dreams! Feel free to return anytime.");
+          (lang === 'bn' ? "শুভ রাত্রি! 🌙 ভালো ঘুম হোক ও শান্তিময় বিশ্রাম কাটুক!" :
+           lang === 'banglish' ? "Good night! 🌙 Bhalo ghum hok ar shundor shopno dekho!" :
+           "Good night! 🌙 Sleep well and have wonderful dreams! Feel free to return anytime.");
       } else if (parsed.timeType === currentPeriod) {
-        // Correct time greeting match
         greetingText = this.getRandomGreetingItem(langDict && langDict.match ? langDict.match[currentPeriod] : null) ||
-          `Good ${currentPeriod}! How can I help you today?`;
+          (lang === 'bn' ? `শুভ ${currentPeriod}! কীভাবে সাহায্য করতে পারি?` :
+           lang === 'banglish' ? `Good ${currentPeriod}! Ki bhabe help korte pari?` :
+           `Good ${currentPeriod}! How can I help you today?`);
       } else if (parsed.timeType === 'evening' && currentPeriod === 'night') {
-        // Special case: "Good evening" late at night -> friendly nighttime response
         greetingText = this.getRandomGreetingItem(langDict && langDict.correction ? langDict.correction.eveningLateAtNight : null) ||
-          (lang === 'bn' ? "শুভ সন্ধ্যা! 🌙 তবে এখন কিন্তু রাত হয়ে গেছে—কীভাবে সাহায্য করতে পারি?" : "Good evening! 🌙 It's getting late into the night—hope you're having a relaxing time! How can I help you tonight?");
+          (lang === 'bn' ? "শুভ সন্ধ্যা! 🌙 তবে এখন কিন্তু রাত হয়ে গেছে—কীভাবে সাহায্য করতে পারি?" :
+           lang === 'banglish' ? "Good evening! 🌙 Tobe ekhon kintu raat hoye geche—ki bhabe help korbo?" :
+           "Good evening! 🌙 It's getting late into the night—hope you're having a relaxing time! How can I help you tonight?");
       } else if (parsed.timeType === 'night' && currentPeriod !== 'night') {
-        // "Good night" during daytime -> gentle daytime note
         isCorrection = true;
         const daytimeOptions = langDict && langDict.correction && langDict.correction.nightInDaytime ? langDict.correction.nightInDaytime[currentPeriod] : null;
         greetingText = this.getRandomGreetingItem(daytimeOptions) ||
-          `It's actually ${currentPeriod} right now! Good ${currentPeriod}!`;
+          (lang === 'bn' ? `এখন কিন্তু ${currentPeriod}! শুভ ${currentPeriod}!` :
+           lang === 'banglish' ? `Ekhon kintu ${currentPeriod}! Good ${currentPeriod}!` :
+           `It's actually ${currentPeriod} right now! Good ${currentPeriod}!`);
       } else {
-        // Genuine mismatch -> polite correction to currentPeriod
         isCorrection = true;
         let targetList = null;
         if (langDict && langDict.correction) {
@@ -717,10 +814,11 @@
           else if (currentPeriod === 'night') targetList = langDict.correction.toNight;
         }
         greetingText = this.getRandomGreetingItem(targetList) ||
-          `It's actually ${currentPeriod} right now according to your local time! Good ${currentPeriod}! How can I help you?`;
+          (lang === 'bn' ? `আপনার স্থানীয় সময় অনুযায়ী এখন ${currentPeriod}! শুভ ${currentPeriod}! কীভাবে সাহায্য করতে পারি?` :
+           lang === 'banglish' ? `Tomar local time onujayi ekhon ${currentPeriod}! Good ${currentPeriod}! Ki bhabe help korte pari?` :
+           `It's actually ${currentPeriod} right now according to your local time! Good ${currentPeriod}! How can I help you?`);
       }
 
-      // If user had a substantive query attached (e.g. "Good morning! Tell me about your projects"):
       if (parsed.hasSubstantiveQuery && parsed.remainderText) {
         const subMatched = this.matchResponse(parsed.remainderText, { skipGreeting: true });
         if (subMatched && subMatched.response) {
@@ -737,7 +835,6 @@
         }
       }
 
-      // Pure greeting without question
       return {
         intentId: isCorrection ? 'time_greeting_correction' : 'time_greeting',
         response: {
@@ -748,12 +845,21 @@
     }
 
     matchResponse(rawText, options = {}) {
+      if (!options || !options.skipLanguageUpdate) {
+        this.currentLanguage = this.detectLanguage(rawText);
+      }
+
       const norm = this.normalize(rawText);
       if (!norm) {
+        const emptyTexts = {
+          en: "I didn't catch that. Please type any question about Abdur's projects, skills, education, or contact details below!",
+          bn: "আমি বুঝতে পারিনি। আব্দুর রাজ্জাকের প্রজেক্ট, স্কিল, পড়াশোনা বা যোগাযোগ সম্পর্কে নিচে যেকোনো প্রশ্ন লিখুন!",
+          banglish: "Ami thik moto bujhte parini. Abdur-er projects, skills, porashona ba contact niye niche jekono question type koro!"
+        };
         return {
           intentId: 'empty',
           response: {
-            text: "I didn't catch that. Please type any question about Abdur's projects, skills, education, or contact details below!"
+            text: emptyTexts[this.currentLanguage] || emptyTexts.en
           }
         };
       }
@@ -773,7 +879,10 @@
       if (isPortfolioGameQuery) {
         const gameProj = this.intents.find(i => i.id === 'project_game');
         if (gameProj) {
-          return { intentId: 'project_game', response: gameProj.response };
+          return {
+            intentId: 'project_game',
+            response: this.getLocalizedResponse('project_game', gameProj.response, this.currentLanguage)
+          };
         }
       }
 
@@ -811,20 +920,63 @@
       const funIntent = this.detectFunAndGameIntent(rawText, norm);
       if (funIntent.isJoke || funIntent.isGame) {
         const contextualActions = [];
+        const lang = this.currentLanguage || 'en';
+
+        const actionLabels = {
+          tell_joke: {
+            en: '😂 Tell Me a Joke',
+            bn: '😂 একটি জোক বলো',
+            banglish: '😂 Ekta Joke Bolo'
+          },
+          play_game: {
+            en: '🎮 Play a Game',
+            bn: '🎮 একটি গেম খেলি',
+            banglish: '🎮 Game Kheli'
+          },
+          brain_teaser: {
+            en: '🧠 Brain Teaser',
+            bn: '🧠 ব্রেন টিজার ধাঁধা',
+            banglish: '🧠 Brain Teaser'
+          }
+        };
+
         if (funIntent.isJoke) {
-          contextualActions.push({ type: 'tell_joke', label: '😂 Tell Me a Joke' });
+          contextualActions.push({
+            type: 'tell_joke',
+            label: actionLabels.tell_joke[lang] || actionLabels.tell_joke.en
+          });
         }
         if (funIntent.isGame) {
-          contextualActions.push({ type: 'play_game', label: '🎮 Play a Game' });
-          contextualActions.push({ type: 'brain_teaser', label: '🧠 Brain Teaser' });
+          contextualActions.push({
+            type: 'play_game',
+            label: actionLabels.play_game[lang] || actionLabels.play_game.en
+          });
+          contextualActions.push({
+            type: 'brain_teaser',
+            label: actionLabels.brain_teaser[lang] || actionLabels.brain_teaser.en
+          });
         }
 
-        let replyText = "Ready to play? Choose an activity below to get started! 🎮";
-        if (funIntent.isJoke && funIntent.isGame) {
-          replyText = "Boredom banished! Pick a game or enjoy a joke below: 🌟";
-        } else if (funIntent.isJoke) {
-          replyText = "Looking for some fun or a good laugh? Click below whenever you're ready! 😄";
-        }
+        const replyTexts = {
+          both: {
+            en: "Boredom banished! Pick a game or enjoy a joke below: 🌟",
+            bn: "বিরক্তি দূর হোক! নিচের যে কোনো একটি গেম খেলুন বা জোক শুনুন: 🌟",
+            banglish: "Boring lagche? Ekta game khelo ba moja-r joke shono niche theke: 🌟"
+          },
+          joke: {
+            en: "Looking for some fun or a good laugh? Click below whenever you're ready! 😄",
+            bn: "একটু আনন্দ বা হাসির কিছু খুঁজছেন? নিচে ক্লিক করুন! 😄",
+            banglish: "Kichu mojar ba hasir jinis khujcho? Click koro niche! 😄"
+          },
+          game: {
+            en: "Ready to play? Choose an activity below to get started! 🎮",
+            bn: "খেলতে প্রস্তুত? শুরু করতে নিচের যেকোনো একটি বেছে নিন! 🎮",
+            banglish: "Khelte ready? Nicher theke shuru koro! 🎮"
+          }
+        };
+
+        const replyType = funIntent.isJoke && funIntent.isGame ? 'both' : (funIntent.isJoke ? 'joke' : 'game');
+        const replyText = replyTexts[replyType][lang] || replyTexts[replyType].en;
 
         return {
           intentId: funIntent.isJoke && funIntent.isGame ? 'fun_and_games' : (funIntent.isJoke ? 'fun_joke_prompt' : 'fun_game_prompt'),
@@ -904,7 +1056,7 @@
             if (norm === cleanKw) {
               score += 100 + (intent.priority || 0);
               break;
-            } else if (cleanKw.length > 2 && norm.includes(cleanKw)) {
+            } else if (cleanKw.length > 2 && (new RegExp('(?:^|\\s)' + cleanKw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:\\s|$)')).test(norm)) {
               score += 40 + (intent.priority || 0);
             }
           }
@@ -919,14 +1071,20 @@
       if (best && maxScore >= 40) {
         return {
           intentId: best.id,
-          response: best.response
+          response: this.getLocalizedResponse(best.id, best.response, this.currentLanguage)
         };
       }
+
+      const fallbackTexts = {
+        en: "I'm not sure about that yet. I'm Abdur's Portfolio Assistant — feel free to ask about Abdur's projects, technical skills, education, or contact details by typing below!",
+        bn: "আমি এখনো এই বিষয়ে নিশ্চিত নই। আমি আব্দুর রাজ্জাকের পোর্টফোলিও সহকারী — ওনার প্রজেক্ট, টেকনিক্যাল স্কিল, পড়াশোনা বা যোগাযোগ সম্পর্কে নিচে প্রশ্ন লিখতে পারেন!",
+        banglish: "Ami ekhono eta niye sure na. Ami Abdur-er Portfolio Assistant — Abdur-er projects, skills, porashona ba contact details niye jekono question type korte paro!"
+      };
 
       return {
         intentId: 'fallback',
         response: {
-          text: "I'm not sure about that yet. I'm Abdur's Portfolio Assistant — feel free to ask about Abdur's projects, technical skills, education, or contact details by typing below!"
+          text: fallbackTexts[this.currentLanguage] || fallbackTexts.en
         }
       };
     }
@@ -946,11 +1104,31 @@
       const card = document.createElement('div');
       card.className = 'portfolio-chatbot-contact-card';
 
+      const lang = this.currentLanguage || 'en';
+
+      const titles = {
+        en: 'Connect with Abdur',
+        bn: 'আব্দুর এর সাথে যোগাযোগ করুন',
+        banglish: 'Connect with Abdur'
+      };
+
+      const descs = {
+        en: 'Choose your preferred way to get in touch.',
+        bn: 'আপনার পছন্দের মাধ্যমে যোগাযোগ করুন।',
+        banglish: 'Choose your preferred way to get in touch.'
+      };
+
+      const formBtnLabels = {
+        en: 'Open Contact Form',
+        bn: 'কন্টাক্ট ফর্ম খুলুন',
+        banglish: 'Open Contact Form'
+      };
+
       const header = document.createElement('div');
       header.className = 'portfolio-chatbot-contact-header';
       header.innerHTML = `
-        <h4 class="portfolio-chatbot-contact-title">Connect with Abdur</h4>
-        <p class="portfolio-chatbot-contact-desc">Choose your preferred way to get in touch.</p>
+        <h4 class="portfolio-chatbot-contact-title">${titles[lang] || titles.en}</h4>
+        <p class="portfolio-chatbot-contact-desc">${descs[lang] || descs.en}</p>
       `;
       card.appendChild(header);
 
@@ -998,7 +1176,7 @@
       formBtn.setAttribute('aria-label', 'Open Contact Form on portfolio');
       formBtn.innerHTML = `
         ${ICONS.message}
-        <span>Open Contact Form</span>
+        <span>${formBtnLabels[lang] || formBtnLabels.en}</span>
       `;
       formBtn.addEventListener('click', () => {
         const target = document.querySelector('#contact');
@@ -1239,8 +1417,13 @@
 
       if (exitBtn) {
         exitBtn.addEventListener('click', () => {
+          const exitTexts = {
+            en: "Game exited! What would you like to explore next in Abdur's portfolio?",
+            bn: "খেলা সমাপ্ত! আব্দুর রাজ্জাকের পোর্টফোলিও সম্পর্কে আর কী দেখতে চান?",
+            banglish: "Game exited! Abdur-er portfolio niye ar ki explore korte chao?"
+          };
           this.appendBotMsg({
-            text: "Game exited! What would you like to explore next in Abdur's portfolio?"
+            text: exitTexts[this.currentLanguage] || exitTexts.en
           });
         });
       }
@@ -1330,8 +1513,13 @@
 
       if (exitBtn) {
         exitBtn.addEventListener('click', () => {
+          const exitTexts = {
+            en: "Hope you enjoyed the riddle! Feel free to ask about Abdur's projects, skills, or anything else.",
+            bn: "ধাঁধাটি ভালো লেগেছে আশা করি! আব্দুর রাজ্জাকের প্রজেক্ট, স্কিল বা অন্য কিছু সম্পর্কে জিজ্ঞাসা করতে পারেন।",
+            banglish: "Hope you enjoyed the riddle! Abdur-er projects ba skills niye jekono question korte paro."
+          };
           this.appendBotMsg({
-            text: "Hope you enjoyed the riddle! Feel free to ask about Abdur's projects, skills, or anything else."
+            text: exitTexts[this.currentLanguage] || exitTexts.en
           });
         });
       }
@@ -1340,12 +1528,18 @@
     }
 
     handleContextAction(actionType) {
+      const lang = this.currentLanguage || 'en';
       if (actionType === 'tell_joke') {
         const joke = this.getRandomJoke();
+        const anotherLabels = {
+          en: '😂 Another Joke 🔄',
+          bn: '😂 আরেকটি জোক 🔄',
+          banglish: '😂 Arekta Joke 🔄'
+        };
         this.appendBotMsg({
           text: joke,
           contextualActions: [
-            { type: 'tell_joke', label: '😂 Another Joke 🔄' }
+            { type: 'tell_joke', label: anotherLabels[lang] || anotherLabels.en }
           ]
         });
       } else if (actionType === 'play_game') {
