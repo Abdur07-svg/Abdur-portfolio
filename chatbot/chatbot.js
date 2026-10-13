@@ -38,6 +38,7 @@
       this.selectedProject = null;
       this.lastDisplayedProjects = [];
       this.pendingFollowUpType = null;
+      this.themeFunnyIndices = { dark: 0, light: 0 };
 
       this.init();
     }
@@ -533,7 +534,7 @@
         return 1250 + Math.floor(Math.random() * 450);
       }
 
-      const shortIntents = ['greeting', 'thanks', 'how_are_you', 'empty', 'bye', 'time_greeting', 'time_greeting_correction', 'theme_dark', 'theme_light', 'theme_conflict'];
+      const shortIntents = ['greeting', 'thanks', 'how_are_you', 'empty', 'bye', 'time_greeting', 'time_greeting_correction', 'theme_dark', 'theme_light', 'theme_already_dark', 'theme_already_light', 'theme_conflict'];
       if (shortIntents.includes(intentId) || textLen < 80) {
         return 560 + Math.floor(Math.random() * 280);
       }
@@ -652,10 +653,68 @@
     }
 
     getCurrentTheme() {
+      let isLight = false;
       if (typeof window.getPortfolioTheme === 'function') {
-        return window.getPortfolioTheme() === 'light-theme' ? 'light' : 'dark';
+        const theme = window.getPortfolioTheme();
+        isLight = (theme === 'light-theme' || theme === 'light');
+      } else if (typeof document !== 'undefined' && document.body) {
+        const hasLightClass = document.body.classList && typeof document.body.classList.contains === 'function' && document.body.classList.contains('light-theme');
+        const hasLightName = typeof document.body.className === 'string' && document.body.className.includes('light-theme');
+        isLight = Boolean(hasLightClass || hasLightName);
       }
-      return document.body.classList.contains('light-theme') ? 'light' : 'dark';
+      return isLight ? 'light' : 'dark';
+    }
+
+    getFunnyThemeAlreadyResponse(themeType, lang) {
+      if (!this.themeFunnyIndices) {
+        this.themeFunnyIndices = { dark: 0, light: 0 };
+      }
+
+      const funnyPools = {
+        dark: {
+          en: [
+            "Dark mode is already ON! 🌙😂 Even the darkness is enjoying itself!",
+            "Already in dark mode! 🌚 You can't make it any darker!",
+            "Dark mode is already ON! 🌙 Mission accomplished before you asked!"
+          ],
+          bn: [
+            "আরে, ডার্ক মোড তো আগেই চালু আছে! 🌙😂 আর কত অন্ধকার করবে?",
+            "ডার্ক মোড তো আগেই চালু আছে! 🌚 এর চেয়ে আর বেশি অন্ধকার করা সম্ভব না!",
+            "ডার্ক মোড তো আগেই চালু আছে! 🌙 মিশন তো আগেই সফল হয়েছে!"
+          ],
+          banglish: [
+            "Arey, dark mode to agei ON ache! 🌙😂",
+            "Already dark mode-e ache! 🌚 Ar koto dark korbe bolo?",
+            "Dark mode to agei ON ache! 🌙 Mission to agei accomplished!"
+          ]
+        },
+        light: {
+          en: [
+            "Light mode is already ON! ☀️😂 Your screen is already enjoying the sunshine!",
+            "We're already shining bright! ☀️😎 Light mode is ON!",
+            "Light mode is already ON! ☀️ No extra sunshine needed!"
+          ],
+          bn: [
+            "লাইট মোড তো আগেই চালু আছে! ☀️😄 স্ক্রিনে তো রোদ ঝলমল করছে!",
+            "আরে, লাইট মোড তো অনই আছে! ☀️😎 চারপাশ তো আগেই আলো ঝলমলে!",
+            "লাইট মোড তো আগেই চালু আছে! ☀️ আর অতিরিক্ত আলোর কোনো প্রয়োজন নেই!"
+          ],
+          banglish: [
+            "Light mode to agei ON ache! ☀️😄",
+            "Already shining bright! ☀️😎 Light mode to agei ON!",
+            "Light mode to agei ON ache! ☀️ No extra sunshine needed!"
+          ]
+        }
+      };
+
+      const langPool = (funnyPools[themeType] && funnyPools[themeType][lang]) || (funnyPools[themeType] && funnyPools[themeType].en);
+      if (!langPool || langPool.length === 0) {
+        return themeType === 'dark' ? "Dark mode is already ON! 🌙😂" : "Light mode is already ON! ☀️😄";
+      }
+
+      const idx = this.themeFunnyIndices[themeType] % langPool.length;
+      this.themeFunnyIndices[themeType]++;
+      return langPool[idx];
     }
 
     detectThemeCommand(rawText) {
@@ -716,7 +775,7 @@
 
       if (/\b(?:dark\s*(?:mode|theme)?|ডার্ক\s*(?:মোড|থিম)?)\b/i.test(clean) &&
           /\b(?:light\s*(?:mode|theme)?|লাইট\s*(?:মোড|থিম)?)\b/i.test(clean)) {
-        const darkAgreement = (hasExplicitDarkOn || darkOn) && (hasExplicitLightOff || lightOff) && !hasExplicitDarkOff && !hasExplicitLightOn;
+        const darkAgreement = (hasExplicitDarkOn || darkOn) && (hasExplicitLightOff || lightOff) && !hasExplicitDarkOff && !hasExplicitDarkOn;
         const lightAgreement = (hasExplicitLightOn || lightOn) && (hasExplicitDarkOff || darkOff) && !hasExplicitLightOff && !hasExplicitDarkOn;
         if (darkAgreement) return { type: 'dark' };
         if (lightAgreement) return { type: 'light' };
@@ -784,7 +843,19 @@
         };
       }
 
+      const currentTheme = this.getCurrentTheme();
+
       if (parsed.type === 'dark') {
+        if (currentTheme === 'dark') {
+          const funnyMsg = this.getFunnyThemeAlreadyResponse('dark', lang);
+          return {
+            intentId: 'theme_already_dark',
+            response: {
+              text: funnyMsg
+            }
+          };
+        }
+
         this.setTheme('dark');
         const confirmMsgs = {
           en: "Dark mode is now on. 🌙",
@@ -800,6 +871,16 @@
       }
 
       if (parsed.type === 'light') {
+        if (currentTheme === 'light') {
+          const funnyMsg = this.getFunnyThemeAlreadyResponse('light', lang);
+          return {
+            intentId: 'theme_already_light',
+            response: {
+              text: funnyMsg
+            }
+          };
+        }
+
         this.setTheme('light');
         const confirmMsgs = {
           en: "Light mode is now on. ☀️",
