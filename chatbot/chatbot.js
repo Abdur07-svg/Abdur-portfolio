@@ -35,6 +35,9 @@
       this.i18n = window.PORTFOLIO_I18N || {};
       this.currentLanguage = 'en';
       this.isSending = false;
+      this.selectedProject = null;
+      this.lastDisplayedProjects = [];
+      this.pendingFollowUpType = null;
 
       this.init();
     }
@@ -502,7 +505,9 @@
       const companionIntents = [
         'calculator_card', 'number_game_card', 'rps_card', 'math_calc', 'joke',
         'number_guess', 'game_clarification', 'fun_and_games', 'fun_joke_prompt',
-        'fun_game_prompt', 'brain_teaser_card'
+        'fun_game_prompt', 'brain_teaser_card', 'project_search_results',
+        'project_more_details', 'project_github_link', 'project_github_profile',
+        'project_tech_stack', 'project_followup_ambiguous', 'project_not_found'
       ];
       if (companionIntents.includes(intentId)) {
         return 500 + Math.floor(Math.random() * 260);
@@ -571,7 +576,8 @@
         /\b(dhonnobad|dhonno|thik\s*ache|bujhlam|acha|accha|ha|na)\b/i,
         /\b(dekhte\s*chai|jante\s*chai|bolte\s*paro|parba|parbe)\b/i,
         /\b(shuru|shesh|notun|puraton)\b/i,
-        /\b(koro|korun|chalu|bondho|hoyeche|naki|ar|ebong|kori|korchi)\b/i
+        /\b(koro|korun|chalu|bondho|hoyeche|naki|ar|ebong|kori|korchi)\b/i,
+        /\b(dekhao|dekhaw|ache|ase|etar|er|bistarito|khujchi|konta|konti)\b/i
       ];
 
       let banglishMatches = 0;
@@ -809,6 +815,536 @@
       }
 
       return null;
+    }
+
+    findProjects(rawText, lang) {
+      if (!rawText || typeof rawText !== 'string') return [];
+      const clean = rawText.trim().toLowerCase();
+      const projects = (this.data && this.data.projects) || [];
+      if (!projects || projects.length === 0) return [];
+
+      // Check if asking for all projects (general overview)
+      const isAllProjectsQuery =
+        /^(?:show\s*(?:me\s*)?(?:your|all|abdur'?s)?\s*projects|all\s*projects|list\s*(?:all\s*)?projects|portfolio\s*projects|projects|work|apps)[\s.?!]*$/i.test(clean) ||
+        /(?:তোমার\s*প্রজেক্টগুলো\s*দেখাও|প্রজেক্ট\s*দেখাও|সব\s*প্রজেক্ট\s*দেখাও|তোমার\s*কাজগুলো\s*দেখাও|প্রজেক্টগুলো|প্রজেক্টসমূহ)/.test(rawText) ||
+        /\b(?:tomar\s*project\s*gulo\s*dekhao|project\s*gulo\s*dekhao|project\s*dekhaw|shob\s*project\s*dekhao|project\s*list)\b/i.test(clean);
+
+      const hasSpecificTechOrTopic =
+        /\b(python|java\b|javascript|js\b|html|css|android|tensorflow|opencv|pytorch|nltk|gemini|livekit|ai\b|artificial\s*intelligence|machine\s*learning|ml\b|deep\s*learning|nlp|computer\s*vision|vision|game|runner|temple\s*run|voice|speech|assistant|translator|translation|fileforge|file\s*forge|polyglot|jarvis|cnn|sentiment|image|pdf|enhancer)\b/i.test(clean) ||
+        /(পাইথন|জাভা|এআই|মেশিন\s*লার্নিং|ডিপ\s*লার্নিং|কম্পিউটার\s*ভিশন|গেম|ভয়েস|অনুবাদ|ছবি|ইমেজ|ফাইল)/.test(rawText);
+
+      if (isAllProjectsQuery && !hasSpecificTechOrTopic) {
+        return projects;
+      }
+
+      const results = [];
+
+      for (const p of projects) {
+        let score = 0;
+        const pId = (p.id || '').toLowerCase();
+        const pTitle = (p.title || '').toLowerCase();
+        const pShort = (p.shortName || '').toLowerCase();
+        const pCategory = (p.category || '').toLowerCase();
+        const pTech = (p.tech || []).map(t => t.toLowerCase());
+        const pKeywords = (p.keywords || []).map(k => k.toLowerCase());
+
+        // Exact ID or Name match
+        if (clean.includes(pId) || clean.includes(pTitle) || clean.includes(pShort)) {
+          score += 150;
+        }
+
+        // Technology matching
+        if (/\b(python|পাইথন)\b/i.test(clean)) {
+          if (pTech.includes('python')) score += 80;
+        }
+        if (/\b(java|জাভা)\b/i.test(clean) && !/\b(javascript|js)\b/i.test(clean)) {
+          if (pTech.includes('java')) score += 80;
+        }
+        if (/\b(javascript|js|html|html5|css|css3)\b/i.test(clean)) {
+          if (pTech.some(t => t.includes('javascript') || t.includes('html') || t.includes('css'))) score += 70;
+        }
+        if (/\b(android|mobile\s*game|mobile\s*app)\b/i.test(clean)) {
+          if (pTech.some(t => t.includes('android')) || pCategory.includes('mobile')) score += 70;
+        }
+        if (/\b(tensorflow|opencv)\b/i.test(clean)) {
+          if (pTech.some(t => t.includes('tensorflow') || t.includes('opencv'))) score += 80;
+        }
+        if (/\b(pytorch|nltk)\b/i.test(clean)) {
+          if (pTech.some(t => t.includes('pytorch') || t.includes('nltk'))) score += 80;
+        }
+        if (/\b(gemini|livekit)\b/i.test(clean)) {
+          if (pTech.some(t => t.includes('gemini') || t.includes('livekit'))) score += 80;
+        }
+
+        // Category / Domain matching
+        if (/\b(ai|artificial\s*intelligence)\b/i.test(clean) || /(এআই|কৃত্রিম\s*বুদ্ধিমত্তা)/.test(rawText)) {
+          if (pCategory.includes('ai') || pCategory.includes('deep learning') || pCategory.includes('natural language') || pId === 'jarvis' || pId === 'image_classification' || pId === 'sentiment_analyzer') {
+            score += 65;
+          }
+        }
+        if (/\b(machine\s*learning|ml)\b/i.test(clean) || /(মেশিন\s*লার্নিং)/.test(rawText)) {
+          if (pCategory.includes('deep learning') || pCategory.includes('natural language') || pId === 'image_classification' || pId === 'sentiment_analyzer') {
+            score += 65;
+          }
+        }
+        if (/\b(deep\s*learning)\b/i.test(clean) || /(ডিপ\s*লার্নিং)/.test(rawText)) {
+          if (pCategory.includes('deep learning') || pId === 'image_classification' || pId === 'sentiment_analyzer') {
+            score += 70;
+          }
+        }
+        if (/\b(computer\s*vision|vision|cnn|object\s*detection)\b/i.test(clean) || /(কম্পিউটার\s*ভিশন)/.test(rawText)) {
+          if (pId === 'image_classification') score += 80;
+        }
+        if (/\b(nlp|natural\s*language|sentiment)\b/i.test(clean) || /(ন্যাচারাল\s*ল্যাঙ্গুয়েজ)/.test(rawText)) {
+          if (pId === 'sentiment_analyzer') score += 80;
+        }
+        if (/\b(voice|speech|wake\s*word)\b/i.test(clean) || /(ভয়েস|কণ্ঠ)/.test(rawText)) {
+          if (pId === 'jarvis') score += 80;
+        }
+        if (/\b(game|games|runner|temple\s*run)\b/i.test(clean) || /(গেম|খেলা)/.test(rawText)) {
+          if (pId === 'endless_runner') score += 80;
+        }
+        if (/\b(translator|translation|translate|multilingual|anubad)\b/i.test(clean) || /(অনুবাদ|অনুবাদক)/.test(rawText)) {
+          if (pId === 'polyglot') score += 80;
+        }
+        if (/\b(pdf|file\s*processing|file\s*tool|privacy\s*file)\b/i.test(clean) || /(পিডিএফ|ফাইল)/.test(rawText)) {
+          if (pId === 'fileforge') score += 80;
+        }
+        if (/\b(image|photo|picture|enhancer|compressor)\b/i.test(clean) || /(ছবি|ইমেজ)/.test(rawText)) {
+          if (pId === 'fileforge' || pId === 'image_classification') {
+            score += 55;
+            if (/\benhancer\b/i.test(clean) && pId === 'fileforge') score += 35;
+          }
+        }
+
+        // Project keywords match
+        for (const kw of pKeywords) {
+          if (clean.includes(kw)) {
+            score += 40;
+          }
+        }
+
+        if (score > 0) {
+          results.push({ project: p, score });
+        }
+      }
+
+      if (results.length === 0) return [];
+
+      results.sort((a, b) => b.score - a.score);
+      // If single top match has an overwhelming exact score
+      if (results[0].score >= 120 && results.length > 1 && results[0].score - results[1].score >= 60) {
+        return [results[0].project];
+      }
+
+      return results.map(r => r.project);
+    }
+
+    isProjectQuery(clean, rawText) {
+      if (!clean) return false;
+
+      // Mentions "project" in English, Bengali, or Banglish
+      if (/\b(projects?|apps?|creations?|portfolio\s*projects?)\b/i.test(clean) ||
+          /(প্রজেক্ট|কাজগুলো|প্রজেক্টসমূহ)/.test(rawText) ||
+          /\b(project|projects|project-gulo|projectgulo|project-er|projecter)\b/i.test(clean)) {
+        return true;
+      }
+
+      // Mentions specific project names or terms
+      if (/\b(fileforge|file\s*forge|polyglot|jarvis|endless\s*runner|temple\s*run|sentiment\s*analyzer|image\s*classification|image\s*classifier|image\s*enhancer)\b/i.test(clean)) {
+        return true;
+      }
+
+      // Asking what Abdur built / made / coded
+      if (/\b(what\s*(did|has|have)\s*(you|abdur)\s*(built|made|created|developed|coded))\b/i.test(clean) ||
+          /(বানিয়েছ|তৈরি\s*করেছ|কী\s*কী\s*বানিয়েছ)/.test(rawText) ||
+          /\b(ki\s*ki\s*(banise|baniyeche|toiri\s*koreche))\b/i.test(clean)) {
+        return true;
+      }
+
+      // Questions like "Do you have any AI / Python / ML / Web tools?"
+      if (/\b(do\s*you\s*have|show\s*me|tell\s*me\s*about|any)\b/i.test(clean) &&
+          /\b(ai|python|machine\s*learning|deep\s*learning|nlp|computer\s*vision|vision|translator|runner|speech|voice|livekit|gemini)\b/i.test(clean)) {
+        return true;
+      }
+
+      // Banglish questions like "Tomar AI ache?", "Python project ache?"
+      if (/\b(ache|ase)\b/i.test(clean) && /\b(ai|python|ml|java|game|tool|tools)\b/i.test(clean)) {
+        return true;
+      }
+
+      return false;
+    }
+
+    handleProjectSearch(rawText, norm) {
+      const clean = rawText.trim().toLowerCase();
+      if (!this.isProjectQuery(clean, rawText)) {
+        return null;
+      }
+
+      const lang = this.detectLanguage(rawText);
+      this.currentLanguage = lang;
+      const matches = this.findProjects(rawText, lang);
+
+      if (!matches || matches.length === 0) {
+        const notFoundTexts = {
+          en: `I couldn't find any verified projects matching your query. Abdur's verified projects focus on Python, AI/ML (JARVIS, Image Classification, Sentiment Analyzer), and Web Applications (FileForge, Polyglot). Would you like to view all projects? 🚀`,
+          bn: `দুঃখিত, আপনার অনুসন্ধানের সাথে মিলে এমন কোনো প্রজেক্ট পাওয়া যায়নি। আব্দুর রাজ্জাকের প্রজেক্টসমূহ মূলত পাইথন, এআই/এমএল (JARVIS, Image Classification, Sentiment Analyzer) এবং ওয়েব অ্যাপ্লিকেশন (FileForge, Polyglot) নিয়ে। আপনি কি সব প্রজেক্ট দেখতে চান? 🚀`,
+          banglish: `Sorry, ei query onujayi kono project paoa jayni. Abdur-er verified projects gulo main-ly Python, AI/ML (JARVIS, Image Classification, Sentiment Analyzer) ar Web Apps (FileForge, Polyglot) niye. Shob projects dekhte chao? 🚀`
+        };
+
+        const showAllLabels = {
+          en: 'View All Projects',
+          bn: 'সব প্রজেক্ট দেখুন',
+          banglish: 'Shob Projects Dekho'
+        };
+
+        return {
+          intentId: 'project_not_found',
+          response: {
+            text: notFoundTexts[lang] || notFoundTexts.en,
+            actions: [
+              { label: showAllLabels[lang] || showAllLabels.en, query: 'Show me your projects' }
+            ]
+          }
+        };
+      }
+
+      // Update conversation context
+      if (matches.length === 1) {
+        this.selectedProject = matches[0];
+        this.lastDisplayedProjects = matches;
+        this.pendingFollowUpType = null;
+      } else {
+        this.selectedProject = null;
+        this.lastDisplayedProjects = matches;
+        this.pendingFollowUpType = null;
+      }
+
+      // Localized Intro Text
+      let introText = '';
+      if (matches.length >= 6) {
+        const allIntros = {
+          en: "Here are Abdur Rajjak's verified portfolio projects across AI, Machine Learning, and Web Development: 🚀",
+          bn: "এখানে আব্দুর রাজ্জাকের তৈরি এআই, মেশিন লার্নিং ও ওয়েব ডেভেলপমেন্টের প্রজেক্টসমূহ তুলে ধরা হলো: 🚀",
+          banglish: "Ekhane Abdur-er toiri kora AI, Machine Learning ar Web Development-er verified projects dewa holo: 🚀"
+        };
+        introText = allIntros[lang] || allIntros.en;
+      } else if (matches.length === 1) {
+        const singleIntros = {
+          en: `Here are the details for ${matches[0].title}: 🚀`,
+          bn: `এখানে ${matches[0].title}-এর বিস্তারিত তথ্য: 🚀`,
+          banglish: `Ekhane ${matches[0].title}-er details: 🚀`
+        };
+        introText = singleIntros[lang] || singleIntros.en;
+      } else {
+        const filterIntros = {
+          en: `Found ${matches.length} verified projects matching your search: 🚀`,
+          bn: `আপনার অনুসন্ধানের সাথে মিলে এমন ${matches.length}টি প্রজেক্ট পাওয়া গেছে: 🚀`,
+          banglish: `Tomar search onujayi ${matches.length}-ti verified project paoa geche: 🚀`
+        };
+        introText = filterIntros[lang] || filterIntros.en;
+      }
+
+      return {
+        intentId: 'project_search_results',
+        response: {
+          text: introText,
+          introText,
+          projectCards: matches
+        }
+      };
+    }
+
+    handleProjectFollowUp(rawText, norm) {
+      if (!rawText) return null;
+      const clean = rawText.trim().toLowerCase();
+      const lang = this.detectLanguage(rawText);
+
+      const isMoreDetails =
+        /\b(tell\s*me\s*more|more\s*details?|more\s*info|more\s*about\s*(it|this|that)?|give\s*more\s*details|explain\s*more|bistarito\s*bolo|aro\s*bolo|aro\s*bistarito|details\s*bolo)\b/i.test(clean) ||
+        /(আরও\s*বিস্তারিত|বিস্তারিত\s*বলো|আরও\s*বলো|ডিটেলস\s*বলো|বিস্তারিত)/.test(rawText) ||
+        /^(tell\s*me\s*more|more\s*details?|more|details|aro\s*bolo)[\s.?!]*$/i.test(clean);
+
+      const isGitHubLink =
+        /\b(show\s*(its\s*)?github|give\s*(its\s*)?github|its\s*github|er\s*github|etar\s*github|github\s*link\s*dao|github\s*link\s*dekhaw|github\s*link|repo\s*link|repository\s*link|source\s*code\s*link)\b/i.test(clean) ||
+        /(এটার|এর|etar|er)\s*(?:github|গিটহাব)/i.test(rawText) ||
+        /(?:github|গিটহাব)\s*(?:লিংক|link|দাও|dao)/i.test(rawText) ||
+        /(গিটহাব\s*লিংক|এটার\s*গিটহাব|এর\s*গিটহাব)/.test(rawText) ||
+        /^(github\s*link|repo|github|গিটহাব|গিটহাব\s*লিংক|er\s*github\s*link\s*dao)[\s.?!]*$/i.test(clean);
+
+      const isTechStack =
+        /\b(what\s*(technolog\w*|tech|stack|tools)|which\s*(technolog\w*|tech|stack|tools)|what\s*does\s*it\s*use|technolog\w*(\s*used)?|tech\s*stack|tech\s*used|ki\s*tech|kon\s*tech|kon\s*technology)\b/i.test(clean) ||
+        /(টেকনোলজি|প্রযুক্তি|কী\s*প্রযুক্তি)/.test(rawText);
+
+      // Check if user is answering a previous clarification question
+      if (!isMoreDetails && !isGitHubLink && !isTechStack) {
+        if (this.pendingFollowUpType && this.lastDisplayedProjects && this.lastDisplayedProjects.length > 0) {
+          const chosen = this.lastDisplayedProjects.find(p =>
+            clean.includes(p.id.toLowerCase()) ||
+            clean.includes(p.title.toLowerCase()) ||
+            clean.includes(p.shortName.toLowerCase())
+          );
+          if (chosen) {
+            this.selectedProject = chosen;
+            const actionType = this.pendingFollowUpType;
+            this.pendingFollowUpType = null;
+            return this.deliverProjectFollowUpAnswer(chosen, actionType, lang);
+          }
+        }
+        return null;
+      }
+
+      this.currentLanguage = lang;
+      const followUpType = isGitHubLink ? 'github' : (isTechStack ? 'tech' : 'more');
+
+      // Check if query explicitly names one of the projects
+      const projects = (this.data && this.data.projects) || [];
+      const explicitlyNamed = projects.find(p =>
+        clean.includes(p.id.toLowerCase()) ||
+        clean.includes(p.title.toLowerCase()) ||
+        clean.includes(p.shortName.toLowerCase())
+      );
+
+      if (explicitlyNamed) {
+        this.selectedProject = explicitlyNamed;
+        this.lastDisplayedProjects = [explicitlyNamed];
+        this.pendingFollowUpType = null;
+        return this.deliverProjectFollowUpAnswer(explicitlyNamed, followUpType, lang);
+      }
+
+      // If a single project is currently selected in conversation context
+      if (this.selectedProject) {
+        this.pendingFollowUpType = null;
+        return this.deliverProjectFollowUpAnswer(this.selectedProject, followUpType, lang);
+      }
+
+      // If multiple projects were displayed and question is ambiguous
+      if (this.lastDisplayedProjects && this.lastDisplayedProjects.length > 1) {
+        this.pendingFollowUpType = followUpType;
+
+        const promptTexts = {
+          en: `Which project would you like to know more about? (${this.lastDisplayedProjects.map(p => p.shortName || p.title).join(', ')})`,
+          bn: `আপনি কোন প্রজেক্টটি সম্পর্কে জানতে চান? (${this.lastDisplayedProjects.map(p => p.shortName || p.title).join(', ')})`,
+          banglish: `Tumi kon project-ta somporke jante chao? (${this.lastDisplayedProjects.map(p => p.shortName || p.title).join(', ')})`
+        };
+
+        const clarificationActions = this.lastDisplayedProjects.map(p => ({
+          label: p.shortName || p.title,
+          query: p.title
+        }));
+
+        return {
+          intentId: 'project_followup_ambiguous',
+          response: {
+            text: promptTexts[lang] || promptTexts.en,
+            actions: clarificationActions
+          }
+        };
+      }
+
+      // If no project context exists yet
+      const noContextTexts = {
+        en: "Which project would you like to know about? Abdur has built JARVIS AI, FileForge, Polyglot, Image Classification CNN, Endless Runner Game, and Sentiment Analyzer. Or ask to show all projects! 🚀",
+        bn: "আপনি কোন প্রজেক্টটি সম্পর্কে জানতে চান? আব্দুর রাজ্জাকের তৈরি প্রজেক্টগুলো হলো: JARVIS AI, FileForge, Polyglot, Image Classification CNN, Endless Runner Game এবং Sentiment Analyzer। আপনি সব প্রজেক্ট দেখতে বলতে পারেন! 🚀",
+        banglish: "Tumi kon project-ta somporke jante chao? Abdur-er projects gulo holo: JARVIS AI, FileForge, Polyglot, Image Classification CNN, Endless Runner Game ar Sentiment Analyzer. Shob projects dekhte bolte paro! 🚀"
+      };
+
+      return {
+        intentId: 'project_followup_no_context',
+        response: {
+          text: noContextTexts[lang] || noContextTexts.en,
+          actions: [
+            { label: lang === 'bn' ? 'সব প্রজেক্ট দেখাও' : (lang === 'banglish' ? 'Shob Projects Dekhao' : 'Show All Projects'), query: 'Show me your projects' }
+          ]
+        }
+      };
+    }
+
+    deliverProjectFollowUpAnswer(project, type, lang) {
+      if (type === 'github') {
+        if (project.repoUrl && project.repoUrl.startsWith('http')) {
+          const msgs = {
+            en: `Here is the verified GitHub repository for ${project.title}:\n\n🔗 ${project.repoUrl}`,
+            bn: `${project.title}-এর ভেরিফাইড গিটহাব রিপোজিটরি লিংক:\n\n🔗 ${project.repoUrl}`,
+            banglish: `${project.title}-er verified GitHub repository link:\n\n🔗 ${project.repoUrl}`
+          };
+          return {
+            intentId: 'project_github_link',
+            response: {
+              text: msgs[lang] || msgs.en,
+              links: [
+                { label: lang === 'bn' ? 'গিটহাব রিপোজিটরি খুলুন ↗' : 'Open GitHub Repository ↗', href: project.repoUrl, external: true }
+              ]
+            }
+          };
+        } else {
+          const msgs = {
+            en: `The dedicated source repository for ${project.title} is currently in active development or research. You can explore Abdur's public repositories on his GitHub profile:\n\nGitHub: https://github.com/Abdur07-svg`,
+            bn: `${project.title}-এর নির্দিষ্ট রিপোজিটরিটি বর্তমানে ডেভেলপমেন্ট ও রিসার্চ পর্যায়ে রয়েছে। আপনি আব্দুর রাজ্জাকের পাবলিক কোড দেখতে ওনার গিটহাব প্রোফাইল ভিজিট করতে পারেন:\n\nGitHub: https://github.com/Abdur07-svg`,
+            banglish: `${project.title}-er specific repository-ti ekhon development ba research phase-e ache. Abdur-er public code dekhte tar GitHub profile visit korte paro:\n\nGitHub: https://github.com/Abdur07-svg`
+          };
+          return {
+            intentId: 'project_github_profile',
+            response: {
+              text: msgs[lang] || msgs.en,
+              links: [
+                { label: lang === 'bn' ? "আব্দুর এর গিটহাব প্রোফাইল ↗" : "Abdur's GitHub Profile ↗", href: "https://github.com/Abdur07-svg", external: true }
+              ]
+            }
+          };
+        }
+      }
+
+      if (type === 'tech') {
+        const techList = (project.tech || []).join(', ');
+        const msgs = {
+          en: `🛠️ ${project.title} is built using verified technologies:\n• ${techList}\n\nCategory: ${project.category}`,
+          bn: `🛠️ ${project.title}-এ ব্যবহৃত ভেরিফাইড প্রযুক্তিসমূহ হলো:\n• ${techList}\n\nক্যাটাগরি: ${project.category}`,
+          banglish: `🛠️ ${project.title}-e bebohar kora verified tech stack:\n• ${techList}\n\nCategory: ${project.category}`
+        };
+        return {
+          intentId: 'project_tech_stack',
+          response: {
+            text: msgs[lang] || msgs.en
+          }
+        };
+      }
+
+      // Type: 'more'
+      const desc = (project.i18n && project.i18n[lang] && project.i18n[lang].description) || project.description;
+      const highlights = (project.highlights || []).map(h => `• ${h}`).join('\n');
+      const msgs = {
+        en: `📌 ${project.title} — Detailed Overview\n\n• Category: ${project.category}\n• Description: ${desc}\n• Tech Stack: ${(project.tech || []).join(', ')}\n• Key Highlights:\n${highlights}\n• Status: ${project.status}`,
+        bn: `📌 ${project.title} — বিস্তারিত বিবরণ\n\n• ক্যাটাগরি: ${project.category}\n• বিবরণ: ${desc}\n• টেকনোলজি: ${(project.tech || []).join(', ')}\n• প্রধান বৈশিষ্ট্যসমূহ:\n${highlights}\n• স্ট্যাটাস: ${project.status}`,
+        banglish: `📌 ${project.title} — Detailed Overview\n\n• Category: ${project.category}\n• Overview: ${desc}\n• Tech Stack: ${(project.tech || []).join(', ')}\n• Highlights:\n${highlights}\n• Status: ${project.status}`
+      };
+
+      const links = [];
+      if (project.liveUrl && project.liveUrl.startsWith('http')) {
+        links.push({ label: lang === 'bn' ? 'লাইভ প্রজেক্ট দেখুন ↗' : 'Launch Live Demo ↗', href: project.liveUrl, external: true });
+      }
+      if (project.repoUrl && project.repoUrl.startsWith('http')) {
+        links.push({ label: lang === 'bn' ? 'গিটহাব রিপোজিটরি ↗' : 'GitHub Repository ↗', href: project.repoUrl, external: true });
+      }
+
+      return {
+        intentId: 'project_more_details',
+        response: {
+          text: msgs[lang] || msgs.en,
+          links: links.length > 0 ? links : undefined
+        }
+      };
+    }
+
+    renderProjectCards(projects, introText) {
+      const container = document.createElement('div');
+      container.className = 'portfolio-chatbot-project-cards-wrap';
+
+      if (introText) {
+        const introEl = document.createElement('div');
+        introEl.className = 'portfolio-chatbot-project-intro';
+        introEl.textContent = introText;
+        container.appendChild(introEl);
+      }
+
+      const listEl = document.createElement('div');
+      listEl.className = 'portfolio-chatbot-project-cards';
+
+      const lang = this.currentLanguage || 'en';
+      const viewLabels = {
+        en: 'View Project',
+        bn: 'প্রজেক্ট দেখুন',
+        banglish: 'View Project'
+      };
+      const repoLabels = {
+        en: 'GitHub Repository',
+        bn: 'GitHub রিপোজিটরি',
+        banglish: 'GitHub Repository'
+      };
+
+      projects.forEach(p => {
+        const card = document.createElement('article');
+        card.className = 'portfolio-chatbot-project-card';
+        card.setAttribute('data-id', p.id);
+
+        if (p.image) {
+          const thumbWrap = document.createElement('div');
+          thumbWrap.className = 'portfolio-chatbot-project-thumb-wrap';
+          const img = document.createElement('img');
+          img.className = 'portfolio-chatbot-project-thumb';
+          img.src = p.image;
+          img.alt = `${p.title} thumbnail`;
+          img.loading = 'lazy';
+          img.onerror = () => { thumbWrap.style.display = 'none'; };
+          thumbWrap.appendChild(img);
+          card.appendChild(thumbWrap);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'portfolio-chatbot-project-body';
+
+        const titleEl = document.createElement('h4');
+        titleEl.className = 'portfolio-chatbot-project-title';
+        titleEl.textContent = p.title;
+        body.appendChild(titleEl);
+
+        const descEl = document.createElement('p');
+        descEl.className = 'portfolio-chatbot-project-desc';
+        const localizedDesc = (p.i18n && p.i18n[lang] && p.i18n[lang].description) || p.description;
+        descEl.textContent = localizedDesc;
+        body.appendChild(descEl);
+
+        if (p.tech && p.tech.length > 0) {
+          const techWrap = document.createElement('div');
+          techWrap.className = 'portfolio-chatbot-project-tech';
+          p.tech.forEach(t => {
+            const pill = document.createElement('span');
+            pill.className = 'portfolio-chatbot-project-pill';
+            pill.textContent = t;
+            techWrap.appendChild(pill);
+          });
+          body.appendChild(techWrap);
+        }
+
+        const hasLive = Boolean(p.liveUrl && p.liveUrl.startsWith('http'));
+        const hasRepo = Boolean(p.repoUrl && p.repoUrl.startsWith('http'));
+
+        if (hasLive || hasRepo) {
+          const linksWrap = document.createElement('div');
+          linksWrap.className = 'portfolio-chatbot-project-links';
+
+          if (hasLive) {
+            const liveLink = document.createElement('a');
+            liveLink.className = 'portfolio-chatbot-project-btn portfolio-chatbot-project-btn-primary';
+            liveLink.href = p.liveUrl;
+            liveLink.target = '_blank';
+            liveLink.rel = 'noopener noreferrer';
+            liveLink.setAttribute('aria-label', `Launch ${p.title} live demo`);
+            liveLink.innerHTML = `${ICONS.external} <span>${viewLabels[lang] || viewLabels.en}</span>`;
+            linksWrap.appendChild(liveLink);
+          }
+
+          if (hasRepo) {
+            const repoLink = document.createElement('a');
+            repoLink.className = 'portfolio-chatbot-project-btn portfolio-chatbot-project-btn-secondary';
+            repoLink.href = p.repoUrl;
+            repoLink.target = '_blank';
+            repoLink.rel = 'noopener noreferrer';
+            repoLink.setAttribute('aria-label', `View ${p.title} repository on GitHub`);
+            repoLink.innerHTML = `${ICONS.github} <span>${repoLabels[lang] || repoLabels.en}</span>`;
+            linksWrap.appendChild(repoLink);
+          }
+
+          body.appendChild(linksWrap);
+        }
+
+        card.appendChild(body);
+        listEl.appendChild(card);
+      });
+
+      container.appendChild(listEl);
+      return container;
     }
 
     detectFunAndGameIntent(rawText, norm) {
@@ -1067,6 +1603,18 @@
         if (greetingRes) {
           return greetingRes;
         }
+      }
+
+      // Smart Project Finder - Follow-Up Questions (Check before general project search)
+      const followUpRes = this.handleProjectFollowUp(rawText, norm);
+      if (followUpRes) {
+        return followUpRes;
+      }
+
+      // Smart Project Finder - Natural Project Search
+      const projectSearchRes = this.handleProjectSearch(rawText, norm);
+      if (projectSearchRes) {
+        return projectSearchRes;
       }
 
       const isPortfolioGameQuery =
@@ -1759,7 +2307,7 @@
       const bubble = document.createElement('div');
       bubble.className = 'portfolio-chatbot-bubble';
 
-      if (res.greetingText && (res.contactCard || res.type)) {
+      if (res.greetingText && (res.contactCard || res.type || res.projectCards)) {
         const intro = document.createElement('div');
         intro.className = 'portfolio-chatbot-card-intro';
         intro.style.cssText = 'padding: 6px 12px 6px; font-size: 13.5px; opacity: 0.92; line-height: 1.45;';
@@ -1767,7 +2315,11 @@
         bubble.appendChild(intro);
       }
 
-      if (res.contactCard) {
+      if (res.projectCards && Array.isArray(res.projectCards)) {
+        msg.classList.add('portfolio-chatbot-msg-card');
+        bubble.classList.add('portfolio-chatbot-bubble-card');
+        bubble.appendChild(this.renderProjectCards(res.projectCards, res.introText));
+      } else if (res.contactCard) {
         msg.classList.add('portfolio-chatbot-msg-card');
         bubble.classList.add('portfolio-chatbot-bubble-card');
         bubble.appendChild(this.renderContactCard());
@@ -1848,6 +2400,31 @@
 
           bubble.appendChild(linksWrap);
         }
+      }
+
+      if (res.actions && Array.isArray(res.actions) && res.actions.length > 0) {
+        const actionsWrap = document.createElement('div');
+        actionsWrap.className = 'portfolio-chatbot-context-actions';
+        actionsWrap.setAttribute('role', 'group');
+        actionsWrap.setAttribute('aria-label', 'Suggested Actions');
+
+        res.actions.forEach(action => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'portfolio-chatbot-action-btn';
+          btn.textContent = action.label;
+
+          btn.addEventListener('click', () => {
+            if (this.input) {
+              this.input.value = action.query || action.label;
+            }
+            this.handleUserSubmit();
+          });
+
+          actionsWrap.appendChild(btn);
+        });
+
+        bubble.appendChild(actionsWrap);
       }
 
       msg.appendChild(bubble);

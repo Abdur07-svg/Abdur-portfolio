@@ -54,14 +54,27 @@ window.PORTFOLIO_DATA = {
       category: "Voice AI & Conversational Assistant",
       description: "A voice-controlled AI assistant built with Python, LiveKit, and the Gemini API. Features real-time wake word detection and intelligent conversational abilities.",
       tech: ["Python", "Gemini API", "LiveKit"],
+      image: "images/jarvis.webp",
       liveUrl: null,
-      githubUrl: "https://github.com/Abdur07-svg",
+      githubUrl: null,
+      repoUrl: null,
       status: "In Development / Upcoming GitHub link",
       highlights: [
         "Voice-activated wake word detection",
         "Real-time conversational streaming with LiveKit",
         "Powered by Google Gemini API"
-      ]
+      ],
+      keywords: ["jarvis", "jarvis ai", "voice", "assistant", "voice assistant", "voice ai", "livekit", "gemini", "gemini api", "wake word", "ai assistant", "conversational ai", "speech"],
+      i18n: {
+        bn: {
+          title: "JARVIS AI Assistant",
+          description: "ওয়েক-ওয়ার্ড ডিটেকশন ও বাস্তব সময়ের ভয়েস ইন্টার‍্যাকশন সম্পন্ন একটি বুদ্ধিমান পার্সোনাল ভয়েস সহকারী।"
+        },
+        banglish: {
+          title: "JARVIS AI Assistant",
+          description: "Voice-activated AI assistant jate wake-word detection ar real-time voice streaming ache."
+        }
+      }
     },
     {
       id: "fileforge",
@@ -70,14 +83,27 @@ window.PORTFOLIO_DATA = {
       category: "Client-Side Privacy File Toolkit",
       description: "A privacy-focused, 100% client-side web toolkit for converting, compressing, editing, and processing images and PDFs directly in the browser without uploading files to any server.",
       tech: ["HTML5", "CSS3", "JavaScript"],
+      image: "images/FileForge.webp",
       liveUrl: "https://abdur07-svg.github.io/FileForge/",
       githubUrl: "https://github.com/Abdur07-svg/FileForge",
+      repoUrl: "https://github.com/Abdur07-svg/FileForge",
       status: "Live & Deployed",
       highlights: [
         "100% Client-side processing — zero server uploads",
         "Image format conversion & compression",
         "PDF manipulation & utilities in browser"
-      ]
+      ],
+      keywords: ["fileforge", "file forge", "file", "files", "image", "images", "pdf", "pdfs", "converter", "compressor", "compress", "editor", "edit", "processing", "enhancer", "enhance", "toolkit", "client side", "tool", "image enhancer", "image processing", "image compressor"],
+      i18n: {
+        bn: {
+          title: "FileForge",
+          description: "প্রাইভেসি-সুরক্ষিত একটি ১০০% ক্লায়েন্ট-সাইড ওয়েব অ্যাপ, যা সার্ভারে ডাটা আপলোড না করে সরাসরি ব্রাউজারে ছবি ও পিডিএফ কনভার্ট, কম্প্রেস এবং এডিট করে।"
+        },
+        banglish: {
+          title: "FileForge",
+          description: "Server-e kono data upload charai browser-e 100% privacy-focused image ar PDF convert, compress ar edit korar web tool."
+        }
+      }
     },
     {
       id: "polyglot",
@@ -86,14 +112,27 @@ window.PORTFOLIO_DATA = {
       category: "Smart Web Translator",
       description: "A responsive, accessible web-based translator designed to make multilingual communication seamless, fast, and simple across all devices.",
       tech: ["HTML5", "CSS3", "JavaScript", "Translation API"],
+      image: "images/Polyglot.webp",
       liveUrl: "https://abdur07-svg.github.io/Translator/",
       githubUrl: "https://github.com/Abdur07-svg/Translator",
+      repoUrl: "https://github.com/Abdur07-svg/Translator",
       status: "Live & Deployed",
       highlights: [
         "Instant multi-language text translation",
         "Clean, responsive UI on mobile and desktop",
         "Fast and accessible translation tools"
-      ]
+      ],
+      keywords: ["polyglot", "translator", "translation", "translate", "language", "multilingual", "web translator", "smart translator", "anubad"],
+      i18n: {
+        bn: {
+          title: "Polyglot",
+          description: "একটি দ্রুত এবং রেসপন্সিভ বহুভাষিক ওয়েব অনুবাদক, যা মোবাইল ও ডেস্কটপ সব ডিভাইসে দ্রুত যেকোনো ভাষা অনুবাদ করতে পারে।"
+        },
+        banglish: {
+          title: "Polyglot",
+          description: "Responsive web translator jeta multi-language text translation-ke fast ar simple kore dey."
+        }
+      }
     },
     {
       id: "image_classification",
@@ -102,14 +141,27 @@ window.PORTFOLIO_DATA = {
       category: "Computer Vision & Deep Learning",
       description: "A deep learning model utilizing Convolutional Neural Networks (CNN) to accurately classify and detect objects and patterns within digital images.",
       tech: ["TensorFlow", "OpenCV", "Python"],
+      image: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=1200",
       liveUrl: null,
-      githubUrl: "https://github.com/Abdur07-svg",
+      githubUrl: null,
+      repoUrl: null,
       status: "Research & Modeling",
       highlights: [
         "Convolutional Neural Network (CNN) architecture",
         "Image preprocessing with OpenCV",
         "Trained using TensorFlow"
-      ]
+      ],
+      keywords: ["image classification", "image classifier", "cnn", "computer vision", "opencv", "tensorflow", "object detection", "deep learning", "convolutional neural network", "vision", "image", "images", "classifier", "photo", "image processing"],
+      i18n: {
+        bn: {
+          title: "Image Classification CNN",
+          description: "কনভোল্যুশনাল নিউরাল নেটওয়ার্ক (CNN) ব্যবহার করে ডিজিটাল ছবির অবজেক্ট নিখুঁতভাবে শনাক্ত ও ক্লাসিফাই করার ডিপ লার্নিং মডেল।"
+        },
+        banglish: {
+          title: "Image Classification CNN",
+          description: "Convolutional Neural Network (CNN) diye digital image-er object accurately classify korar Deep Learning computer vision model."
+        }
+      }
     },
     {
       id: "endless_runner",
@@ -118,14 +170,27 @@ window.PORTFOLIO_DATA = {
       category: "Mobile Game Development",
       description: "A Temple Run-style 3D endless runner mobile video game built using Android Studio and Java with dynamic obstacles and score tracking.",
       tech: ["Android Studio", "Java"],
+      image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200",
       liveUrl: null,
-      githubUrl: "https://github.com/Abdur07-svg",
+      githubUrl: null,
+      repoUrl: null,
       status: "Mobile Game Project",
       highlights: [
         "3D endless runner gameplay mechanics",
         "Native Android development with Java",
         "Obstacle generation and score tracking"
-      ]
+      ],
+      keywords: ["endless runner", "runner", "temple run", "game", "games", "mobile game", "video game", "android", "android studio", "java", "3d game", "khela"],
+      i18n: {
+        bn: {
+          title: "Endless Runner Game",
+          description: "টেম্পল রান ঘরানার একটি থ্রিডি এন্ডলেস রানার মোবাইল গেম, যা নেটিভভাবে অ্যান্ড্রয়েডের জন্য তৈরি।"
+        },
+        banglish: {
+          title: "Endless Runner Game",
+          description: "3D Temple Run-style endless runner video game jeta Android Studio ar Java diye natively banano hoyeche."
+        }
+      }
     },
     {
       id: "sentiment_analyzer",
@@ -134,14 +199,27 @@ window.PORTFOLIO_DATA = {
       category: "Natural Language Processing",
       description: "A Natural Language Processing (NLP) model to analyze text data, customer feedback, or tweets and predict sentiment as positive, negative, or neutral.",
       tech: ["NLTK", "PyTorch", "Python"],
+      image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200",
       liveUrl: null,
-      githubUrl: "https://github.com/Abdur07-svg",
+      githubUrl: null,
+      repoUrl: null,
       status: "NLP Machine Learning Project",
       highlights: [
         "Text tokenization & preprocessing with NLTK",
         "Deep learning classifier built with PyTorch",
         "Positive / Neutral / Negative sentiment classification"
-      ]
+      ],
+      keywords: ["sentiment analyzer", "sentiment analysis", "sentiment", "nlp", "natural language processing", "pytorch", "nltk", "text analysis", "text classification", "tweets", "feedback", "machine learning"],
+      i18n: {
+        bn: {
+          title: "Sentiment Analyzer",
+          description: "টেক্সট বিশ্লেষণ করে মনোভাবের অনুভূতি (ইতিবাচক, নিরপেক্ষ বা নেতিবাচক) নির্ণয় করার ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং মডেল।"
+        },
+        banglish: {
+          title: "Sentiment Analyzer",
+          description: "Text data analyze kore emotional polarity (Positive, Neutral, Negative) predict korar Natural Language Processing model."
+        }
+      }
     }
   ],
 

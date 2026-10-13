@@ -691,6 +691,169 @@ body.light-theme .portfolio-chatbot-root {
   stroke: currentColor;
 }
 
+.portfolio-chatbot-project-cards-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.portfolio-chatbot-project-intro {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--pc-text);
+  font-weight: 500;
+  padding: 2px 2px 4px;
+}
+
+.portfolio-chatbot-project-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.portfolio-chatbot-project-card {
+  background: var(--pc-card);
+  border: 1px solid var(--pc-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.portfolio-chatbot-project-card:hover {
+  border-color: rgba(0, 112, 243, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.portfolio-chatbot-project-thumb-wrap {
+  width: 100%;
+  height: 112px;
+  background: rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-chatbot-project-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.portfolio-chatbot-project-card:hover .portfolio-chatbot-project-thumb {
+  transform: scale(1.03);
+}
+
+.portfolio-chatbot-project-body {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.portfolio-chatbot-project-title {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--pc-text);
+  line-height: 1.3;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.portfolio-chatbot-project-desc {
+  font-size: 0.81rem;
+  line-height: 1.44;
+  color: var(--pc-text-muted);
+  margin: 0;
+}
+
+.portfolio-chatbot-project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.portfolio-chatbot-project-pill {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(0, 112, 243, 0.12);
+  color: var(--pc-accent);
+  border: 1px solid rgba(0, 112, 243, 0.25);
+  line-height: 1.35;
+}
+
+body.light-theme .portfolio-chatbot-project-pill {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--pc-accent);
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
+.portfolio-chatbot-project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.portfolio-chatbot-project-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.18s ease, transform 0.15s ease, border-color 0.18s ease;
+  line-height: 1.3;
+}
+
+.portfolio-chatbot-project-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.portfolio-chatbot-project-btn-primary {
+  background: var(--pc-accent);
+  color: #ffffff !important;
+  border: 1px solid transparent;
+}
+
+.portfolio-chatbot-project-btn-primary:hover {
+  background: var(--pc-accent-hover);
+  transform: translateY(-1px);
+}
+
+.portfolio-chatbot-project-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--pc-text) !important;
+  border: 1px solid var(--pc-border);
+}
+
+.portfolio-chatbot-project-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+body.light-theme .portfolio-chatbot-project-btn-secondary {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--pc-text) !important;
+  border: 1px solid var(--pc-border);
+}
+
+body.light-theme .portfolio-chatbot-project-btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
 .portfolio-chatbot-companion-card {
   display: flex;
   flex-direction: column;
