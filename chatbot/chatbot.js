@@ -313,6 +313,14 @@
       this.sendQuery(text);
     }
 
+    handleUserSubmit(query) {
+      if (query && typeof query === 'string') {
+        this.sendQuery(query);
+      } else {
+        this.handleSubmit();
+      }
+    }
+
     sendQuery(text) {
       if (!text || this.isTyping || this.isSending) return;
       this.isSending = true;
@@ -593,7 +601,8 @@
       const englishPatterns = [
         /\b(tell|me|about|your|what|are|is|how|can|i|contact|who|built|build|show|which|please|hello|hi|hey|thanks|thank\s*you|good\s*morning|good\s*afternoon|good\s*evening|good\s*night|morning|afternoon|evening|night|bye|goodbye)\b/i,
         /\b(projects?|skills?|experience|education|resume|cv|portfolio|socials?|work|code|github|email)\b/i,
-        /\b(dark|light|mode|theme|turn|enable|disable|switch|on|off)\b/i
+        /\b(dark|light|mode|theme|turn|enable|disable|switch|on|off)\b/i,
+        /\b(games?|play|gaming|jokes?|funny|riddles?|brain\s*teaser|calculate|calc|calculator)\b/i
       ];
       let englishMatches = 0;
       for (const pat of englishPatterns) {
@@ -838,7 +847,8 @@
           intentId: 'theme_conflict',
           response: {
             text: conflictMsgs[lang] || conflictMsgs.en,
-            actions: conflictActions[lang] || conflictActions.en
+            actions: conflictActions[lang] || conflictActions.en,
+            isChoice: true
           }
         };
       }
@@ -904,11 +914,11 @@
       const projects = (this.data && this.data.projects) || [];
       if (!projects || projects.length === 0) return [];
 
-      // Check if asking for all projects (general overview)
+
       const isAllProjectsQuery =
-        /^(?:show\s*(?:me\s*)?(?:your|all|abdur'?s)?\s*projects|all\s*projects|list\s*(?:all\s*)?projects|portfolio\s*projects|projects|work|apps)[\s.?!]*$/i.test(clean) ||
-        /(?:তোমার\s*প্রজেক্টগুলো\s*দেখাও|প্রজেক্ট\s*দেখাও|সব\s*প্রজেক্ট\s*দেখাও|তোমার\s*কাজগুলো\s*দেখাও|প্রজেক্টগুলো|প্রজেক্টসমূহ)/.test(rawText) ||
-        /\b(?:tomar\s*project\s*gulo\s*dekhao|project\s*gulo\s*dekhao|project\s*dekhaw|shob\s*project\s*dekhao|project\s*list)\b/i.test(clean);
+        /(?:show\s*(?:me\s*)?(?:your|all|abdur'?s)?\s*projects|tell\s*(?:me\s*)?(?:about\s*)?(?:your|all|abdur'?s)?\s*projects|what\s*(?:are\s*)?(?:your|all|abdur'?s)?\s*projects|view\s*projects|see\s*projects|all\s*projects|list\s*(?:all\s*)?projects|portfolio\s*projects|^projects$|^work$|^apps$)[\s.?!]*$/i.test(clean) ||
+        /(?:তোমার\s*প্রজেক্টগুলো\s*দেখাও|প্রজেক্টগুলো\s*সম্পর্কে\s*বলো|প্রজেক্ট\s*সম্পর্কে\s*বলো|প্রজেক্ট\s*দেখাও|সব\s*প্রজেক্ট\s*দেখাও|তোমার\s*কাজগুলো\s*দেখাও|প্রজেক্টগুলো|প্রজেক্টসমূহ)/.test(rawText) ||
+        /\b(?:tomar\s*project\s*(?:gulo\s*)?(?:dekhao|somporke\s*bolo|bolo)|project\s*gulo\s*(?:dekhao|somporke\s*bolo|bolo)|project\s*dekhaw|shob\s*project\s*dekhao|project\s*list)\b/i.test(clean);
 
       const hasSpecificTechOrTopic =
         /\b(python|java\b|javascript|js\b|html|css|android|tensorflow|opencv|pytorch|nltk|gemini|livekit|ai\b|artificial\s*intelligence|machine\s*learning|ml\b|deep\s*learning|nlp|computer\s*vision|vision|game|runner|temple\s*run|voice|speech|assistant|translator|translation|fileforge|file\s*forge|polyglot|jarvis|cnn|sentiment|image|pdf|enhancer)\b/i.test(clean) ||
@@ -929,12 +939,12 @@
         const pTech = (p.tech || []).map(t => t.toLowerCase());
         const pKeywords = (p.keywords || []).map(k => k.toLowerCase());
 
-        // Exact ID or Name match
+
         if (clean.includes(pId) || clean.includes(pTitle) || clean.includes(pShort)) {
           score += 150;
         }
 
-        // Technology matching
+
         if (/\b(python|পাইথন)\b/i.test(clean)) {
           if (pTech.includes('python')) score += 80;
         }
@@ -957,7 +967,6 @@
           if (pTech.some(t => t.includes('gemini') || t.includes('livekit'))) score += 80;
         }
 
-        // Category / Domain matching
         if (/\b(ai|artificial\s*intelligence)\b/i.test(clean) || /(এআই|কৃত্রিম\s*বুদ্ধিমত্তা)/.test(rawText)) {
           if (pCategory.includes('ai') || pCategory.includes('deep learning') || pCategory.includes('natural language') || pId === 'jarvis' || pId === 'image_classification' || pId === 'sentiment_analyzer') {
             score += 65;
@@ -998,7 +1007,7 @@
           }
         }
 
-        // Project keywords match
+
         for (const kw of pKeywords) {
           if (clean.includes(kw)) {
             score += 40;
@@ -1013,7 +1022,7 @@
       if (results.length === 0) return [];
 
       results.sort((a, b) => b.score - a.score);
-      // If single top match has an overwhelming exact score
+
       if (results[0].score >= 120 && results.length > 1 && results[0].score - results[1].score >= 60) {
         return [results[0].project];
       }
@@ -1024,32 +1033,30 @@
     isProjectQuery(clean, rawText) {
       if (!clean) return false;
 
-      // Mentions "project" in English, Bengali, or Banglish
+
       if (/\b(projects?|apps?|creations?|portfolio\s*projects?)\b/i.test(clean) ||
           /(প্রজেক্ট|কাজগুলো|প্রজেক্টসমূহ)/.test(rawText) ||
           /\b(project|projects|project-gulo|projectgulo|project-er|projecter)\b/i.test(clean)) {
         return true;
       }
 
-      // Mentions specific project names or terms
+
       if (/\b(fileforge|file\s*forge|polyglot|jarvis|endless\s*runner|temple\s*run|sentiment\s*analyzer|image\s*classification|image\s*classifier|image\s*enhancer)\b/i.test(clean)) {
         return true;
       }
 
-      // Asking what Abdur built / made / coded
+
       if (/\b(what\s*(did|has|have)\s*(you|abdur)\s*(built|made|created|developed|coded))\b/i.test(clean) ||
           /(বানিয়েছ|তৈরি\s*করেছ|কী\s*কী\s*বানিয়েছ)/.test(rawText) ||
           /\b(ki\s*ki\s*(banise|baniyeche|toiri\s*koreche))\b/i.test(clean)) {
         return true;
       }
 
-      // Questions like "Do you have any AI / Python / ML / Web tools?"
       if (/\b(do\s*you\s*have|show\s*me|tell\s*me\s*about|any)\b/i.test(clean) &&
           /\b(ai|python|machine\s*learning|deep\s*learning|nlp|computer\s*vision|vision|translator|runner|speech|voice|livekit|gemini)\b/i.test(clean)) {
         return true;
       }
 
-      // Banglish questions like "Tomar AI ache?", "Python project ache?"
       if (/\b(ache|ase)\b/i.test(clean) && /\b(ai|python|ml|java|game|tool|tools)\b/i.test(clean)) {
         return true;
       }
@@ -1086,12 +1093,12 @@
             text: notFoundTexts[lang] || notFoundTexts.en,
             actions: [
               { label: showAllLabels[lang] || showAllLabels.en, query: 'Show me your projects' }
-            ]
+            ],
+            isChoice: true
           }
         };
       }
 
-      // Update conversation context
       if (matches.length === 1) {
         this.selectedProject = matches[0];
         this.lastDisplayedProjects = matches;
@@ -1102,7 +1109,6 @@
         this.pendingFollowUpType = null;
       }
 
-      // Localized Intro Text
       let introText = '';
       if (matches.length >= 6) {
         const allIntros = {
@@ -1158,7 +1164,6 @@
         /\b(what\s*(technolog\w*|tech|stack|tools)|which\s*(technolog\w*|tech|stack|tools)|what\s*does\s*it\s*use|technolog\w*(\s*used)?|tech\s*stack|tech\s*used|ki\s*tech|kon\s*tech|kon\s*technology)\b/i.test(clean) ||
         /(টেকনোলজি|প্রযুক্তি|কী\s*প্রযুক্তি)/.test(rawText);
 
-      // Check if user is answering a previous clarification question
       if (!isMoreDetails && !isGitHubLink && !isTechStack) {
         if (this.pendingFollowUpType && this.lastDisplayedProjects && this.lastDisplayedProjects.length > 0) {
           const chosen = this.lastDisplayedProjects.find(p =>
@@ -1179,7 +1184,7 @@
       this.currentLanguage = lang;
       const followUpType = isGitHubLink ? 'github' : (isTechStack ? 'tech' : 'more');
 
-      // Check if query explicitly names one of the projects
+
       const projects = (this.data && this.data.projects) || [];
       const explicitlyNamed = projects.find(p =>
         clean.includes(p.id.toLowerCase()) ||
@@ -1194,13 +1199,10 @@
         return this.deliverProjectFollowUpAnswer(explicitlyNamed, followUpType, lang);
       }
 
-      // If a single project is currently selected in conversation context
       if (this.selectedProject) {
         this.pendingFollowUpType = null;
         return this.deliverProjectFollowUpAnswer(this.selectedProject, followUpType, lang);
       }
-
-      // If multiple projects were displayed and question is ambiguous
       if (this.lastDisplayedProjects && this.lastDisplayedProjects.length > 1) {
         this.pendingFollowUpType = followUpType;
 
@@ -1219,12 +1221,13 @@
           intentId: 'project_followup_ambiguous',
           response: {
             text: promptTexts[lang] || promptTexts.en,
-            actions: clarificationActions
+            actions: clarificationActions,
+            isChoice: true
           }
         };
       }
 
-      // If no project context exists yet
+
       const noContextTexts = {
         en: "Which project would you like to know about? Abdur has built JARVIS AI, FileForge, Polyglot, Image Classification CNN, Endless Runner Game, and Sentiment Analyzer. Or ask to show all projects! 🚀",
         bn: "আপনি কোন প্রজেক্টটি সম্পর্কে জানতে চান? আব্দুর রাজ্জাকের তৈরি প্রজেক্টগুলো হলো: JARVIS AI, FileForge, Polyglot, Image Classification CNN, Endless Runner Game এবং Sentiment Analyzer। আপনি সব প্রজেক্ট দেখতে বলতে পারেন! 🚀",
@@ -1237,7 +1240,8 @@
           text: noContextTexts[lang] || noContextTexts.en,
           actions: [
             { label: lang === 'bn' ? 'সব প্রজেক্ট দেখাও' : (lang === 'banglish' ? 'Shob Projects Dekhao' : 'Show All Projects'), query: 'Show me your projects' }
-          ]
+          ],
+          isChoice: true
         }
       };
     }
@@ -1472,7 +1476,7 @@
       if (!rawText) return null;
       const clean = rawText.trim();
 
-      // Check if message is a non-greeting time query (e.g. "What did you build this morning?")
+
       const startsWithGreetingPrefix = /^(?:(?:hi|hii|hello|hey|hola|yo|assalamu\s*alaikum|salam|namaste)[\s,!.-]+)?(good\s*(?:morning|afternoon|evening|night)|gud\s*(?:morning|afternoon|evening|night)|sweet\s*dreams|সুপ্রভাত|শুভ\s*(?:সকাল|অপরাহ্ন|দুপুর|সন্ধ্যা|রাত্রি|রাত)|shuvo\s*(?:shokal|sokal|dupur|sondha|shondha|ratri|raat)|subho\s*(?:shokal|sokal|dupur|sondha|shondha|ratri|raat)|(?:shokal|sokal|dupur|sondha|shondha|ratri)\b|\b(?:gm|ga|ge|gn)\b)(?:\s*(?:bolo|bolchi))?[\s,!.-]*/i;
 
       const nonGreetingTimeQuery =
@@ -1484,7 +1488,7 @@
         return null;
       }
 
-      // Check generic greetings (e.g., "Hi", "Hello", "Hey", "Assalamu Alaikum", "Salam", "Hola", "Sup", "What's up", "হ্যালো", "নমস্কার")
+
       const genericGreetingOnly = /^(?:hi|hii|hello|hey|hola|yo|sup|what'?s\s*up|assalamu\s*alaikum|salam|namaste|হ্যালো|নমস্কার|সালাম)[\s!.,?-]*$/i;
       if (genericGreetingOnly.test(clean)) {
         const isIslamic = /(assalamu\s*alaikum|salam|সালাম)/i.test(clean);
@@ -1505,11 +1509,10 @@
       const matchedPhrase = match[0];
       const remainder = clean.slice(matchedPhrase.length).trim();
 
-      // Check language
+
       const isBengali = /[\u0980-\u09FF]/.test(clean) ||
         /\b(shuvo|subho|shokal|sokal|dupur|sondha|shondha|ratri|raat|bolo|bolchi|kemon|acho|asen|aso|tumi|apni|bhalo)\b/i.test(clean);
 
-      // Determine greeting period from matched phrase
       let timeType = null;
       if (/\b(morning|gm)\b/i.test(matchedPhrase) || /(সুপ্রভাত|শুভ\s*সকাল|shokal|sokal)/i.test(matchedPhrase)) {
         timeType = 'morning';
@@ -1523,10 +1526,9 @@
 
       if (!timeType) return null;
 
-      // Check if farewell context
+
       const isFarewell = /\b(bye|goodbye|see\s*you|sleep|sleeping|going\s*to\s*sleep|turning\s*in|bed|bedtime|take\s*care|biday|বিদায়)\b/i.test(clean);
 
-      // Check if remainder is substantive query or just pleasantry
       const isPleasantryOnly = !remainder ||
         /^(?:how\s*are\s*you(?:\s*doing)?|kemon\s*(?:acho|asen|aso|achen)|ki\s*(?:khobor|obostha)|কেমন\s*(?:আছো|আছেন)|bye|goodbye|take\s*care|see\s*you)[\s!.,?-]*$/i.test(remainder) ||
         /^[\s!.,?-]+$/.test(remainder);
@@ -1552,18 +1554,6 @@
       const now = customDate || this.mockDate || new Date();
       const currentPeriod = this.getVisitorTimePeriod(now);
 
-      let defaultActions = [
-        { label: "About Abdur", query: "Who is Abdur?" },
-        { label: "Abdur's Projects", query: "Tell me about Abdur's projects" },
-        { label: "Technical Skills", query: "What are Abdur's technical skills?" },
-        { label: "Contact Abdur", query: "How can I contact Abdur?" }
-      ];
-
-      if (this.i18n && this.i18n.greeting && this.i18n.greeting[lang] && this.i18n.greeting[lang].actions) {
-        defaultActions = this.i18n.greeting[lang].actions;
-      }
-
-      // Handle generic greeting without time mismatch correction
       if (parsed.timeType === 'generic') {
         let greetingMsg = "Hello! 👋 I'm your Portfolio Assistant. I'm here to help you explore Abdur Rajjak's projects, technical skills, education, and contact details. What would you like to know?";
         if (parsed.isIslamic) {
@@ -1582,8 +1572,7 @@
         return {
           intentId: 'greeting',
           response: {
-            text: greetingMsg,
-            actions: defaultActions
+            text: greetingMsg
           }
         };
       }
@@ -1647,8 +1636,7 @@
       return {
         intentId: isCorrection ? 'time_greeting_correction' : 'time_greeting',
         response: {
-          text: greetingText,
-          actions: defaultActions
+          text: greetingText
         }
       };
     }
@@ -1673,7 +1661,6 @@
         };
       }
 
-      // Theme Control Command (High-priority website control action)
       const themeAction = this.handleThemeCommand(rawText, norm);
       if (themeAction) {
         return themeAction;
@@ -1686,13 +1673,11 @@
         }
       }
 
-      // Smart Project Finder - Follow-Up Questions (Check before general project search)
       const followUpRes = this.handleProjectFollowUp(rawText, norm);
       if (followUpRes) {
         return followUpRes;
       }
 
-      // Smart Project Finder - Natural Project Search
       const projectSearchRes = this.handleProjectSearch(rawText, norm);
       if (projectSearchRes) {
         return projectSearchRes;
@@ -1737,28 +1722,47 @@
         }
       }
 
-      if (/(guess\s*the\s*number|number\s*(guessing\s*)?game|play\s*number\s*game|নাম্বার\s*খেলা)/i.test(rawText)) {
+      if (/(guess\s*the\s*number|number\s*(guessing\s*)?game|guess\s*number|play\s*number\s*game|সংখ্যা\s*অনুমান|নাম্বার\s*খেলা)/i.test(rawText)) {
         return {
           intentId: 'number_game_card',
           response: { type: 'number_game_card' }
         };
       }
 
+      if (/\b(brain\s*teaser|riddles?|puzzle|dhadha|dhadha\s*bolo)\b/i.test(rawText) || /(ধাঁধা|ব্রেন\s*টিজার)/.test(rawText)) {
+        return {
+          intentId: 'brain_teaser_card',
+          response: { type: 'brain_teaser_card' }
+        };
+      }
+
+
+      if (/\b(rock\s*paper\s*scissors|rps|stone\s*paper\s*scissors|stone\s*paper)\b/i.test(rawText) || /(পাথর\s*কাগজ)/.test(rawText)) {
+        return {
+          intentId: 'rps_card',
+          response: { type: 'rps_card' }
+        };
+      }
+
       const funIntent = this.detectFunAndGameIntent(rawText, norm);
       if (funIntent.isJoke || funIntent.isGame) {
-        const contextualActions = [];
         const lang = this.currentLanguage || 'en';
+        const anotherLabels = {
+          en: '😂 Another Joke 🔄',
+          bn: '😂 আরেকটি জোক 🔄',
+          banglish: '😂 Arekta Joke 🔄'
+        };
 
-        const actionLabels = {
-          tell_joke: {
-            en: '😂 Tell Me a Joke',
-            bn: '😂 একটি জোক বলো',
-            banglish: '😂 Ekta Joke Bolo'
+        const gameLabels = {
+          rps: {
+            en: '🎮 Rock Paper Scissors',
+            bn: '🎮 পাথর কাগজ কাঁচি',
+            banglish: '🎮 Rock Paper Scissors'
           },
-          play_game: {
-            en: '🎮 Play a Game',
-            bn: '🎮 একটি গেম খেলি',
-            banglish: '🎮 Game Kheli'
+          number_game: {
+            en: '🎯 Guess the Number',
+            bn: '🎯 সংখ্যা অনুমান খেলা',
+            banglish: '🎯 Guess the Number'
           },
           brain_teaser: {
             en: '🧠 Brain Teaser',
@@ -1767,49 +1771,55 @@
           }
         };
 
-        if (funIntent.isJoke) {
-          contextualActions.push({
-            type: 'tell_joke',
-            label: actionLabels.tell_joke[lang] || actionLabels.tell_joke.en
-          });
-        }
-        if (funIntent.isGame) {
-          contextualActions.push({
-            type: 'play_game',
-            label: actionLabels.play_game[lang] || actionLabels.play_game.en
-          });
-          contextualActions.push({
-            type: 'brain_teaser',
-            label: actionLabels.brain_teaser[lang] || actionLabels.brain_teaser.en
-          });
+        if (funIntent.isJoke && !funIntent.isGame) {
+          const joke = this.getRandomJoke();
+          return {
+            intentId: 'joke',
+            response: {
+              text: joke,
+              contextualActions: [
+                { type: 'tell_joke', label: anotherLabels[lang] || anotherLabels.en }
+              ]
+            }
+          };
         }
 
-        const replyTexts = {
-          both: {
-            en: "Boredom banished! Pick a game or enjoy a joke below: 🌟",
-            bn: "বিরক্তি দূর হোক! নিচের যে কোনো একটি গেম খেলুন বা জোক শুনুন: 🌟",
-            banglish: "Boring lagche? Ekta game khelo ba moja-r joke shono niche theke: 🌟"
-          },
-          joke: {
-            en: "Looking for some fun or a good laugh? Click below whenever you're ready! 😄",
-            bn: "একটু আনন্দ বা হাসির কিছু খুঁজছেন? নিচে ক্লিক করুন! 😄",
-            banglish: "Kichu mojar ba hasir jinis khujcho? Click koro niche! 😄"
-          },
-          game: {
-            en: "Ready to play? Choose an activity below to get started! 🎮",
-            bn: "খেলতে প্রস্তুত? শুরু করতে নিচের যেকোনো একটি বেছে নিন! 🎮",
-            banglish: "Khelte ready? Nicher theke shuru koro! 🎮"
-          }
+
+        if (funIntent.isGame && !funIntent.isJoke) {
+          const gameTexts = {
+            en: "Ready to play? Choose one of our 3 mini-games below or type the name to start! 🎮",
+            bn: "খেলতে প্রস্তুত? নিচের ৩টি গেমের যেকোনো একটি বেছে নিন অথবা নাম লিখে শুরু করুন: 🎮",
+            banglish: "Khelte ready? Nicher 3 ta game theke ekta choose koro ba naam likhe shuru koro: 🎮"
+          };
+          return {
+            intentId: 'game_clarification',
+            response: {
+              text: gameTexts[lang] || gameTexts.en,
+              contextualActions: [
+                { type: 'play_game', label: gameLabels.rps[lang] || gameLabels.rps.en },
+                { type: 'number_game', label: gameLabels.number_game[lang] || gameLabels.number_game.en },
+                { type: 'brain_teaser', label: gameLabels.brain_teaser[lang] || gameLabels.brain_teaser.en }
+              ]
+            }
+          };
+        }
+e
+        const joke = this.getRandomJoke();
+        const intros = {
+          en: "Boredom banished! Here's a quick joke to cheer you up, or pick a mini-game below: 😄\n\n",
+          bn: "বিরক্তি দূর করতে একটি মজার জোক শুনুন, অথবা নিচের একটি গেম খেলুন: 😄\n\n",
+          banglish: "Boring lagche? Ei nao ekta mojar joke, ba nicher theke game khelo: 😄\n\n"
         };
-
-        const replyType = funIntent.isJoke && funIntent.isGame ? 'both' : (funIntent.isJoke ? 'joke' : 'game');
-        const replyText = replyTexts[replyType][lang] || replyTexts[replyType].en;
-
         return {
-          intentId: funIntent.isJoke && funIntent.isGame ? 'fun_and_games' : (funIntent.isJoke ? 'fun_joke_prompt' : 'fun_game_prompt'),
+          intentId: 'joke',
           response: {
-            text: replyText,
-            contextualActions: contextualActions
+            text: (intros[lang] || intros.en) + joke,
+            contextualActions: [
+              { type: 'tell_joke', label: anotherLabels[lang] || anotherLabels.en },
+              { type: 'play_game', label: gameLabels.rps[lang] || gameLabels.rps.en },
+              { type: 'number_game', label: gameLabels.number_game[lang] || gameLabels.number_game.en },
+              { type: 'brain_teaser', label: gameLabels.brain_teaser[lang] || gameLabels.brain_teaser.en }
+            ]
           }
         };
       }
@@ -2369,14 +2379,21 @@
             { type: 'tell_joke', label: anotherLabels[lang] || anotherLabels.en }
           ]
         });
-      } else if (actionType === 'play_game') {
+      } else if (actionType === 'play_game' || actionType === 'rps' || actionType === 'play_rps') {
         this.appendBotMsg({
           type: 'rps_card'
         });
-      } else if (actionType === 'brain_teaser') {
+      } else if (actionType === 'number_game' || actionType === 'guess_number') {
+        this.appendBotMsg({
+          type: 'number_game_card'
+        });
+      } else if (actionType === 'brain_teaser' || actionType === 'riddle') {
         this.appendBotMsg({
           type: 'brain_teaser_card'
         });
+      }
+      if (this.input) {
+        this.input.focus();
       }
     }
 
@@ -2483,23 +2500,32 @@
         }
       }
 
-      if (res.actions && Array.isArray(res.actions) && res.actions.length > 0) {
+      if (res.isChoice && res.actions && Array.isArray(res.actions) && res.actions.length > 0) {
         const actionsWrap = document.createElement('div');
         actionsWrap.className = 'portfolio-chatbot-context-actions';
         actionsWrap.setAttribute('role', 'group');
-        actionsWrap.setAttribute('aria-label', 'Suggested Actions');
+        actionsWrap.setAttribute('aria-label', 'Choice Options');
 
-        res.actions.forEach(action => {
+        res.actions.slice(0, 3).forEach(action => {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'portfolio-chatbot-action-btn';
           btn.textContent = action.label;
 
-          btn.addEventListener('click', () => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const query = action.query || action.label;
+            if (!query) return;
+            if (this.isTyping || this.isSending) return;
+
             if (this.input) {
-              this.input.value = action.query || action.label;
+              this.input.value = '';
+              this.input.focus();
             }
-            this.handleUserSubmit();
+            if (this.sendBtn) {
+              this.sendBtn.disabled = true;
+            }
+            this.sendQuery(query);
           });
 
           actionsWrap.appendChild(btn);
